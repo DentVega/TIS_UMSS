@@ -18,10 +18,10 @@ import { sLogin, sNameUmss, sNotifications, sProfile } from '../../constants/str
 const useStyles = makeStyles((theme) => ({
   logo: {
     height: 40,
-    paddingRight: 15
+    paddingRight: 15,
   },
   appBar: {
-    background: '#FE6B8B'
+    background: '#FE6B8B',
   },
   grow: {
     flexGrow: 1,
@@ -47,9 +47,7 @@ function CustomAppBar(props) {
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
-  const handleProfileMenuOpen = (event) => {
-
-  };
+  const handleProfileMenuOpen = (event) => {};
 
   const handleMobileMenuClose = () => {
     setMobileMoreAnchorEl(null);
@@ -68,12 +66,11 @@ function CustomAppBar(props) {
       keepMounted
       transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       open={isMobileMenuOpen}
-      onClose={handleMobileMenuClose}
-    >
+      onClose={handleMobileMenuClose}>
       <MenuItem>
         <IconButton aria-label="show 11 new notifications" color="inherit">
           <Badge badgeContent={numberNotification} color="secondary">
-            <NotificationsIcon/>
+            <NotificationsIcon />
           </Badge>
         </IconButton>
         <p>{sNotifications}</p>
@@ -83,9 +80,8 @@ function CustomAppBar(props) {
           aria-label="account of current user"
           aria-controls="primary-search-account-menu"
           aria-haspopup="true"
-          color="inherit"
-        >
-          <AccountCircle/>
+          color="inherit">
+          <AccountCircle />
         </IconButton>
         <p>{sProfile}</p>
       </MenuItem>
@@ -97,7 +93,7 @@ function CustomAppBar(props) {
       <div className={classes.sectionDesktop}>
         <IconButton aria-label="show 17 new notifications" color="inherit">
           <Badge badgeContent={numberNotification} color="secondary">
-            <NotificationsIcon/>
+            <NotificationsIcon />
           </Badge>
         </IconButton>
         <IconButton
@@ -105,9 +101,8 @@ function CustomAppBar(props) {
           aria-label="account of current user"
           aria-haspopup="true"
           onClick={handleProfileMenuOpen}
-          color="inherit"
-        >
-          <AccountCircle/>
+          color="inherit">
+          <AccountCircle />
         </IconButton>
       </div>
       <div className={classes.sectionMobile}>
@@ -116,9 +111,8 @@ function CustomAppBar(props) {
           aria-controls={mobileMenuId}
           aria-haspopup="true"
           onClick={handleMobileMenuOpen}
-          color="inherit"
-        >
-          <MoreIcon/>
+          color="inherit">
+          <MoreIcon />
         </IconButton>
       </div>
     </div>
@@ -134,12 +128,12 @@ function CustomAppBar(props) {
     <div className={classes.grow}>
       <AppBar position="static">
         <Toolbar>
-          <img src={logoUmss} className={classes.logo} alt={'logo-umss'}/>
+          <img src={logoUmss} className={classes.logo} alt={'logo-umss'} />
           <Typography variant="h6" noWrap>
             {sNameUmss}
           </Typography>
 
-          <div className={classes.grow}/>
+          <div className={classes.grow} />
           {currentUser ? actions : actionsLogin}
         </Toolbar>
       </AppBar>
@@ -149,7 +143,7 @@ function CustomAppBar(props) {
 }
 
 CustomAppBar.propTypes = {
-  currentUser: PropTypes.any
+  currentUser: PropTypes.any,
 };
 
 export default CustomAppBar;
