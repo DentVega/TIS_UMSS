@@ -1,89 +1,86 @@
-import React,{useState,useEffect} from 'react';
+import React from 'react';
 import TextField from '@material-ui/core/TextField';
-import { Button,Grid,Link } from '@material-ui/core';
+import { Button,Grid } from '@material-ui/core';
+import {usePassword,useEmail} from '../constants/formCustomHook/useForm';
+
 
 const LoginPage=()=> {
-  const [form,setForm]=useState({
-    email: "",
-    password: ""
-  });
-  const {email,password}=form;
+  const emailregex=/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+  const [email,setEmail,emailError,setEmailError,emailMessage,setEmailMessage]=useEmail();  
+  const [password,setPassword,passwordError,passMessage]=usePassword();
 
-  const [emailE,setEmailE]=useState(false);
-  const [passE,setPassE]=useState(false);
-
-
-  useEffect(() => {
-    email.length>30 ? setEmailE(true) : setEmailE(false);
-    password.length>20 ? setPassE(true) : setPassE(false); 
-  }, [email,password]);
-
-  const handleInputChange=({target})=>{
-    setForm({
-      ...form,
-      [ target.name ]:target.value
-    })
+  const handleLogin=()=>{
+    if(email.length>5 && emailregex.test(email)){ 
+      //algo
+    }else{
+      setEmailError(true);
+      setEmailMessage("email invalido");
+    }
   }
+
   return (   
-      
-        <Grid 
-        container        
-        style={{minHeight:"100vh"}}
-        alignItems="center"
+    
+    <Grid 
+      container        
+      style={{minHeight:"100vh"}}
+      alignItems="center"
+      justify="center"
+    >    
+      <Grid 
+        container 
+        direction="column"
+        style={{width:"45vh",borderRadius:"40px",padding:"20px",boxShadow:"0px 10px 10px 0px grey"}}
         justify="center"
-        >
-          <Grid 
-          container 
-          direction="column"
-          style={{width:"45vh",borderRadius:"40px",padding:"20px",boxShadow:"0px 10px 10px 0px grey"}}
-          justify="center"
-          alignItems="center"
-          spacing={4}
-          >
-            <Grid item>
-              <label>Iniciar Sesion</label>
-            </Grid>
-            <Grid item>
+        alignItems="center"
+        spacing={4}
+      >
+        <Grid item>
+          <h2>Iniciar Sesion</h2>
+        </Grid>
+        <Grid item>
+          <TextField
+              error={emailError}
+              id="filled-error-helper-text"
+              label="Email"
+              helperText={emailMessage}
+              autoComplete="off"              
+              value={email}
+              type="email"
+              name="email"
+              variant="filled"
+              onChange={setEmail}
+              autoFocus={true}
+              
+            />  
+          </Grid>
+          <Grid item>
             <TextField
-                error={emailE}
-                id="filled-error-helper-text"
-                label="Email"
-                autoComplete="off"
-                name="email"
-                value={email}
-                helperText={emailE ? "Incorrect entry":""}
-                variant="filled"
-                onChange={handleInputChange}
-                autoFocus={true}
-                color="primary"
-              />
-              </Grid>
-              <Grid item>
-              <TextField
-                error={passE}
-                id="filled-error-helper-text"
-                label="Password"
-                name="password"
-                value={password}
-                helperText={passE ? "Incorrect entry":""}
-                variant="filled"
-                autoComplete="off"
-                onChange={handleInputChange}
-              />  
-              </Grid>
-              <Grid item> 
-              <Button variant="contained" color="primary">
-                Iniciar Sesion
-              </Button>
-              </Grid> 
-              <Grid item>
-                <Link>
-                  olvido su contraseña?
-                </Link>
-              </Grid>
-            </Grid>
-        </Grid>   
-        
+              error={passwordError}
+              id="filled-error-helper-text"
+              label="Password"
+              name="password"
+              type="password"
+              value={password}
+              helperText={passMessage}
+              variant="filled"
+              autoComplete="off"
+              onChange={setPassword}
+              
+            />    
+          </Grid>
+          <Grid item> 
+            <Button variant="contained" color="primary" onClick={handleLogin}  >
+              Iniciar Sesion
+            </Button>
+          </Grid> 
+          <Grid item>
+            <Button>
+              olvido su contraseña?
+            </Button>
+          </Grid>
+        </Grid>
+    </Grid>  
+         
   );
 }
 
