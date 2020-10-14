@@ -15,7 +15,6 @@ function TestUi(props) {
 
   return (
     <div>
-      <CustomAppBar currentUser={true} />
       <h1>TestUi</h1>
       <Button variant="contained" color="secondary" className={classes.button} startIcon={<DeleteIcon />}>
         Delete

@@ -7,3 +7,7 @@ export const changeTabIndex = (index) => {
 export const cleanAllReducers = () => {
   return { type: actions.CLEAN_ALL_REDUCERS };
 };
+
+export const openDrawer = () => {
+  return { type: actions.OPEN_DRAWER };
+};
