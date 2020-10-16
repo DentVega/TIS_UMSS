@@ -1,7 +1,7 @@
 import { OPEN_DRAWER, CLEAN_ALL_REDUCERS } from '../actions/actions';
 
 const initState = {
-  openDrawer: true,
+  openDrawer: false,
 };
 
 function appReducer(state = initState, action) {

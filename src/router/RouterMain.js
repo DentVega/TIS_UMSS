@@ -30,14 +30,14 @@ const useStyles = makeStyles((theme) => ({
 }));
 function RouterMain(props) {
   const classes = useStyles();
-  const { openDrawer } = props.app;
+  const { user } = props.userReducer;
   return (
     <BrowserRouter>
-      <div className={classes.root}>
+      <div className={user != null ? classes.root : null}>
         <CustomAppBar currentUser={true} />
-        {openDrawer && <CustomDrawer />}
+        {user && <CustomDrawer />}
         <main className={classes.content}>
-          <Toolbar />
+          {user && <Toolbar />}
           <Route exact={true} path={'/'} component={LoginPage} />
           <Route exact={true} path={routes.login} component={LoginPage} />
           <Route exact={true} path={routes.home} component={HomePage} />
@@ -60,6 +60,7 @@ function RouterMain(props) {
 const mapStateToProps = (state) => {
   return {
     app: state.app,
+    userReducer: state.userReducer,
   };
 };
 

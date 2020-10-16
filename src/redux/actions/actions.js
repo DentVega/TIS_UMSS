@@ -1,3 +1,5 @@
 export const CHANGE_TAB_INDEX = 'CHANGE_TAB_INDEX';
 export const CLEAN_ALL_REDUCERS = 'CLEAN_ALL_REDUCERS';
 export const OPEN_DRAWER = 'OPEN_DRAWER';
+
+export const CHANGE_USER = 'CHANGE_USER';

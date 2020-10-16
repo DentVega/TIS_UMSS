@@ -15,6 +15,7 @@ import logoUmss from '../../assets/logoSanSimon.svg';
 import PropTypes from 'prop-types';
 import { sLogin, sNameUmss, sNotifications, sProfile } from '../../constants/strings';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import { connect } from 'react-redux';
 
 const useStyles = makeStyles((theme) => ({
   logo: {
@@ -42,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function CustomAppBar(props) {
-  const { currentUser } = props;
+  const { user } = props.userReducer;
   const classes = useStyles();
   const [numberNotification, setNumberNotification] = React.useState(0);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -136,10 +137,10 @@ function CustomAppBar(props) {
           </Typography>
 
           <div className={classes.grow} />
-          {currentUser ? actions : actionsLogin}
+          {user ? actions : actionsLogin}
         </Toolbar>
       </AppBar>
-      {currentUser && renderMobileMenu}
+      {user && renderMobileMenu}
     </div>
   );
 }
@@ -148,4 +149,11 @@ CustomAppBar.propTypes = {
   currentUser: PropTypes.any,
 };
 
-export default CustomAppBar;
+const mapStateToProps = (state) => {
+  return {
+    app: state.app,
+    userReducer: state.userReducer,
+  };
+};
+
+export default connect(mapStateToProps)(CustomAppBar);

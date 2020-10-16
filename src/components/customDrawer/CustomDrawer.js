@@ -66,7 +66,6 @@ function CustomDrawer(props) {
   };
 
   const openPage = (id) => {
-      console.warn('id menu', id);
     switch (id) {
       case 0:
         props.history.push(routes.home);
@@ -158,6 +157,7 @@ function CustomDrawer(props) {
 const mapStateToProps = (state) => {
   return {
     app: state.app,
+    userReducer: state.userReducer,
   };
 };
 

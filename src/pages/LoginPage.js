@@ -1,87 +1,97 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import TextField from '@material-ui/core/TextField';
-import { Button,Grid } from '@material-ui/core';
-import {usePassword,useEmail} from '../constants/formCustomHook/useForm';
+import { Button, Grid } from '@material-ui/core';
+import { usePassword, useEmail } from '../constants/formCustomHook/useForm';
+import { changeUser } from '../redux/actions/index.actions';
+import { routes } from '../router/RoutesConstants';
 
+const LoginPage = (props) => {
+  const emailregex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+  const [email, setEmail, emailError, setEmailError, emailMessage, setEmailMessage] = useEmail();
+  const [password, setPassword, passwordError, passMessage] = usePassword();
 
-const LoginPage=()=> {
-  const emailregex=/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-  const [email,setEmail,emailError,setEmailError,emailMessage,setEmailMessage]=useEmail();  
-  const [password,setPassword,passwordError,passMessage]=usePassword();
-
-  const handleLogin=()=>{
-    if(email.length>5 && emailregex.test(email)){ 
-      //algo
-    }else{
+  const handleLogin = () => {
+    if (email.length > 5 && emailregex.test(email)) {
+      login();
+    } else {
       setEmailError(true);
-      setEmailMessage("email invalido");
+      setEmailMessage('email invalido');
     }
-  }
+  };
 
-  return (   
-    
-    <Grid 
-      container        
-      style={{minHeight:"100vh"}}
-      alignItems="center"
-      justify="center"
-    >    
-      <Grid 
-        container 
+  const login = () => {
+    props.changeUser({
+      email: email,
+      password: password,
+    });
+    props.history.push(routes.home);
+  };
+
+  return (
+    <Grid container alignItems="center" justify="center">
+      <Grid
+        container
         direction="column"
-        style={{width:"45vh",borderRadius:"40px",padding:"20px",boxShadow:"0px 10px 10px 0px grey"}}
+        style={{ width: '45vh', borderRadius: '40px', padding: '20px', boxShadow: '0px 10px 10px 0px grey' }}
         justify="center"
         alignItems="center"
-        spacing={4}
-      >
+        spacing={4}>
         <Grid item>
           <h2>Iniciar Sesion</h2>
         </Grid>
         <Grid item>
           <TextField
-              error={emailError}
-              id="filled-error-helper-text"
-              label="Email"
-              helperText={emailMessage}
-              autoComplete="off"              
-              value={email}
-              type="email"
-              name="email"
-              variant="filled"
-              onChange={setEmail}
-              autoFocus={true}
-              
-            />  
-          </Grid>
-          <Grid item>
-            <TextField
-              error={passwordError}
-              id="filled-error-helper-text"
-              label="Password"
-              name="password"
-              type="password"
-              value={password}
-              helperText={passMessage}
-              variant="filled"
-              autoComplete="off"
-              onChange={setPassword}
-              
-            />    
-          </Grid>
-          <Grid item> 
-            <Button variant="contained" color="primary" onClick={handleLogin}  >
-              Iniciar Sesion
-            </Button>
-          </Grid> 
-          <Grid item>
-            <Button>
-              olvido su contraseña?
-            </Button>
-          </Grid>
+            error={emailError}
+            id="filled-error-helper-text"
+            label="Email"
+            helperText={emailMessage}
+            autoComplete="off"
+            value={email}
+            type="email"
+            name="email"
+            variant="filled"
+            onChange={setEmail}
+            autoFocus={true}
+          />
         </Grid>
-    </Grid>  
-         
+        <Grid item>
+          <TextField
+            error={passwordError}
+            id="filled-error-helper-text"
+            label="Password"
+            name="password"
+            type="password"
+            value={password}
+            helperText={passMessage}
+            variant="filled"
+            autoComplete="off"
+            onChange={setPassword}
+          />
+        </Grid>
+        <Grid item>
+          <Button variant="contained" color="primary" onClick={handleLogin}>
+            Iniciar Sesion
+          </Button>
+        </Grid>
+        <Grid item>
+          <Button>olvido su contraseña?</Button>
+        </Grid>
+      </Grid>
+    </Grid>
   );
-}
+};
 
-export default LoginPage;
+const mapStateToProps = (state) => {
+  return {
+    app: state.app,
+    userReducer: state.userReducer,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  changeUser: (user) => dispatch(changeUser(user)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(LoginPage));

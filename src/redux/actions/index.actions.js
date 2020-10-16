@@ -11,3 +11,7 @@ export const cleanAllReducers = () => {
 export const openDrawer = () => {
   return { type: actions.OPEN_DRAWER };
 };
+
+export const changeUser = (user) => {
+  return { type: actions.CHANGE_USER, user };
+};
