@@ -45,3 +45,36 @@ export const enumMenuDrawer = {
     nameEs: 'Cuenta',
   },
 };
+
+export const rolesMock = [
+  {
+    id: 0,
+    name: 'Nombre Role 1',
+    permissions: [0, 2, 3, 5],
+  },
+  {
+    id: 1,
+    name: 'Nombre Role 2',
+    permissions: [0, 2, 3, 5],
+  },
+  {
+    id: 2,
+    name: 'Nombre Role 3',
+    permissions: [0, 2, 3, 5],
+  },
+  {
+    id: 3,
+    name: 'Nombre Role 4',
+    permissions: [0, 2, 3, 5],
+  },
+  {
+    id: 4,
+    name: 'Nombre Role 5',
+    permissions: [0, 2, 3, 5],
+  },
+  {
+    id: 5,
+    name: 'Nombre Role 6',
+    permissions: [0, 2, 3, 5],
+  },
+];

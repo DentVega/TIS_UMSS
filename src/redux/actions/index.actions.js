@@ -15,3 +15,11 @@ export const openDrawer = () => {
 export const changeUser = (user) => {
   return { type: actions.CHANGE_USER, user };
 };
+
+export const changeRoles = (roles) => {
+  return { type: actions.CHANGE_ROLES, roles };
+};
+
+export const changeRole = (role) => {
+  return { type: actions.CHANGE_ROLE, role };
+};
