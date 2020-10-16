@@ -1,11 +1,30 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
+import CardItem from '../components/CardItem';
+import { makeStyles } from '@material-ui/core/styles';
+import { routes } from '../router/RoutesConstants';
 
-function AdministratorPage() {
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: 'flex',
+  },
+  content: {
+  },
+}));
+
+function AdministratorPage(props) {
+  const classes = useStyles();
+
+  const goToRoles = () => props.history.push(routes.roles);
+
   return (
-    <div>
+    <div className={classes.content}>
       <h1>Administracion</h1>
+      <div>
+        <CardItem text={'Roles'} showIconRow={true} width={340} onClick={goToRoles}/>
+      </div>
     </div>
   );
 }
 
-export default AdministratorPage;
+export default withRouter(AdministratorPage);

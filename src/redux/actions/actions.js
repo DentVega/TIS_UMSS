@@ -3,3 +3,6 @@ export const CLEAN_ALL_REDUCERS = 'CLEAN_ALL_REDUCERS';
 export const OPEN_DRAWER = 'OPEN_DRAWER';
 
 export const CHANGE_USER = 'CHANGE_USER';
+
+export const CHANGE_ROLES = 'CHANGE_ROLES';
+export const CHANGE_ROLE = 'CHANGE_ROLE';

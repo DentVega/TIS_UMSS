@@ -18,14 +18,18 @@ import SchedulePage from '../pages/SchedulePage';
 import GroupsPage from '../pages/GroupsPage';
 import AdministratorPage from '../pages/AdministratorPage';
 import AccountPage from '../pages/AccountPage';
+import RolesPage from '../pages/RolesPage';
+import RolePage from '../pages/RolePage';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    display: 'flex',
+    // display: 'flex',
+    paddingLeft: 240
   },
   content: {
     flexGrow: 1,
-    padding: theme.spacing(15),
+    padding: theme.spacing(3),
+    height: '100%'
   },
 }));
 function RouterMain(props) {
@@ -37,7 +41,7 @@ function RouterMain(props) {
         <CustomAppBar currentUser={true} />
         {user && <CustomDrawer />}
         <main className={classes.content}>
-          {user && <Toolbar />}
+          <Toolbar />
           <Route exact={true} path={'/'} component={LoginPage} />
           <Route exact={true} path={routes.login} component={LoginPage} />
           <Route exact={true} path={routes.home} component={HomePage} />
@@ -48,6 +52,9 @@ function RouterMain(props) {
           <Route exact={true} path={routes.schedule} component={SchedulePage} />
           <Route exact={true} path={routes.groups} component={GroupsPage} />
           <Route exact={true} path={routes.administration} component={AdministratorPage} />
+          <Route exact={true} path={routes.roles} component={RolesPage}/>
+          <Route exact={true} path={routes.newRole} component={RolePage}/>
+          <Route exact={true} path={routes.editRole} component={RolePage}/>
           <Route exact={true} path={routes.account} component={AccountPage} />
           <Route exact={true} path={routes.testUi} component={TestUi} />
           <Route exact={true} path={routes.route404} component={NotFoundPage} />
