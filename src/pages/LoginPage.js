@@ -21,12 +21,12 @@ const LoginPage = (props) => {
     }
   };
 
-  const login = () => {
-    props.changeUser({
+  const login = ({changeUser,history}) => {
+    changeUser({
       email: email,
       password: password,
     });
-    props.history.push(routes.home);
+    history.push(routes.home);
   };
 
   return (
