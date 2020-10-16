@@ -21,9 +21,13 @@ export const usePassword = () => {
   const [values, setValues] = useState('');
   const [passwordError, setPasswordError] = useState(false);
 
+  const validPass = () => {
+    return values.length > 20 || values.length === 0;
+  };
+
   const handleEmailChange = ({ target }) => {
     values.length > 20 ? setPasswordError(true) : setPasswordError(false);
     setValues(target.value);
   };
-  return [values, handleEmailChange, passwordError, passwordError ? 'Muchos Caracteres' : ''];
+  return [values, handleEmailChange, passwordError, passwordError ? 'Muchos Caracteres' : '', setPasswordError];
 };

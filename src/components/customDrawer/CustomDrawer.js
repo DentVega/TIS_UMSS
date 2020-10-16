@@ -6,7 +6,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { openDrawer } from '../../redux/actions/index.actions';
+import { changeUser, openDrawer } from '../../redux/actions/index.actions';
 import { enumMenuDrawer } from '../../constants/mockData';
 import { routes } from '../../router/RoutesConstants';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -123,6 +123,11 @@ function CustomDrawer(props) {
     }
   };
 
+  const logout = () => {
+    props.changeUser(null);
+    props.history.push(routes.login);
+  };
+
   const list = (anchor) => (
     <div
       className={classes.drawerContainer}
@@ -137,6 +142,10 @@ function CustomDrawer(props) {
             <ListItemText primary={menuItem.nameEs} style={{ color: '#ffffff' }} />
           </ListItem>
         ))}
+        <ListItem button onClick={logout}>
+          <div style={{ width: 10 }} />
+          <ListItemText primary={'Cerrar Sesion'} style={{ color: '#ffffff' }} />
+        </ListItem>
       </List>
     </div>
   );
@@ -163,6 +172,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
   openDrawer: () => dispatch(openDrawer()),
+  changeUser: (user) => dispatch(changeUser(user)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(CustomDrawer));
