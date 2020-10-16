@@ -14,6 +14,7 @@ import MoreIcon from '@material-ui/icons/MoreVert';
 import logoUmss from '../../assets/logoSanSimon.svg';
 import PropTypes from 'prop-types';
 import { sLogin, sNameUmss, sNotifications, sProfile } from '../../constants/strings';
+import CssBaseline from '@material-ui/core/CssBaseline';
 
 const useStyles = makeStyles((theme) => ({
   logo: {
@@ -21,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
     paddingRight: 15,
   },
   appBar: {
-    background: '#FE6B8B',
+    zIndex: theme.zIndex.drawer + 1,
   },
   grow: {
     flexGrow: 1,
@@ -126,7 +127,8 @@ function CustomAppBar(props) {
 
   return (
     <div className={classes.grow}>
-      <AppBar position="static">
+      <CssBaseline />
+      <AppBar position="fixed" className={classes.appBar}>
         <Toolbar>
           <img src={logoUmss} className={classes.logo} alt={'logo-umss'} />
           <Typography variant="h6" noWrap>
