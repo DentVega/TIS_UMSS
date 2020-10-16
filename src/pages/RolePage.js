@@ -32,7 +32,7 @@ function RolePage(props) {
         {menuAdmin.map((menu) => {
           return (
             <div key={menu.id}>
-              <FormControlLabel control={<Checkbox />} label={menu.name} />
+              <FormControlLabel control={<Checkbox color={'#2d3540'}/>} label={menu.name} />
             </div>
           );
         })}
