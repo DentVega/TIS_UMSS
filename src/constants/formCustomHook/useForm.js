@@ -20,14 +20,21 @@ export const useEmail = () => {
 export const usePassword = () => {
   const [values, setValues] = useState('');
   const [passwordError, setPasswordError] = useState(false);
+  const [passMessage,setPassMessage] = useState('');
 
   const validPass = () => {
     return values.length > 20 || values.length === 0;
   };
 
   const handleEmailChange = ({ target }) => {
-    values.length > 20 ? setPasswordError(true) : setPasswordError(false);
+    if (values.length > 30) {
+      setPasswordError(true);
+      setPassMessage('Muchos Caracteres');
+    } else {
+      setPasswordError(false);
+      setPassMessage('');
+    }
     setValues(target.value);
   };
-  return [values, handleEmailChange, passwordError, passwordError ? 'Muchos Caracteres' : '', setPasswordError];
+  return [values, handleEmailChange, passwordError,setPasswordError,passMessage,setPassMessage ];
 };

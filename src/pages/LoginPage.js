@@ -10,7 +10,7 @@ import { routes } from '../router/RoutesConstants';
 const LoginPage = (props) => {
   const emailregex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
   const [email, setEmail, emailError, setEmailError, emailMessage, setEmailMessage] = useEmail();
-  const [password, setPassword, passwordError, passMessage, setPasswordError] = usePassword();
+  const [password, setPassword,passwordError,setPasswordError,passMessage,setPassMessage] = usePassword();
 
   const handleLogin = () => {
     if (email.length > 5 && emailregex.test(email)) {
@@ -18,8 +18,8 @@ const LoginPage = (props) => {
     } else {
       setEmailError(true);
       setEmailMessage('email invalido');
+      setPassMessage("contraseña incorrecta")
       setPasswordError(true);
-
     }
   };
 
