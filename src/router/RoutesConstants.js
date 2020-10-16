@@ -8,6 +8,7 @@ export const routes = {
   schedule: '/schedule',
   groups: '/groups',
   administration: '/administration',
+  account: '/account',
   route404: '/404',
   testUi: '/testui',
 };

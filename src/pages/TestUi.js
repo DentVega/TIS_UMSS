@@ -2,7 +2,6 @@ import React from 'react';
 import Button from '@material-ui/core/Button';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { makeStyles } from '@material-ui/core/styles';
-import CustomAppBar from '../components/appBar/CustomAppBar';
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -10,7 +9,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function TestUi(props) {
+function TestUi() {
   const classes = useStyles();
 
   return (

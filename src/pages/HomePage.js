@@ -1,6 +1,4 @@
 import React from 'react';
-import CustomAppBar from '../components/appBar/CustomAppBar';
-
 function HomePage() {
   return (
     <div>

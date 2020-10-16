@@ -15,11 +15,13 @@ import WatchLaterIcon from '@material-ui/icons/WatchLater';
 import GroupIcon from '@material-ui/icons/Group';
 import DomainIcon from '@material-ui/icons/Domain';
 import DescriptionIcon from '@material-ui/icons/Description';
-import { white } from 'color-name';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import AssignmentIndIcon from '@material-ui/icons/AssignmentInd';
+import SettingsApplicationsIcon from '@material-ui/icons/SettingsApplications';
 
 const drawerWidth = 240;
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   drawer: {
     width: drawerWidth,
     flexShrink: 0,
@@ -30,10 +32,7 @@ const useStyles = makeStyles((theme) => ({
   drawerContainer: {
     overflow: 'auto',
     background: '#2d3540',
-  },
-  content: {
-    flexGrow: 1,
-    padding: theme.spacing(3),
+    height: '100%',
   },
 }));
 
@@ -67,46 +66,37 @@ function CustomDrawer(props) {
   };
 
   const openPage = (id) => {
+      console.warn('id menu', id);
     switch (id) {
       case 0:
         props.history.push(routes.home);
-        props.openDrawer();
         break;
       case 1:
         props.history.push(routes.campus);
-        props.openDrawer();
         break;
       case 2:
         props.history.push(routes.school);
-        props.openDrawer();
         break;
       case 3:
         props.history.push(routes.subjects);
-        props.openDrawer();
         break;
       case 4:
         props.history.push(routes.reports);
-        props.openDrawer();
         break;
       case 5:
         props.history.push(routes.schedule);
-        props.openDrawer();
         break;
       case 6:
         props.history.push(routes.groups);
-        props.openDrawer();
         break;
       case 7:
         props.history.push(routes.administration);
-        props.openDrawer();
         break;
       case 8:
         props.history.push(routes.account);
-        props.openDrawer();
         break;
       default:
         props.history.push(routes.home);
-        props.openDrawer();
         return null;
     }
   };
@@ -114,17 +104,23 @@ function CustomDrawer(props) {
   const getIcons = (id) => {
     switch (id) {
       case 0:
-        return <HomeIcon style={{ color: white }}/>;
+        return <HomeIcon style={{ color: '#ffffff' }} />;
+      case 1:
+        return <AssignmentIndIcon style={{ color: '#ffffff' }} />;
       case 2:
-        return <DomainIcon />;
+        return <DomainIcon style={{ color: '#ffffff' }} />;
       case 4:
-        return <DescriptionIcon />;
+        return <DescriptionIcon style={{ color: '#ffffff' }} />;
       case 5:
-        return <WatchLaterIcon />;
+        return <WatchLaterIcon style={{ color: '#ffffff' }} />;
       case 6:
-        return <GroupIcon />;
+        return <GroupIcon style={{ color: '#ffffff' }} />;
+      case 7:
+        return <SettingsApplicationsIcon style={{ color: '#ffffff' }} />;
+      case 8:
+        return <AccountCircleIcon style={{ color: '#ffffff' }} />;
       default:
-        return <HomeIcon style={{ color: white }}/>;
+        return <HomeIcon style={{ color: '#ffffff' }} />;
     }
   };
 
@@ -135,10 +131,11 @@ function CustomDrawer(props) {
       onClick={toggleDrawer(anchor, false)}
       onKeyDown={toggleDrawer(anchor, false)}>
       <List>
-        {menuAdmin.map((menuItem, index) => (
+        {menuAdmin.map((menuItem) => (
           <ListItem button key={menuItem.id} onClick={() => openPage(menuItem.id)}>
             {getIcons(menuItem.id)}
-            <ListItemText primary={menuItem.nameEs} />
+            <div style={{ width: 10 }} />
+            <ListItemText primary={menuItem.nameEs} style={{ color: '#ffffff' }} />
           </ListItem>
         ))}
       </List>
