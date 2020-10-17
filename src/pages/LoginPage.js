@@ -11,7 +11,7 @@ const LoginPage = (props) => {
   const emailregex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
   const [email, setEmail, emailError, setEmailError, emailMessage, setEmailMessage] = useEmail();
   const [password, setPassword,passwordError,setPasswordError,passMessage,setPassMessage] = usePassword();
-  console.log(props);
+  
   const handleLogin = () => {
     if (email.length > 5 && emailregex.test(email)) {
       login();
@@ -23,9 +23,8 @@ const LoginPage = (props) => {
     }
   };
 
-  const login = (props) => {
-    console.log(props);
-    props.changeUser({
+  const login = () => {
+    changeUser({
       email: email,
       password: password,
     });
@@ -89,6 +88,7 @@ const LoginPage = (props) => {
 };
 
 const mapStateToProps = (state) => {
+  console.log("estado",state)
   return {
     app: state.app,
     userReducer: state.userReducer,
@@ -96,7 +96,9 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
+  
   changeUser: (user) => dispatch(changeUser(user)),
+  
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(LoginPage));
