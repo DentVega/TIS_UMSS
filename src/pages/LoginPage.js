@@ -11,7 +11,7 @@ const LoginPage = (props) => {
   const emailregex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
   const [email, setEmail, emailError, setEmailError, emailMessage, setEmailMessage] = useEmail();
   const [password, setPassword,passwordError,setPasswordError,passMessage,setPassMessage] = usePassword();
-
+  console.log(props);
   const handleLogin = () => {
     if (email.length > 5 && emailregex.test(email)) {
       login();
@@ -23,12 +23,13 @@ const LoginPage = (props) => {
     }
   };
 
-  const login = ({changeUser,history}) => {
-    changeUser({
+  const login = (props) => {
+    console.log(props);
+    props.changeUser({
       email: email,
       password: password,
     });
-    history.push(routes.home);
+    props.history.push(routes.home);
   };
 
   return (
