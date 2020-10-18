@@ -20,7 +20,7 @@ import AdministratorPage from '../pages/AdministratorPage';
 import AccountPage from '../pages/AccountPage';
 import RolesPage from '../pages/RolesPage';
 import RolePage from '../pages/RolePage';
-
+import RegisterPage from '../pages/RegistrationPage';
 const useStyles = makeStyles((theme) => ({
   root: {
     // display: 'flex',
@@ -43,6 +43,7 @@ function RouterMain(props) {
         <main className={classes.content}>
           <Toolbar />
           <Route exact={true} path={'/'} component={LoginPage} />
+          <Route exact={true} path={routes.registerUser} component={RegisterPage} />
           <Route exact={true} path={routes.login} component={LoginPage} />
           <Route exact={true} path={routes.home} component={HomePage} />
           <Route exact={true} path={routes.campus} component={CampusPage} />
