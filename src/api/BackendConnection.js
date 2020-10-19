@@ -141,7 +141,6 @@ class BackendConnection {
           lastname: lastname,
           phone: phone,
           email: email,
-          ci: ci,
           userpassword: userpassword,
         },
       })

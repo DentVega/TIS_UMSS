@@ -6,8 +6,14 @@ import { changeUserSelected } from '../../redux/actions/index.actions';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import BackendConnection from '../../api/BackendConnection';
+import { routes } from '../../router/RoutesConstants';
 
 const RegistrationPage = (props) => {
+  const { user } = props.userReducer;
+  if (user === null) {
+    props.history.push(routes.login);
+  }
+
   const [createUserComplete, setCreateUserComplete] = useState(false);
   const [updateUserComplete, setUpdateUserComplete] = useState(false);
   const [loadCurrentUser, setLoadCurrentUser] = useState(false);
@@ -156,8 +162,8 @@ const RegistrationPage = (props) => {
             />
           </Grid>
           <Grid item style={{ textAlign: 'center' }}>
-            <Button variant="contained" color="primary" type="submit" onClick={idUser === null? register: updateUser}>
-              {idUser === null? 'Crear usuario': 'Actualizar usuario'}
+            <Button variant="contained" color="primary" type="submit" onClick={idUser === null ? register : updateUser}>
+              {idUser === null ? 'Crear usuario' : 'Actualizar usuario'}
             </Button>
           </Grid>
         </Grid>
@@ -169,6 +175,7 @@ const RegistrationPage = (props) => {
 const mapStateToProps = (state) => {
   return {
     app: state.app,
+    userReducer: state.userReducer,
     usersReducer: state.usersReducer,
   };
 };

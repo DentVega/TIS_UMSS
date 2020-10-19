@@ -33,6 +33,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function CampusPage(props) {
+  const { user } = props.userReducer;
+  if (user === null) {
+    props.history.push(routes.login);
+  }
+
   const { loading, users } = props.usersReducer;
   const classes = useStyles();
 
@@ -105,6 +110,7 @@ function CampusPage(props) {
 const mapStateToProps = (state) => {
   return {
     app: state.app,
+    userReducer: state.userReducer,
     usersReducer: state.usersReducer,
   };
 };

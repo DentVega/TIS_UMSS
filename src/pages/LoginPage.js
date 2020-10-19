@@ -29,6 +29,9 @@ const LoginPage = (props) => {
       if (user.length > 0) {
         props.changeUser(user[0]);
         props.history.push(routes.home);
+      } else {
+        setEmailError(true);
+        setEmailMessage('Credenciales incorrectas');
       }
     });
   };

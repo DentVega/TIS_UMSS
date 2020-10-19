@@ -20,7 +20,7 @@ import AccountPage from '../pages/AccountPage';
 import RolesPage from '../pages/role/RolesPage';
 import RolePage from '../pages/role/RolePage';
 import RegisterPage from '../pages/users/RegistrationPage';
-import CustomToolbar from '../components/toolbar/CustomToolbar';
+// import CustomToolbar from '../components/toolbar/CustomToolbar';
 import Toolbar from '@material-ui/core/Toolbar';
 const useStyles = makeStyles((theme) => ({
   root: {
