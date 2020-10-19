@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 function CardItem(props) {
-  const { text, showIconRow, width, onClick, showEditIcon, showDeleteIcon } = props;
+  const { text, showIconRow, width, onClick, showEditIcon, editClick, showDeleteIcon, deleteClick } = props;
   const classes = useStyles();
   return (
     <div style={{ width: width ? width : 'auto' }}>
@@ -30,12 +30,12 @@ function CardItem(props) {
           <div className={classes.space} />
           {showIconRow && <ArrowForwardIosIcon />}
           {showEditIcon && (
-            <IconButton>
+            <IconButton onClick={editClick}>
               <EditIcon />
             </IconButton>
           )}
           {showDeleteIcon && (
-            <IconButton style={{ paddingLeft: 20, paddingRight: 20 }}>
+            <IconButton style={{ paddingLeft: 20, paddingRight: 20 }} onClick={deleteClick}>
               <DeleteIcon />
             </IconButton>
           )}
@@ -52,6 +52,8 @@ CardItem.propTypes = {
   showEditIcon: PropTypes.bool,
   showDeleteIcon: PropTypes.bool,
   onClick: PropTypes.func,
+  deleteClick: PropTypes.func,
+  editClick: PropTypes.func,
 };
 
 export default CardItem;

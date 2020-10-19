@@ -7,7 +7,7 @@ export const enumMenuDrawer = {
   campus: {
     id: 1,
     name: 'campus',
-    nameEs: 'Plantel',
+    nameEs: 'Usuarios',
   },
   school: {
     id: 2,

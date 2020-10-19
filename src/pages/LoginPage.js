@@ -4,27 +4,27 @@ import { withRouter } from 'react-router-dom';
 import TextField from '@material-ui/core/TextField';
 import { Button, Grid } from '@material-ui/core';
 import { usePassword, useEmail } from '../constants/formCustomHook/useForm';
-import { changeUser } from '../redux/actions/index.actions';
 import { routes } from '../router/RoutesConstants';
+import { changeUser } from '../redux/actions/index.actions';
 
 const LoginPage = (props) => {
-  const emailregex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+  const emailregex = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
   const [email, setEmail, emailError, setEmailError, emailMessage, setEmailMessage] = useEmail();
-  const [password, setPassword,passwordError,setPasswordError,passMessage,setPassMessage] = usePassword();
-  
+  const [password, setPassword, passwordError, setPasswordError, passMessage, setPassMessage] = usePassword();
+
   const handleLogin = () => {
     if (email.length > 5 && emailregex.test(email)) {
       login();
     } else {
       setEmailError(true);
       setEmailMessage('email invalido');
-      setPassMessage("contraseña incorrecta")
+      setPassMessage('contraseña incorrecta');
       setPasswordError(true);
     }
   };
 
   const login = () => {
-    changeUser({
+    props.changeUser({
       email: email,
       password: password,
     });
@@ -88,7 +88,6 @@ const LoginPage = (props) => {
 };
 
 const mapStateToProps = (state) => {
-  console.log("estado",state)
   return {
     app: state.app,
     userReducer: state.userReducer,
@@ -96,9 +95,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  
   changeUser: (user) => dispatch(changeUser(user)),
-  
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(LoginPage));

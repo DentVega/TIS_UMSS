@@ -8,7 +8,7 @@ const RegistrationPage = () => {
     const [phone,handlePhoneChange,phoneError,setPhoneError,phoneErrorMessage,setPhoneErrorMessage] = usePhone();
     const [email, setEmail, emailError, setEmailError, emailMessage, setEmailMessage] = useEmail();
     const [ci,handleCiChange,ciError, setCiError,ciErrorMessage, setCiMessageError] = useCi();
-    const emailregex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+    const emailregex = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
     const register=()=>{
         if(!nameError && name.length > 0){
             if(!lastNameError && lastName.length > 0){
@@ -41,14 +41,14 @@ const RegistrationPage = () => {
     return (
         <div id={'content-login'} style={{ height: 700 }}>
         <Grid
-            container 
+            container
             autoComplete="off"
             style={{minHeight:"100vh"}}
             alignItems="center"
             justify="center"
             >
-            <Grid 
-                container 
+            <Grid
+                container
                 justify="center"
                 direction="column"
                 spacing={4}
@@ -58,9 +58,9 @@ const RegistrationPage = () => {
                 <Grid item style={{textAlign:'center'}}>
                     <h2>Crear Usuario</h2>
                 </Grid>
-                    <TextField 
-                    
-                        label="Nombres" 
+                    <TextField
+
+                        label="Nombres"
                         type="text"
                         value={name}
                         onChange={handleNameChange}
@@ -70,40 +70,40 @@ const RegistrationPage = () => {
                     />
                 </Grid>
                 <Grid item >
-                    <TextField 
-                    label="Apellidos" 
+                    <TextField
+                    label="Apellidos"
                     type="text"
                     value={lastName}
-                    onChange={handleLastNameChange}    
+                    onChange={handleLastNameChange}
                     error={lastNameError}
                     helperText={lastNameMesasge}
                     />
                 </Grid>
                 <Grid item>
-                    <TextField 
-                    label="Telefono" 
-                    type="number"  
-                    value={phone}     
-                    onChange={handlePhoneChange}   
+                    <TextField
+                    label="Telefono"
+                    type="number"
+                    value={phone}
+                    onChange={handlePhoneChange}
                     error={phoneError}
-                    helperText={phoneErrorMessage}              
+                    helperText={phoneErrorMessage}
                     />
                 </Grid>
-                
+
                 <Grid item >
-                    <TextField 
-                    label="Email" 
-                    type="email"                      
+                    <TextField
+                    label="Email"
+                    type="email"
                     value={email}
-                    onChange={setEmail}  
+                    onChange={setEmail}
                     error={emailError}
                     helperText={emailMessage}
                     />
                 </Grid>
                 <Grid item >
-                    <TextField 
-                        label="CI" 
-                        type="number" 
+                    <TextField
+                        label="CI"
+                        type="number"
                         value={ci}
                         onChange={handleCiChange}
                         error={ciError}

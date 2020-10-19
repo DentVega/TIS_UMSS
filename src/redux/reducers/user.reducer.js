@@ -1,7 +1,7 @@
 import { CHANGE_USER, CLEAN_ALL_REDUCERS } from '../actions/actions';
 
 const initState = {
-  user: null,
+  user: 1,
 };
 
 function userReducer(state = initState, action) {
