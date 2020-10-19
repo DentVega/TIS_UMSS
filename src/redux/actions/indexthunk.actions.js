@@ -1,8 +1,10 @@
 import { changeRoles } from './index.actions';
-import { rolesMock } from '../../constants/mockData';
+import BackendConnection from '../../api/BackendConnection';
 
 export const getRoles = () => {
   return (dispatch) => {
-    dispatch(changeRoles(rolesMock));
+    BackendConnection.getRoles().then((roles) => {
+      dispatch(changeRoles(roles));
+    });
   };
 };

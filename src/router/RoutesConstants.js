@@ -1,7 +1,7 @@
 export const routes = {
   home: '/home',
   login: '/login',
-  campus: '/campus',
+  campus: '/users',
   school: '/school',
   subjects: '/subjects',
   reports: '/reports',
@@ -10,7 +10,7 @@ export const routes = {
   administration: '/administration',
   roles: '/roles',
   newRole: '/newrole',
-  editRole: '/role/:id',
+  editRole: '/roles/:id',
   account: '/account',
   route404: '/404',
   testUi: '/testui',

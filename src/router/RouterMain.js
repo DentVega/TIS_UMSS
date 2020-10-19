@@ -18,8 +18,8 @@ import SchedulePage from '../pages/SchedulePage';
 import GroupsPage from '../pages/GroupsPage';
 import AdministratorPage from '../pages/AdministratorPage';
 import AccountPage from '../pages/AccountPage';
-import RolesPage from '../pages/RolesPage';
-import RolePage from '../pages/RolePage';
+import RolesPage from '../pages/role/RolesPage';
+import RolePage from '../pages/role/RolePage';
 import RegisterPage from '../pages/RegistrationPage';
 const useStyles = makeStyles((theme) => ({
   root: {
