@@ -25,7 +25,6 @@ function RolePage(props) {
     setIdRole(role.idroles);
     setLoadCurrentRole(true);
   }
-  console.warn('id select role', role);
 
   const cancelCreateRole = () => {
     props.changeRole(null);

@@ -6,6 +6,7 @@ import { Button, Grid } from '@material-ui/core';
 import { usePassword, useEmail } from '../constants/formCustomHook/useForm';
 import { routes } from '../router/RoutesConstants';
 import { changeUser } from '../redux/actions/index.actions';
+import BackendConnection from '../api/BackendConnection';
 
 const LoginPage = (props) => {
   const emailregex = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
@@ -24,11 +25,12 @@ const LoginPage = (props) => {
   };
 
   const login = () => {
-    props.changeUser({
-      email: email,
-      password: password,
+    BackendConnection.login(email, password).then((user) => {
+      if (user.length > 0) {
+        props.changeUser(user[0]);
+        props.history.push(routes.home);
+      }
     });
-    props.history.push(routes.home);
   };
 
   return (
@@ -55,7 +57,7 @@ const LoginPage = (props) => {
               type="email"
               name="email"
               variant="filled"
-              onChange={setEmail}
+              onChange={({ target }) => setEmail(target.value)}
               autoFocus={true}
             />
           </Grid>

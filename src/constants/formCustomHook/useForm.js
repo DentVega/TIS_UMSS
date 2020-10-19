@@ -4,7 +4,7 @@ export const useEmail = () => {
   const [values, setValues] = useState('');
   const [emailError, setEmailError] = useState(false);
   const [emailMessage, setEmailMessage] = useState('');
-  const handleEmailChange = ({ target }) => {
+  const handleEmailChange = (value) => {
     if (values.length > 29) {
       setEmailError(true);
       setEmailMessage('Muchos Caracteres');
@@ -12,7 +12,7 @@ export const useEmail = () => {
       setEmailError(false);
       setEmailMessage('');
     }
-    setValues(target.value);
+    setValues(value);
   };
   return [values, handleEmailChange, emailError, setEmailError, emailMessage, setEmailMessage];
 };
@@ -43,7 +43,7 @@ export const useFullName=()=>{
   const [values, setValues] = useState('');
   const [fullNameError,setFullNameError] = useState(false);
   const [fullNameMesasge,setFullNameErrorMessage] = useState('');
-  const handleFullNameChange =({target})=>{
+  const handleFullNameChange =(value)=>{
     if(values.length > 24){
       setFullNameErrorMessage("limite de caracteres 25");
       setFullNameError(true);
@@ -51,7 +51,7 @@ export const useFullName=()=>{
       setFullNameErrorMessage("");
       setFullNameError(false);
     }
-    setValues(target.value);
+    setValues(value);
   }
   return [values,handleFullNameChange,fullNameError,setFullNameError,fullNameMesasge,setFullNameErrorMessage];
 }
@@ -60,7 +60,7 @@ export const useCi=()=>{
   const [values, setValues] = useState('');
   const [ciError, setCiError] = useState(false);
   const [ciErrorMessage, setCiMessageError] = useState('');
-  const handleCiChange =({target})=>{
+  const handleCiChange =(value)=>{
     if(values.length > 7){
       setCiMessageError("8 numeros como maximo");
       setCiError(true);
@@ -68,7 +68,7 @@ export const useCi=()=>{
       setCiMessageError("");
       setCiError(false);
     }
-    setValues(target.value);
+    setValues(value);
   }
   return [values,handleCiChange,ciError, setCiError,ciErrorMessage, setCiMessageError];
 }
@@ -76,7 +76,7 @@ export const usePhone=()=>{
   const [values, setValues] = useState('');
   const [phoneError,setPhoneError] = useState(false);
   const [phoneErrorMessage,setPhoneErrorMessage] =useState("");
-  const handlePhoneChange =({target})=>{
+  const handlePhoneChange =(value)=>{
     if(values.length > 7){
       setPhoneErrorMessage("8 numeros como maximo");
       setPhoneError(true);
@@ -84,7 +84,7 @@ export const usePhone=()=>{
       setPhoneErrorMessage("");
       setPhoneError(false);
     }
-    setValues(target.value);
+    setValues(value);
   }
   return [values,handlePhoneChange,phoneError,setPhoneError,phoneErrorMessage,setPhoneErrorMessage]
 }

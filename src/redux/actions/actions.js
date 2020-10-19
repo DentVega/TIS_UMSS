@@ -6,3 +6,6 @@ export const CHANGE_USER = 'CHANGE_USER';
 
 export const CHANGE_ROLES = 'CHANGE_ROLES';
 export const CHANGE_ROLE = 'CHANGE_ROLE';
+
+export const CHANGE_USERS = 'CHANGE_USERS';
+export const CHANGE_USER_SELECTED = 'CHANGE_USER_SELECTED';

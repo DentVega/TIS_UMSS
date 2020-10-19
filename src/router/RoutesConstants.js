@@ -14,5 +14,6 @@ export const routes = {
   account: '/account',
   route404: '/404',
   testUi: '/testui',
-  registerUser:'/registerUser'
+  registerUser: '/registerUser',
+  editUser: '/users/:id',
 };

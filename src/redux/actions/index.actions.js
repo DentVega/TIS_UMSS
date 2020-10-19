@@ -23,3 +23,11 @@ export const changeRoles = (roles) => {
 export const changeRole = (role) => {
   return { type: actions.CHANGE_ROLE, role };
 };
+
+export const changeUsers = (users) => {
+  return { type: actions.CHANGE_USERS, users };
+};
+
+export const changeUserSelected = (userSelected) => {
+  return { type: actions.CHANGE_USER_SELECTED, userSelected };
+};
