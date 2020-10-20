@@ -44,10 +44,6 @@ class BackendConnection {
       axios({
         method: 'POST',
         url: `${baseUrl}/roles`,
-        headers: {
-          'content-type': 'application/json',
-          'cache-control': 'no-cache',
-        },
         data: {
           rolename: rolename,
         },
@@ -119,7 +115,7 @@ class BackendConnection {
           userpassword: userpassword,
         },
       })
-        .then((response) => resolve(response))
+        .then((response) => resolve(response.data))
         .catch((e) => reject(e));
     });
   }
