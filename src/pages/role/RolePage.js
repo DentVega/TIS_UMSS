@@ -11,6 +11,8 @@ import { connect } from 'react-redux';
 import { changeRole } from '../../redux/actions/index.actions';
 import { getRoles } from '../../redux/actions/indexthunk.actions';
 import { colorMain } from '../../constants/colors';
+import CustomAlertDialog from '../../components/dialogs/CustomAlertDialog';
+import { sConfirm } from '../../constants/strings';
 
 function RolePage(props) {
   const [createRoleComplete, setCreateRoleComplete] = useState(false);
@@ -19,6 +21,7 @@ function RolePage(props) {
   const [nameRole, setNameRole] = useState('');
   const [loadCurrentRole, setLoadCurrentRole] = useState(false);
   const [messageError, setMessageError] = useState(null);
+  const [openDialog, setOpenDialog] = useState(false);
 
   const { role } = props.rolesReducer;
   if (role != null && !loadCurrentRole) {
@@ -69,6 +72,14 @@ function RolePage(props) {
     enumMenuDrawer.account,
   ];
 
+  const confirmCreation = () => {
+    setOpenDialog(true);
+  };
+
+  const closeDialog = () => {
+    setOpenDialog(false);
+  };
+
   const renderListAccess = () => {
     return (
       <div>
@@ -85,6 +96,14 @@ function RolePage(props) {
 
   return (
     <div>
+      <CustomAlertDialog
+        title={sConfirm}
+        messageText={idRole === null ? 'Confirma la crecion del rol' : 'Confirma la actualizaicon del rol'}
+        open={openDialog}
+        handleClose={closeDialog}
+        handleAccept={idRole === null ? createRole : updateRole}
+      />
+
       <h1>Role</h1>
       <Grid container spacing={3}>
         <Grid item xs={12} sm={6}>
@@ -111,7 +130,7 @@ function RolePage(props) {
               variant="contained"
               color="primary"
               style={{ margin: 10 }}
-              onClick={idRole === null ? createRole : updateRole}>
+              onClick={confirmCreation}>
               {idRole === null ? 'Crear Rol' : 'Editar Rol'}
             </Button>
           </div>

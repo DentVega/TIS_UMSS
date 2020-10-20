@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { getRoles } from '../../redux/actions/indexthunk.actions';
 import CardItem from '../../components/CardItem';
@@ -10,6 +10,8 @@ import green from '@material-ui/core/colors/green';
 import { routes } from '../../router/RoutesConstants';
 import BackendConnection from '../../api/BackendConnection';
 import { changeRole } from '../../redux/actions/index.actions';
+import CustomAlertDialog from '../../components/dialogs/CustomAlertDialog';
+import { sConfirm } from '../../constants/strings';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -36,6 +38,9 @@ function RolesPage(props) {
   const { roles, loading } = props.rolesReducer;
   const classes = useStyles();
 
+  const [roleSelected, setRoleSelected] = useState(null);
+  const [openDialog, setOpenDialog] = useState(false);
+
   useEffect(() => {
     if (loading) {
       props.getRoles();
@@ -53,10 +58,11 @@ function RolesPage(props) {
     props.history.push(routes.newRole);
   };
 
-  const deleteRole = (rol) => {
-    BackendConnection.deleteRole(rol.idroles)
+  const deleteRole = () => {
+    BackendConnection.deleteRole(roleSelected.idroles)
       .then((response) => {
         console.warn('finish Delete', response);
+        setOpenDialog(false);
         props.getRoles();
       })
       .catch((e) => console.warn('Error Delete', e));
@@ -65,6 +71,16 @@ function RolesPage(props) {
   const updateRole = (rol) => {
     props.history.push(`${routes.roles}/${rol.idroles}`);
     props.changeRole(rol);
+  };
+
+  const confirmDelete = (rol) => {
+    setOpenDialog(true);
+    setRoleSelected(rol);
+  };
+
+  const cancelDelete = () => {
+    setOpenDialog(false);
+    setRoleSelected(null);
   };
 
   const renderRoles = () => {
@@ -79,7 +95,7 @@ function RolesPage(props) {
                 showEditIcon={true}
                 showDeleteIcon={true}
                 editClick={() => updateRole(rol)}
-                deleteClick={() => deleteRole(rol)}
+                deleteClick={() => confirmDelete(rol)}
               />
               <div style={{ height: 20 }} />
             </div>
@@ -90,6 +106,13 @@ function RolesPage(props) {
   };
   return (
     <div>
+      <CustomAlertDialog
+        title={sConfirm}
+        messageText={'Seguro que desea eliminar este Rol'}
+        open={openDialog}
+        handleClose={cancelDelete}
+        handleAccept={deleteRole}
+      />
       <h1>Roles</h1>
       {roles.length > 0 ? renderRoles() : <div />}
       <Fab aria-label={fab.label} className={fab.className} color={fab.color} onClick={newRole}>

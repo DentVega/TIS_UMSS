@@ -124,7 +124,7 @@ const RegistrationPage = (props) => {
     setOpenDialog(true);
   };
 
-  const cancelDelete = () => {
+  const closeDialog = () => {
     setOpenDialog(false);
   };
 
@@ -134,7 +134,7 @@ const RegistrationPage = (props) => {
         title={sConfirm}
         messageText={idUser === null ? 'Confirma la creacion del cliente' : 'Confirma la actualizacion del cliente'}
         open={openDialog}
-        handleClose={cancelDelete}
+        handleClose={closeDialog}
         handleAccept={idUser === null ? register : updateUser}
       />
       <Grid container autoComplete="off" style={{ minHeight: '100vh' }} alignItems="center" justify="center">
