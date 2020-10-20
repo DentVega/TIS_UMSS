@@ -95,10 +95,6 @@ class BackendConnection {
       axios({
         method: 'GET',
         url: `${baseUrl}/users`,
-        headers: {
-          'content-type': 'application/json',
-          'cache-control': 'no-cache',
-        },
       })
         .then((response) => resolve(response.data))
         .catch((e) => reject(e));
