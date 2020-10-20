@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import green from '@material-ui/core/colors/green';
 import AddIcon from '@material-ui/icons/Add';
@@ -10,7 +10,8 @@ import { changeUserSelected } from '../../redux/actions/index.actions';
 import CardItem from '../../components/CardItem';
 import { routes } from '../../router/RoutesConstants';
 import BackendConnection from '../../api/BackendConnection';
-import { sUsers } from '../../constants/strings';
+import { sConfirm, sUsers } from '../../constants/strings';
+import CustomAlertDialog from '../../components/dialogs/CustomAlertDialog';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -40,6 +41,8 @@ function CampusPage(props) {
   }
 
   const { loading, users } = props.usersReducer;
+  const [userSelected, setUserSelected] = useState(null);
+  const [openDialog, setOpenDialog] = useState(false);
   const classes = useStyles();
 
   useEffect(() => {
@@ -57,6 +60,7 @@ function CampusPage(props) {
   };
 
   const newUser = () => {
+    props.changeUserSelected(null);
     props.history.push(routes.registerUser);
   };
 
@@ -65,13 +69,24 @@ function CampusPage(props) {
     props.history.push(`${routes.campus}/${user.idusers}`);
   };
 
-  const deleteUser = (user) => {
-    BackendConnection.deleteUsers(user.idusers)
+  const deleteUser = () => {
+    BackendConnection.deleteUsers(userSelected.idusers)
       .then((response) => {
         console.warn('finish delete user', response);
+        setOpenDialog(false);
         props.getUsers();
       })
       .catch((e) => console.warn('Error Delete User', e));
+  };
+
+  const confirmDelete = (user) => {
+    setOpenDialog(true);
+    setUserSelected(user);
+  };
+
+  const cancelDelete = () => {
+    setOpenDialog(false);
+    setUserSelected(null);
   };
 
   const renderUser = () => {
@@ -85,7 +100,7 @@ function CampusPage(props) {
                 width={500}
                 showEditIcon={true}
                 showDeleteIcon={true}
-                deleteClick={() => deleteUser(user)}
+                deleteClick={() => confirmDelete(user)}
                 editClick={() => updateUser(user)}
               />
               <div style={{ height: 20 }} />
@@ -98,6 +113,13 @@ function CampusPage(props) {
 
   return (
     <div>
+      <CustomAlertDialog
+        title={sConfirm}
+        messageText={'Seguro que desea eliminar este usuario'}
+        open={openDialog}
+        handleClose={cancelDelete}
+        handleAccept={deleteUser}
+      />
       <h1>{sUsers}</h1>
       {users.length > 0 ? renderUser() : <div />}
       <Fab aria-label={fab.label} className={fab.className} color={fab.color} onClick={newUser}>

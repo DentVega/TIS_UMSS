@@ -7,8 +7,19 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import BackendConnection from '../../api/BackendConnection';
 import { routes } from '../../router/RoutesConstants';
-import { sCancel, sCI, sCreateUser, sEmail, sLastName, sName, sPhone, sUpdateUser } from '../../constants/strings';
+import {
+  sCancel,
+  sCI,
+  sConfirm,
+  sCreateUser,
+  sEmail,
+  sLastName,
+  sName,
+  sPhone,
+  sUpdateUser,
+} from '../../constants/strings';
 import { emailregex } from '../../constants/regexs';
+import CustomAlertDialog from '../../components/dialogs/CustomAlertDialog';
 
 const RegistrationPage = (props) => {
   const { user } = props.userReducer;
@@ -33,6 +44,7 @@ const RegistrationPage = (props) => {
   const [ci, handleCiChange, ciError, setCiError, ciErrorMessage, setCiMessageError] = useCi();
   const [password, setPassword] = useState('');
   const [idUser, setIdUser] = useState(null);
+  const [openDialog, setOpenDialog] = useState(false);
 
   const validName = () => {};
 
@@ -90,13 +102,15 @@ const RegistrationPage = (props) => {
   };
 
   const registerUser = () => {
-    BackendConnection.createUser(name, lastName, phone, email, ci, createPassword()).then(() =>
-      setCreateUserComplete(true),
-    );
+    BackendConnection.createUser(name, lastName, phone, email, ci, createPassword()).then(() => {
+      setOpenDialog(false);
+      setCreateUserComplete(true);
+    });
   };
 
   const updateUser = () => {
     BackendConnection.updateUser(idUser, name, lastName, phone, email, ci, password).then(() => {
+      setOpenDialog(false);
       setUpdateUserComplete(true);
     });
   };
@@ -106,8 +120,23 @@ const RegistrationPage = (props) => {
     props.history.goBack();
   };
 
+  const confirmCreation = () => {
+    setOpenDialog(true);
+  };
+
+  const cancelDelete = () => {
+    setOpenDialog(false);
+  };
+
   return (
     <div id={'content-login'} style={{ height: 700 }}>
+      <CustomAlertDialog
+        title={sConfirm}
+        messageText={idUser === null ? 'Confirma la creacion del cliente' : 'Confirma la actualizacion del cliente'}
+        open={openDialog}
+        handleClose={cancelDelete}
+        handleAccept={idUser === null ? register : updateUser}
+      />
       <Grid container autoComplete="off" style={{ minHeight: '100vh' }} alignItems="center" justify="center">
         <Grid
           container
@@ -175,7 +204,7 @@ const RegistrationPage = (props) => {
               {sCancel}
             </Button>
 
-            <Button variant="contained" color="primary" type="submit" onClick={idUser === null ? register : updateUser}>
+            <Button variant="contained" color="primary" type="submit" onClick={confirmCreation}>
               {idUser === null ? sCreateUser : sUpdateUser}
             </Button>
           </Grid>

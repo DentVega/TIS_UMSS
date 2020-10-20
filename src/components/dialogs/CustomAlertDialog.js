@@ -8,16 +8,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import PropTypes from 'prop-types';
 
 function CustomAlertDialog(props) {
-  const { title, messageText } = props;
-  const [open, setOpen] = React.useState(false);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
+  const { title, messageText, open, handleClose, handleAccept } = props;
 
   return (
     <div>
@@ -34,7 +25,7 @@ function CustomAlertDialog(props) {
           <Button onClick={handleClose} color="primary">
             Cancelar
           </Button>
-          <Button onClick={handleClose} color="primary" autoFocus>
+          <Button onClick={handleAccept} color="primary" autoFocus>
             Aceptar
           </Button>
         </DialogActions>
@@ -46,6 +37,9 @@ function CustomAlertDialog(props) {
 CustomAlertDialog.propTypes = {
   title: PropTypes.string.isRequired,
   messageText: PropTypes.string.isRequired,
+  open: PropTypes.bool,
+  handleClose: PropTypes.func,
+  handleAccept: PropTypes.func,
 };
 
 export default CustomAlertDialog;

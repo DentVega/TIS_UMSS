@@ -21,3 +21,4 @@ export const sName = 'Nombres';
 export const sLastName = 'Apellidos';
 export const sUsers = 'Usuarios';
 export const sCancel = 'Cancelar';
+export const sConfirm = 'Confirmacion';
