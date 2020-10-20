@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { TextField, Grid, Button } from '@material-ui/core';
 import { useEmail, useFullName, useCi, usePhone } from '../../constants/formCustomHook/useForm';
-import { getRoles, getUsers } from '../../redux/actions/indexthunk.actions';
+import { getUsers } from '../../redux/actions/indexthunk.actions';
 import { changeUserSelected } from '../../redux/actions/index.actions';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import BackendConnection from '../../api/BackendConnection';
 import { routes } from '../../router/RoutesConstants';
+import { sCancel, sCI, sCreateUser, sEmail, sLastName, sName, sPhone, sUpdateUser } from '../../constants/strings';
+import { emailregex } from '../../constants/regexs';
 
 const RegistrationPage = (props) => {
   const { user } = props.userReducer;
@@ -31,7 +33,9 @@ const RegistrationPage = (props) => {
   const [ci, handleCiChange, ciError, setCiError, ciErrorMessage, setCiMessageError] = useCi();
   const [password, setPassword] = useState('');
   const [idUser, setIdUser] = useState(null);
-  const emailregex = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
+
+  const validName = () => {};
+
   const register = () => {
     if (!nameError && name.length > 0) {
       if (!lastNameError && lastName.length > 0) {
@@ -62,7 +66,6 @@ const RegistrationPage = (props) => {
   };
 
   const { userSelected } = props.usersReducer;
-  console.warn('userSelected', userSelected);
   if (userSelected != null && !loadCurrentUser) {
     handleNameChange(userSelected.firstname);
     handleLastNameChange(userSelected.lastname);
@@ -80,9 +83,10 @@ const RegistrationPage = (props) => {
   }
 
   const createPassword = () => {
-    return `${name.substring(0.2).toUpperCase()}${lastName.substring(0.2).toUpperCase()}${phone.substring(
-      0.2,
-    )}${email.substring(0.2)}${ci.substring(0.2)}`;
+    return `${name.substring(0, 2)}${lastName.substring(0, 2)}${phone.substring(0, 2)}${email.substring(
+      0,
+      2,
+    )}${ci.substring(0, 2)}`;
   };
 
   const registerUser = () => {
@@ -97,6 +101,11 @@ const RegistrationPage = (props) => {
     });
   };
 
+  const cancel = () => {
+    props.changeUserSelected(null);
+    props.history.goBack();
+  };
+
   return (
     <div id={'content-login'} style={{ height: 700 }}>
       <Grid container autoComplete="off" style={{ minHeight: '100vh' }} alignItems="center" justify="center">
@@ -105,13 +114,13 @@ const RegistrationPage = (props) => {
           justify="center"
           direction="column"
           spacing={4}
-          style={{ height: '90vh', width: '90vh', borderRadius: '40px', boxShadow: '0px 10px 10px 0px grey' }}>
+          style={{ height: '90vh', width: '100vh', borderRadius: '40px', boxShadow: '0px 10px 10px 0px grey' }}>
           <Grid item>
             <Grid item style={{ textAlign: 'center' }}>
-              <h2>Crear Usuario</h2>
+              <h2>{sCreateUser}</h2>
             </Grid>
             <TextField
-              label="Nombres"
+              label={sName}
               type="text"
               value={name}
               onChange={({ target }) => handleNameChange(target.value)}
@@ -122,7 +131,7 @@ const RegistrationPage = (props) => {
           </Grid>
           <Grid item>
             <TextField
-              label="Apellidos"
+              label={sLastName}
               type="text"
               value={lastName}
               onChange={({ target }) => handleLastNameChange(target.value)}
@@ -132,7 +141,7 @@ const RegistrationPage = (props) => {
           </Grid>
           <Grid item>
             <TextField
-              label="Telefono"
+              label={sPhone}
               type="number"
               value={phone}
               onChange={({ target }) => handlePhoneChange(target.value)}
@@ -143,7 +152,7 @@ const RegistrationPage = (props) => {
 
           <Grid item>
             <TextField
-              label="Email"
+              label={sEmail}
               type="email"
               value={email}
               onChange={({ target }) => setEmail(target.value)}
@@ -153,7 +162,7 @@ const RegistrationPage = (props) => {
           </Grid>
           <Grid item>
             <TextField
-              label="CI"
+              label={sCI}
               type="number"
               value={ci}
               onChange={({ target }) => handleCiChange(target.value)}
@@ -162,8 +171,12 @@ const RegistrationPage = (props) => {
             />
           </Grid>
           <Grid item style={{ textAlign: 'center' }}>
+            <Button variant="contained" color="primary" type="submit" onClick={cancel}>
+              {sCancel}
+            </Button>
+
             <Button variant="contained" color="primary" type="submit" onClick={idUser === null ? register : updateUser}>
-              {idUser === null ? 'Crear usuario' : 'Actualizar usuario'}
+              {idUser === null ? sCreateUser : sUpdateUser}
             </Button>
           </Grid>
         </Grid>

@@ -10,6 +10,7 @@ import BackendConnection from '../../api/BackendConnection';
 import { connect } from 'react-redux';
 import { changeRole } from '../../redux/actions/index.actions';
 import { getRoles } from '../../redux/actions/indexthunk.actions';
+import { colorMain } from '../../constants/colors';
 
 function RolePage(props) {
   const [createRoleComplete, setCreateRoleComplete] = useState(false);
@@ -74,7 +75,7 @@ function RolePage(props) {
         {menuAdmin.map((menu) => {
           return (
             <div key={menu.id}>
-              <FormControlLabel control={<Checkbox color={'#2d3540'} />} label={menu.name} />
+              <FormControlLabel control={<Checkbox color={colorMain} />} label={menu.name} />
             </div>
           );
         })}

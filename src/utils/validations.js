@@ -1,0 +1,3 @@
+function validName(name, action) {
+
+}

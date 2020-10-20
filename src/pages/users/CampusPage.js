@@ -10,6 +10,7 @@ import { changeUserSelected } from '../../redux/actions/index.actions';
 import CardItem from '../../components/CardItem';
 import { routes } from '../../router/RoutesConstants';
 import BackendConnection from '../../api/BackendConnection';
+import { sUsers } from '../../constants/strings';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -65,8 +66,7 @@ function CampusPage(props) {
   };
 
   const deleteUser = (user) => {
-    console.warn(user);
-    BackendConnection.deleteRole(user.idusers)
+    BackendConnection.deleteUsers(user.idusers)
       .then((response) => {
         console.warn('finish delete user', response);
         props.getUsers();
@@ -98,7 +98,7 @@ function CampusPage(props) {
 
   return (
     <div>
-      <h1>Usuarios</h1>
+      <h1>{sUsers}</h1>
       {users.length > 0 ? renderUser() : <div />}
       <Fab aria-label={fab.label} className={fab.className} color={fab.color} onClick={newUser}>
         {fab.icon}

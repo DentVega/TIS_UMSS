@@ -4,11 +4,12 @@ import RouterMain from './router/RouterMain';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 import red from '@material-ui/core/colors/red';
+import { colorMain } from './constants/colors';
 
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: '#2d3540',
+      main: colorMain,
     },
     secondary: {
       main: red[500],

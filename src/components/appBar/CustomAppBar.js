@@ -10,12 +10,16 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import NotificationsIcon from '@material-ui/icons/Notifications';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import logoUmss from '../../assets/logoSanSimon.svg';
 import PropTypes from 'prop-types';
-import { sLogin, sNameUmss, sNotifications, sProfile } from '../../constants/strings';
+import { sCloseSesion, sLogin, sNameUmss, sNotifications, sProfile } from '../../constants/strings';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { connect } from 'react-redux';
+import { routes } from '../../router/RoutesConstants';
+import { changeUser, openDrawer } from '../../redux/actions/index.actions';
+import { withRouter } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   logo: {
@@ -59,6 +63,11 @@ function CustomAppBar(props) {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
+  const handleLogout = () => {
+    props.changeUser(null);
+    props.history.push(routes.login);
+  };
+
   const mobileMenuId = 'primary-search-account-menu-mobile';
   const renderMobileMenu = (
     <Menu
@@ -87,6 +96,16 @@ function CustomAppBar(props) {
         </IconButton>
         <p>{sProfile}</p>
       </MenuItem>
+      <MenuItem onClick={handleLogout}>
+        <IconButton
+          aria-label="account of current user"
+          aria-controls="primary-search-account-menu"
+          aria-haspopup="true"
+          color="inherit">
+          <ExitToAppIcon />
+        </IconButton>
+         <p>{sCloseSesion}</p>
+      </MenuItem>
     </Menu>
   );
 
@@ -105,6 +124,14 @@ function CustomAppBar(props) {
           onClick={handleProfileMenuOpen}
           color="inherit">
           <AccountCircle />
+        </IconButton>
+        <IconButton
+          edge="end"
+          aria-label="account of current user"
+          aria-haspopup="true"
+          onClick={handleLogout}
+          color="inherit">
+          <ExitToAppIcon />
         </IconButton>
       </div>
       <div className={classes.sectionMobile}>
@@ -156,4 +183,9 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(CustomAppBar);
+const mapDispatchToProps = (dispatch) => ({
+  openDrawer: () => dispatch(openDrawer()),
+  changeUser: (user) => dispatch(changeUser(user)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(CustomAppBar));

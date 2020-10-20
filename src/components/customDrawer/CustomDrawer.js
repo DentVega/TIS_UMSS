@@ -18,6 +18,7 @@ import DescriptionIcon from '@material-ui/icons/Description';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import AssignmentIndIcon from '@material-ui/icons/AssignmentInd';
 import SettingsApplicationsIcon from '@material-ui/icons/SettingsApplications';
+import { colorMain } from '../../constants/colors';
 
 const drawerWidth = 240;
 
@@ -31,7 +32,7 @@ const useStyles = makeStyles(() => ({
   },
   drawerContainer: {
     overflow: 'auto',
-    background: '#2d3540',
+    background: colorMain,
     height: '100%',
   },
 }));
@@ -39,13 +40,13 @@ const useStyles = makeStyles(() => ({
 const menuAdmin = [
   enumMenuDrawer.home,
   enumMenuDrawer.campus,
-  enumMenuDrawer.school,
-  enumMenuDrawer.subjects,
-  enumMenuDrawer.schedule,
-  enumMenuDrawer.reports,
-  enumMenuDrawer.groups,
+  // enumMenuDrawer.school,
+  // enumMenuDrawer.subjects,
+  // enumMenuDrawer.schedule,
+  // enumMenuDrawer.reports,
+  // enumMenuDrawer.groups,
   enumMenuDrawer.administration,
-  enumMenuDrawer.account,
+  // enumMenuDrawer.account,
 ];
 
 function CustomDrawer(props) {
@@ -123,11 +124,6 @@ function CustomDrawer(props) {
     }
   };
 
-  const logout = () => {
-    props.changeUser(null);
-    props.history.push(routes.login);
-  };
-
   const list = (anchor) => (
     <div
       className={classes.drawerContainer}
@@ -142,10 +138,6 @@ function CustomDrawer(props) {
             <ListItemText primary={menuItem.nameEs} style={{ color: '#ffffff' }} />
           </ListItem>
         ))}
-        <ListItem button onClick={logout}>
-          <div style={{ width: 10 }} />
-          <ListItemText primary={'Cerrar Sesion'} style={{ color: '#ffffff' }} />
-        </ListItem>
       </List>
     </div>
   );

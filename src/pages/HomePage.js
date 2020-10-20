@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { routes } from '../router/RoutesConstants';
+import { sHome } from '../constants/strings';
 function HomePage(props) {
   const { user } = props.userReducer;
   if (user === null) {
@@ -10,7 +11,7 @@ function HomePage(props) {
 
   return (
     <div>
-      <h1>HomePage</h1>
+      <h1>{sHome}</h1>
     </div>
   );
 }

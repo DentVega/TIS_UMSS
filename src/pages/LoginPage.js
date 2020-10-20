@@ -7,6 +7,7 @@ import { usePassword, useEmail } from '../constants/formCustomHook/useForm';
 import { routes } from '../router/RoutesConstants';
 import { changeUser } from '../redux/actions/index.actions';
 import BackendConnection from '../api/BackendConnection';
+import { sBadCredentials, sForgotYourPassword, sIncorrectPassword, sInvalidEmail, sLogin } from '../constants/strings';
 
 const LoginPage = (props) => {
   const emailregex = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
@@ -18,8 +19,8 @@ const LoginPage = (props) => {
       login();
     } else {
       setEmailError(true);
-      setEmailMessage('email invalido');
-      setPassMessage('contraseña incorrecta');
+      setEmailMessage(sInvalidEmail);
+      setPassMessage(sIncorrectPassword);
       setPasswordError(true);
     }
   };
@@ -31,7 +32,7 @@ const LoginPage = (props) => {
         props.history.push(routes.home);
       } else {
         setEmailError(true);
-        setEmailMessage('Credenciales incorrectas');
+        setEmailMessage(sBadCredentials);
       }
     });
   };
@@ -47,7 +48,7 @@ const LoginPage = (props) => {
           alignItems="center"
           spacing={4}>
           <Grid item>
-            <h2>Iniciar Sesion</h2>
+            <h2>{sLogin}</h2>
           </Grid>
           <Grid item>
             <TextField
@@ -80,11 +81,11 @@ const LoginPage = (props) => {
           </Grid>
           <Grid item>
             <Button variant="contained" color="primary" onClick={handleLogin}>
-              Iniciar Sesion
+              {sLogin}
             </Button>
           </Grid>
           <Grid item>
-            <Button>olvido su contraseña?</Button>
+            <Button>{sForgotYourPassword}</Button>
           </Grid>
         </Grid>
       </Grid>
