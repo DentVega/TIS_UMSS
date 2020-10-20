@@ -1,11 +1,12 @@
 import axios from 'axios';
+import { baseUrl } from './Keys';
 
 class BackendConnection {
   login(email, password) {
     return new Promise((resolve, reject) => {
       axios({
         method: 'GET',
-        url: `https://tis-backend.herokuapp.com/login/${email}/${password}`,
+        url: `${baseUrl}/login/${email}/${password}`,
         headers: {
           'content-type': 'application/json',
           'cache-control': 'no-cache',
@@ -23,7 +24,7 @@ class BackendConnection {
     return new Promise((resolve, reject) => {
       axios({
         method: 'GET',
-        url: `https://tis-backend.herokuapp.com/roles`,
+        url: `${baseUrl}/roles`,
         headers: {
           'content-type': 'application/json',
           'cache-control': 'no-cache',
@@ -42,7 +43,7 @@ class BackendConnection {
     return new Promise((resolve, reject) => {
       axios({
         method: 'POST',
-        url: `https://tis-backend.herokuapp.com/roles`,
+        url: `${baseUrl}/roles`,
         headers: {
           'content-type': 'application/json',
           'cache-control': 'no-cache',
@@ -60,7 +61,7 @@ class BackendConnection {
     return new Promise((resolve, reject) => {
       axios({
         method: 'PUT',
-        url: `https://tis-backend.herokuapp.com/roles/${id}`,
+        url: `${baseUrl}/roles/${id}`,
         headers: {
           'content-type': 'application/json',
           'cache-control': 'no-cache',
@@ -78,7 +79,7 @@ class BackendConnection {
     return new Promise((resolve, reject) => {
       axios({
         method: 'DELETE',
-        url: `https://tis-backend.herokuapp.com/roles/${id}`,
+        url: `${baseUrl}/roles/${id}`,
         headers: {
           'content-type': 'application/json',
           'cache-control': 'no-cache',
@@ -93,7 +94,7 @@ class BackendConnection {
     return new Promise((resolve, reject) => {
       axios({
         method: 'GET',
-        url: `https://tis-backend.herokuapp.com/users`,
+        url: `${baseUrl}/users`,
         headers: {
           'content-type': 'application/json',
           'cache-control': 'no-cache',
@@ -131,7 +132,7 @@ class BackendConnection {
     return new Promise((resolve, reject) => {
       axios({
         method: 'PUT',
-        url: `https://tis-backend.herokuapp.com/users/${id}`,
+        url: `${baseUrl}/users/${id}`,
         headers: {
           'content-type': 'application/json',
           'cache-control': 'no-cache',
@@ -159,7 +160,7 @@ class BackendConnection {
     return new Promise((resolve, reject) => {
       axios({
         method: 'DELETE',
-        url: `https://tis-backend.herokuapp.com/users/${id}`,
+        url: `${baseUrl}/users/${id}`,
         headers: {
           'content-type': 'application/json',
           'cache-control': 'no-cache',

@@ -122,6 +122,7 @@ function CampusPage(props) {
       />
       <h1>{sUsers}</h1>
       {users.length > 0 ? renderUser() : <div />}
+      {loading && <h3>Cargando...</h3>}
       <Fab aria-label={fab.label} className={fab.className} color={fab.color} onClick={newUser}>
         {fab.icon}
       </Fab>

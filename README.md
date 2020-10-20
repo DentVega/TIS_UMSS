@@ -90,3 +90,11 @@ Si tiene una sesion iniciada puede cerrar sesion con el comando
 Pude seguir la siguiente guia para ver mas a detalle el despliegue del proyecto
 
 (https://medium.com/swlh/how-to-deploy-a-react-app-with-firebase-hosting-98063c5bf425)
+
+
+Heroku
+- Para ver los logs del backend usar el comando
+    `heroku logs --tail`
+    
+- Para subir cambios al backend user el comando 
+    `git push heroku main` 

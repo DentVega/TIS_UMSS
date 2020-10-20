@@ -11,8 +11,12 @@ export const getRoles = () => {
 
 export const getUsers = () => {
   return (dispatch) => {
-    BackendConnection.getUsers().then((users) => {
-      dispatch(changeUsers(users));
-    });
+    BackendConnection.getUsers()
+      .then((users) => {
+        dispatch(changeUsers(users));
+      })
+      .catch((e) => {
+        console.warn(e.message);
+      });
   };
 };
