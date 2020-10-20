@@ -24,7 +24,6 @@ import CustomBottombar from '../components/toolbar/CustomBottombar';
 import Toolbar from '@material-ui/core/Toolbar';
 const useStyles = makeStyles((theme) => ({
   root: {
-    // display: 'flex',
     paddingLeft: 240,
   },
   content: {
@@ -67,11 +66,6 @@ function RouterMain(props) {
           <Route exact={true} path={routes.testUi} component={TestUi} />
           <Route exact={true} path={routes.route404} component={NotFoundPage} />
         </main>
-        {user != null && (
-          <div className={classes.bottombar}>
-            <CustomBottombar />
-          </div>
-        )}
       </div>
       {user === null && (
         <div className={classes.bottombar}>
