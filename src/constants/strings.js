@@ -22,3 +22,4 @@ export const sLastName = 'Apellidos';
 export const sUsers = 'Usuarios';
 export const sCancel = 'Cancelar';
 export const sConfirm = 'Confirmacion';
+export const sCopyright = '@ 2020, DevZ-UMSS todos los derecchos reservados.';

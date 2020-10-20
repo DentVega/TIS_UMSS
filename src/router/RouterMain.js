@@ -20,7 +20,7 @@ import AccountPage from '../pages/AccountPage';
 import RolesPage from '../pages/role/RolesPage';
 import RolePage from '../pages/role/RolePage';
 import RegisterPage from '../pages/users/RegistrationPage';
-// import CustomToolbar from '../components/toolbar/CustomToolbar';
+import CustomBottombar from '../components/toolbar/CustomBottombar';
 import Toolbar from '@material-ui/core/Toolbar';
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -31,6 +31,11 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     padding: theme.spacing(3),
     height: '100%',
+  },
+  bottombar: {
+    position: 'relative',
+    bottom: 0,
+    zIndex: 10,
   },
 }));
 function RouterMain(props) {
@@ -62,8 +67,17 @@ function RouterMain(props) {
           <Route exact={true} path={routes.testUi} component={TestUi} />
           <Route exact={true} path={routes.route404} component={NotFoundPage} />
         </main>
+        {user != null && (
+          <div className={classes.bottombar}>
+            <CustomBottombar />
+          </div>
+        )}
       </div>
-      {/*<CustomToolbar />*/}
+      {user === null && (
+        <div className={classes.bottombar}>
+          <CustomBottombar />
+        </div>
+      )}
     </BrowserRouter>
   );
 }
