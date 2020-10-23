@@ -22,6 +22,9 @@ import RolePage from '../pages/role/RolePage';
 import RegisterPage from '../pages/users/RegistrationPage';
 import CustomBottombar from '../components/toolbar/CustomBottombar';
 import Toolbar from '@material-ui/core/Toolbar';
+import {PrivateRoute} from '../constants/PrivateRoute';
+import {PublicRoute} from '../constants/PublicRoute';
+
 const useStyles = makeStyles((theme) => ({
   root: {
     paddingLeft: 240,
@@ -38,8 +41,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 function RouterMain(props) {
+  
   const classes = useStyles();
   const { user } = props.userReducer;
+  let isAuth = user!=null; 
+  console.log(isAuth);
   return (
     <BrowserRouter>
       <div className={user != null ? classes.root : null}>
@@ -49,22 +55,22 @@ function RouterMain(props) {
           <Toolbar />
           <Route exact={true} path={'/'} component={LoginPage} />
           <Route exact={true} path={routes.login} component={LoginPage} />
-          <Route exact={true} path={routes.home} component={HomePage} />
-          <Route exact={true} path={routes.campus} component={CampusPage} />
-          <Route exact={true} path={routes.registerUser} component={RegisterPage} />
-          <Route exact={true} path={routes.editUser} component={RegisterPage} />
-          <Route exact={true} path={routes.school} component={SchoolPage} />
-          <Route exact={true} path={routes.subjects} component={SubjectPage} />
-          <Route exact={true} path={routes.reports} component={ReportsPage} />
-          <Route exact={true} path={routes.schedule} component={SchedulePage} />
-          <Route exact={true} path={routes.groups} component={GroupsPage} />
-          <Route exact={true} path={routes.administration} component={AdministratorPage} />
-          <Route exact={true} path={routes.roles} component={RolesPage} />
-          <Route exact={true} path={routes.newRole} component={RolePage} />
-          <Route exact={true} path={routes.editRole} component={RolePage} />
-          <Route exact={true} path={routes.account} component={AccountPage} />
-          <Route exact={true} path={routes.testUi} component={TestUi} />
-          <Route exact={true} path={routes.route404} component={NotFoundPage} />
+          <PrivateRoute isAuth={isAuth} exact={true} path={routes.home} component={HomePage} />
+          <PrivateRoute isAuth={isAuth} exact={true} path={routes.campus} component={CampusPage} />
+          <PrivateRoute isAuth={isAuth} exact={true} path={routes.registerUser} component={RegisterPage} />
+          <PrivateRoute isAuth={isAuth} exact={true} path={routes.editUser} component={RegisterPage} />
+          <PrivateRoute isAuth={isAuth} exact={true} path={routes.school} component={SchoolPage} />
+          <PrivateRoute isAuth={isAuth} exact={true} path={routes.subjects} component={SubjectPage} />
+          <PrivateRoute isAuth={isAuth} exact={true} path={routes.reports} component={ReportsPage} />
+          <PrivateRoute isAuth={isAuth} exact={true} path={routes.schedule} component={SchedulePage} />
+          <PrivateRoute isAuth={isAuth} exact={true} path={routes.groups} component={GroupsPage} />
+          <PrivateRoute isAuth={isAuth} exact={true} path={routes.administration} component={AdministratorPage} />
+          <PrivateRoute isAuth={isAuth} exact={true} path={routes.roles} component={RolesPage} />
+          <PrivateRoute isAuth={isAuth} exact={true} path={routes.newRole} component={RolePage} />
+          <PrivateRoute isAuth={isAuth} exact={true} path={routes.editRole} component={RolePage} />
+          <PrivateRoute isAuth={isAuth} exact={true} path={routes.account} component={AccountPage} />
+          <PrivateRoute isAuth={isAuth} exact={true} path={routes.testUi} component={TestUi} />
+          <PrivateRoute isAuth={isAuth} exact={true} path={routes.route404} component={NotFoundPage} />
         </main>
       </div>
       {user === null && (

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-
+import {sLimitCharacters,sLimitNumber} from '../strings';
 export const useEmail = () => {
   const [values, setValues] = useState('');
   const [emailError, setEmailError] = useState(false);
@@ -7,7 +7,7 @@ export const useEmail = () => {
   const handleEmailChange = (value) => {
     if (values.length > 29) {
       setEmailError(true);
-      setEmailMessage('Muchos Caracteres');
+      setEmailMessage('');
     } else {
       setEmailError(false);
       setEmailMessage('');
@@ -22,13 +22,10 @@ export const usePassword = () => {
   const [passwordError, setPasswordError] = useState(false);
   const [passMessage,setPassMessage] = useState('');
 
-  const validPass = () => {
-    return values.length > 20 || values.length === 0;
-  };
 
   const handlePassChange = ({ target }) => {
     if (values.length > 29) {
-      setPassMessage('Muchos Caracteres');
+      setPassMessage('');
       setPasswordError(true);
     } else {
       setPasswordError(false);
@@ -45,7 +42,7 @@ export const useFullName=()=>{
   const [fullNameMesasge,setFullNameErrorMessage] = useState('');
   const handleFullNameChange =(value)=>{
     if(values.length > 24){
-      setFullNameErrorMessage("limite de caracteres 25");
+      setFullNameErrorMessage(sLimitCharacters);
       setFullNameError(true);
     }else{
       setFullNameErrorMessage("");
@@ -62,7 +59,7 @@ export const useCi=()=>{
   const [ciErrorMessage, setCiMessageError] = useState('');
   const handleCiChange =(value)=>{
     if(values.length > 7){
-      setCiMessageError("8 numeros como maximo");
+      setCiMessageError(sLimitNumber);
       setCiError(true);
     }else{
       setCiMessageError("");
@@ -78,7 +75,7 @@ export const usePhone=()=>{
   const [phoneErrorMessage,setPhoneErrorMessage] =useState("");
   const handlePhoneChange =(value)=>{
     if(values.length > 7){
-      setPhoneErrorMessage("8 numeros como maximo");
+      setPhoneErrorMessage(sLimitNumber);
       setPhoneError(true);
     }else{
       setPhoneErrorMessage("");
