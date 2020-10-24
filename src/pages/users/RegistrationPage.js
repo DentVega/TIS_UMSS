@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { TextField, Grid, Button } from '@material-ui/core';
-import { useEmail, useFullName, useCi, usePhone } from '../../constants/formCustomHook/useForm';
+import { useEmail, useFullName, useCi, usePhone, useLastName } from '../../constants/formCustomHook/useForm';
 import { getUsers } from '../../redux/actions/indexthunk.actions';
 import { changeUserSelected } from '../../redux/actions/index.actions';
 import { connect } from 'react-redux';
@@ -18,7 +18,6 @@ import {
   sPhone,
   sUpdateUser,
 } from '../../constants/strings';
-import { emailregex } from '../../constants/regexs';
 import CustomAlertDialog from '../../components/dialogs/CustomAlertDialog';
 
 const RegistrationPage = (props) => {
@@ -38,7 +37,7 @@ const RegistrationPage = (props) => {
     setLastNameError,
     lastNameMesasge,
     setLastNameErrorMessage,
-  ] = useFullName();
+  ] = useLastName();
   const [phone, handlePhoneChange, phoneError, setPhoneError, phoneErrorMessage, setPhoneErrorMessage] = usePhone();
   const [email, setEmail, emailError, setEmailError, emailMessage, setEmailMessage] = useEmail();
   const [ci, handleCiChange, ciError, setCiError, ciErrorMessage, setCiMessageError] = useCi();
@@ -46,34 +45,39 @@ const RegistrationPage = (props) => {
   const [idUser, setIdUser] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
 
-  const validName = () => {};
-
-  const register = () => {
-    if (!nameError && name.length > 0) {
-      if (!lastNameError && lastName.length > 0) {
-        if (!phoneError && phone.length > 0) {
-          if (!emailError && email.length > 4 && emailregex.test(email)) {
-            if (!ciError && ci > 0) {
-              registerUser();
-            } else {
-              setCiMessageError('carnet incorrecto');
-              setCiError(true);
-            }
-          } else {
-            setEmailMessage('email incorrecto');
-            setEmailError(true);
-          }
-        } else {
-          setPhoneErrorMessage('telefono incorrecto');
-          setPhoneError(true);
-        }
-      } else {
-        setLastNameErrorMessage('dato incorrecto');
-        setLastNameError(true);
-      }
-    } else {
-      setNameErrorMessage('dato incorrecto');
+  const validName = () => {
+    const nameValidIsNoEmpty = !nameError && name.length > 0;
+    if (!nameValidIsNoEmpty) {
+      setNameErrorMessage('El nombre no puede estar vacio');
       setNameError(true);
+    }
+
+    const lastNameIsNoEmpty = !lastNameError && lastName.length > 0;
+    if (!lastNameIsNoEmpty) {
+      setLastNameErrorMessage('El Apellido no puede estar vacio');
+      setLastNameError(true);
+    }
+
+    const phoneIsNoEmpty = !phoneError && phone.length > 0;
+    if (!phoneIsNoEmpty) {
+      setPhoneErrorMessage('telefono no puede estar vacio');
+      setPhoneError(true);
+    }
+
+    const emailIsNoEmpty = !emailError && email.length > 0;
+    if (!emailIsNoEmpty) {
+      setEmailMessage('email no puede estar vacio');
+      setEmailError(true);
+    }
+
+    const ciIsNoEmpty = !ciError && ci > 0;
+    if (!ciIsNoEmpty) {
+      setCiMessageError('no puede estar vacio');
+      setCiError(true);
+    }
+
+    if (nameValidIsNoEmpty && lastNameIsNoEmpty && phoneIsNoEmpty && emailIsNoEmpty && ci) {
+      confirmCreation();
     }
   };
 
@@ -135,7 +139,7 @@ const RegistrationPage = (props) => {
         messageText={idUser === null ? 'Confirma la creacion del cliente' : 'Confirma la actualizacion del cliente'}
         open={openDialog}
         handleClose={closeDialog}
-        handleAccept={idUser === null ? register : updateUser}
+        handleAccept={idUser === null ? registerUser : updateUser}
       />
       <Grid container autoComplete="off" style={{ minHeight: '100vh' }} alignItems="center" justify="center">
         <Grid
@@ -204,7 +208,7 @@ const RegistrationPage = (props) => {
               {sCancel}
             </Button>
 
-            <Button variant="contained" color="primary" type="submit" onClick={confirmCreation}>
+            <Button variant="contained" color="primary" type="submit" onClick={validName}>
               {idUser === null ? sCreateUser : sUpdateUser}
             </Button>
           </Grid>
