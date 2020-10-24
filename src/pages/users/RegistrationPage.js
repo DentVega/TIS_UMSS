@@ -1,7 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { TextField, Grid, Button } from '@material-ui/core';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormControl from '@material-ui/core/FormControl';
 import { useEmail, useFullName, useCi, usePhone, useLastName } from '../../constants/formCustomHook/useForm';
-import { getUsers } from '../../redux/actions/indexthunk.actions';
+import { getRoles, getUsers } from '../../redux/actions/indexthunk.actions';
 import { changeUserSelected } from '../../redux/actions/index.actions';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
@@ -22,6 +26,8 @@ import CustomAlertDialog from '../../components/dialogs/CustomAlertDialog';
 
 const RegistrationPage = (props) => {
   const { user } = props.userReducer;
+  const { roles } = props.rolesReducer;
+  const { getRoles } = props;
   if (user === null) {
     props.history.push(routes.login);
   }
@@ -44,6 +50,16 @@ const RegistrationPage = (props) => {
   const [password, setPassword] = useState('');
   const [idUser, setIdUser] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
+  const [roleSelected, setRoleSelected] = useState(1);
+
+  useEffect(() => {
+    getRoles();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const handleChangeRol = (event) => {
+    setRoleSelected(parseInt(event.target.value));
+  };
 
   const validName = () => {
     const nameValidIsNoEmpty = !nameError && name.length > 0;
@@ -132,26 +148,39 @@ const RegistrationPage = (props) => {
     setOpenDialog(false);
   };
 
-  return (
-    <div id={'content-login'} style={{ height: 700 }}>
-      <CustomAlertDialog
-        title={sConfirm}
-        messageText={idUser === null ? 'Confirma la creacion del cliente' : 'Confirma la actualizacion del cliente'}
-        open={openDialog}
-        handleClose={closeDialog}
-        handleAccept={idUser === null ? registerUser : updateUser}
-      />
-      <Grid container autoComplete="off" style={{ minHeight: '100vh' }} alignItems="center" justify="center">
-        <Grid
-          container
-          justify="center"
-          direction="column"
-          spacing={4}
-          style={{ height: '90vh', width: '100vh', borderRadius: '40px', boxShadow: '0px 10px 10px 0px grey' }}>
+  const renderSelectRol = () => {
+    return (
+      <Grid item>
+        <Grid container justify="center" direction="column">
           <Grid item>
-            <Grid item style={{ textAlign: 'center' }}>
-              <h2>{sCreateUser}</h2>
-            </Grid>
+            <h2>Roles</h2>
+          </Grid>
+          <Grid item>
+            <FormControl component={'fieldset'}>
+              <RadioGroup name={'Rol1'} value={roleSelected} onChange={handleChangeRol}>
+                {roles.map((rol) => {
+                  return (
+                    <div key={rol.idroles}>
+                      <FormControlLabel control={<Radio />} label={rol.rolename} value={rol.idroles} />
+                    </div>
+                  );
+                })}
+              </RadioGroup>
+            </FormControl>
+          </Grid>
+        </Grid>
+      </Grid>
+    );
+  };
+
+  const renderForm = () => {
+    return (
+      <Grid item style={{ width: '100vh', borderRadius: '40px' }}>
+        <Grid container justify="center" direction="column" spacing={4}>
+          <Grid item style={{ textAlign: 'center' }}>
+            <h2>{sCreateUser}</h2>
+          </Grid>
+          <Grid item>
             <TextField
               label={sName}
               type="text"
@@ -203,14 +232,39 @@ const RegistrationPage = (props) => {
               helperText={ciErrorMessage}
             />
           </Grid>
-          <Grid item style={{ textAlign: 'center' }}>
-            <Button variant="contained" color="primary" type="submit" onClick={cancel}>
-              {sCancel}
-            </Button>
+        </Grid>
+      </Grid>
+    );
+  };
 
-            <Button variant="contained" color="primary" type="submit" onClick={validName}>
-              {idUser === null ? sCreateUser : sUpdateUser}
-            </Button>
+  return (
+    <div id={'content-login'} style={{ height: 700 }}>
+      <CustomAlertDialog
+        title={sConfirm}
+        messageText={idUser === null ? 'Confirma la creacion del cliente' : 'Confirma la actualizacion del cliente'}
+        open={openDialog}
+        handleClose={closeDialog}
+        handleAccept={idUser === null ? registerUser : updateUser}
+      />
+      <Grid container direction="column" spacing={4}>
+        <Grid item container direction="row">
+          {renderForm()}
+          {renderSelectRol()}
+        </Grid>
+
+        <Grid item style={{ textAlign: 'center' }}>
+          <Grid container direction={'row'} spacing={2}>
+            <Grid item>
+              <Button variant="contained" color="primary" type="submit" onClick={cancel}>
+                {sCancel}
+              </Button>
+            </Grid>
+
+            <Grid item>
+              <Button variant="contained" color="primary" type="submit" onClick={validName}>
+                {idUser === null ? sCreateUser : sUpdateUser}
+              </Button>
+            </Grid>
           </Grid>
         </Grid>
       </Grid>
@@ -223,11 +277,13 @@ const mapStateToProps = (state) => {
     app: state.app,
     userReducer: state.userReducer,
     usersReducer: state.usersReducer,
+    rolesReducer: state.rolesReducer,
   };
 };
 
 const mapDispatchToProps = (dispatch) => ({
   getUsers: () => dispatch(getUsers()),
+  getRoles: () => dispatch(getRoles()),
   changeUserSelected: (userSelected) => dispatch(changeUserSelected(userSelected)),
 });
 

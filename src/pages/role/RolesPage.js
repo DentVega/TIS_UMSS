@@ -36,6 +36,7 @@ const useStyles = makeStyles((theme) => ({
 
 function RolesPage(props) {
   const { roles, loading } = props.rolesReducer;
+  const { getRoles } = props;
   const classes = useStyles();
 
   const [roleSelected, setRoleSelected] = useState(null);
@@ -43,7 +44,7 @@ function RolesPage(props) {
 
   useEffect(() => {
     if (loading) {
-      props.getRoles();
+      getRoles();
     }
   });
 
