@@ -8,14 +8,14 @@ import { routes } from '../router/RoutesConstants';
 import { changeUser } from '../redux/actions/index.actions';
 import BackendConnection from '../api/BackendConnection';
 import { sBadCredentials, sForgotYourPassword, sIncorrectPassword, sInvalidEmail, sLogin } from '../constants/strings';
-import {emailregex} from '../constants/regexs';
+import { emailRegex } from '../constants/regexs';
 
 const LoginPage = (props) => {
   const [email, setEmail, emailError, setEmailError, emailMessage, setEmailMessage] = useEmail();
   const [password, setPassword, passwordError, setPasswordError, passMessage, setPassMessage] = usePassword();
   console.log(props.userReducer);
   const handleLogin = () => {
-    if (email.length > 5 && emailregex.test(email)) {
+    if (email.length > 5 && emailRegex.test(email)) {
       login();
     } else {
       setEmailError(true);
