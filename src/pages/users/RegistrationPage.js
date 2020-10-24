@@ -12,14 +12,15 @@ import { withRouter } from 'react-router-dom';
 import BackendConnection from '../../api/BackendConnection';
 import { routes } from '../../router/RoutesConstants';
 import {
+  sAreYouSureYourWantCancel,
   sCancel,
   sCI,
-  sConfirm,
+  sConfirm, sConfirmTheCreation, sConfirmTheUpdate,
   sCreateUser,
   sEmail,
   sLastName,
   sName,
-  sPhone,
+  sPhone, sTheNameCannotBeEmpty,
   sUpdateUser,
 } from '../../constants/strings';
 import CustomAlertDialog from '../../components/dialogs/CustomAlertDialog';
@@ -65,31 +66,31 @@ const RegistrationPage = (props) => {
   const validName = () => {
     const nameValidIsNoEmpty = !nameError && name.length > 0;
     if (!nameValidIsNoEmpty) {
-      setNameErrorMessage('El nombre no puede estar vacio');
+      setNameErrorMessage(sTheNameCannotBeEmpty);
       setNameError(true);
     }
 
     const lastNameIsNoEmpty = !lastNameError && lastName.length > 0;
     if (!lastNameIsNoEmpty) {
-      setLastNameErrorMessage('El Apellido no puede estar vacio');
+      setLastNameErrorMessage(sTheNameCannotBeEmpty);
       setLastNameError(true);
     }
 
     const phoneIsNoEmpty = !phoneError && phone.length > 0;
     if (!phoneIsNoEmpty) {
-      setPhoneErrorMessage('telefono no puede estar vacio');
+      setPhoneErrorMessage(sTheNameCannotBeEmpty);
       setPhoneError(true);
     }
 
     const emailIsNoEmpty = !emailError && email.length > 0;
     if (!emailIsNoEmpty) {
-      setEmailMessage('email no puede estar vacio');
+      setEmailMessage(sTheNameCannotBeEmpty);
       setEmailError(true);
     }
 
     const ciIsNoEmpty = !ciError && ci > 0;
     if (!ciIsNoEmpty) {
-      setCiMessageError('no puede estar vacio');
+      setCiMessageError(sTheNameCannotBeEmpty);
       setCiError(true);
     }
 
@@ -242,14 +243,14 @@ const RegistrationPage = (props) => {
     <div id={'content-login'} style={{ height: 700 }}>
       <CustomAlertDialog
         title={sConfirm}
-        messageText={idUser === null ? 'Confirma la creacion del cliente' : 'Confirma la actualizacion del cliente'}
+        messageText={idUser === null ? sConfirmTheCreation : sConfirmTheUpdate}
         open={openDialog}
         handleClose={closeDialog}
         handleAccept={idUser === null ? registerUser : updateUser}
       />
       <CustomAlertDialog
         title={sConfirm}
-        messageText={'Esta seguro que quiere cancelar'}
+        messageText={sAreYouSureYourWantCancel}
         open={openDialogCancel}
         handleClose={() => setOpenDialogCancel(false)}
         handleAccept={cancel}

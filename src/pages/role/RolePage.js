@@ -12,7 +12,13 @@ import { changeRole } from '../../redux/actions/index.actions';
 import { getRoles } from '../../redux/actions/indexthunk.actions';
 // import { colorMain } from '../../constants/colors';
 import CustomAlertDialog from '../../components/dialogs/CustomAlertDialog';
-import { sConfirm } from '../../constants/strings';
+import {
+  sAreYouSureYourWantCancel,
+  sConfirm,
+  sConfirmTheCreationRol,
+  sConfirmTheUpdateOfRol, sCreateRol, sEditRol, sNameTheRol,
+  sTheNameCannotBeEmpty
+} from '../../constants/strings';
 import { useNameRol } from '../../constants/formCustomHook/useForm';
 
 function RolePage(props) {
@@ -39,7 +45,7 @@ function RolePage(props) {
 
   const createRole = () => {
     if (nameRole.length === 0) {
-      setNameErrorMessage('El campo no puede estar vacio');
+      setNameErrorMessage(sTheNameCannotBeEmpty);
       setNameError(true);
     } else {
       BackendConnection.createRole(nameRole).then(() => {
@@ -50,7 +56,7 @@ function RolePage(props) {
 
   const updateRole = () => {
     if (nameRole.length === 0) {
-      setNameErrorMessage('El campo no puede estar vacio');
+      setNameErrorMessage(sTheNameCannotBeEmpty);
       setNameError(true);
     } else {
       BackendConnection.updateRole(idRole, nameRole).then(() => {
@@ -79,7 +85,7 @@ function RolePage(props) {
   const confirmCreation = () => {
     const nameIsNoEmpty = !nameError && nameRole.length > 0;
     if (!nameIsNoEmpty) {
-      setNameErrorMessage('El nombre no puede estar vacio');
+      setNameErrorMessage(sTheNameCannotBeEmpty);
       setNameError(true);
     } else {
       setOpenDialog(true);
@@ -108,14 +114,14 @@ function RolePage(props) {
     <div>
       <CustomAlertDialog
         title={sConfirm}
-        messageText={idRole === null ? 'Confirma la crecion del rol' : 'Confirma la actualizaicon del rol'}
+        messageText={idRole === null ? sConfirmTheCreationRol : sConfirmTheUpdateOfRol}
         open={openDialog}
         handleClose={closeDialog}
         handleAccept={idRole === null ? createRole : updateRole}
       />
       <CustomAlertDialog
         title={sConfirm}
-        messageText={'Esta seguro que quiere cancelar'}
+        messageText={sAreYouSureYourWantCancel}
         open={openDialogCancel}
         handleClose={() => setOpenDialogCancel(false)}
         handleAccept={cancelCreateRole}
@@ -126,7 +132,7 @@ function RolePage(props) {
         <Grid item xs={12} sm={6}>
           <TextField
             id={'name-rol'}
-            label={'Nombre del Rol'}
+            label={sNameTheRol}
             value={nameRole}
             onChange={({ target }) => setNameRole(target.value)}
             error={nameError}
@@ -148,7 +154,7 @@ function RolePage(props) {
             </Button>
 
             <Button variant="contained" color="primary" style={{ margin: 10 }} onClick={confirmCreation}>
-              {idRole === null ? 'Crear Rol' : 'Editar Rol'}
+              {idRole === null ? sCreateRol : sEditRol}
             </Button>
           </div>
         </Grid>
