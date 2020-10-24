@@ -50,6 +50,7 @@ const RegistrationPage = (props) => {
   const [password, setPassword] = useState('');
   const [idUser, setIdUser] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
+  const [openDialogCancel, setOpenDialogCancel] = useState(false);
   const [roleSelected, setRoleSelected] = useState(1);
 
   useEffect(() => {
@@ -246,6 +247,13 @@ const RegistrationPage = (props) => {
         handleClose={closeDialog}
         handleAccept={idUser === null ? registerUser : updateUser}
       />
+      <CustomAlertDialog
+        title={sConfirm}
+        messageText={'Esta seguro que quiere cancelar'}
+        open={openDialogCancel}
+        handleClose={() => setOpenDialogCancel(false)}
+        handleAccept={cancel}
+      />
       <Grid container direction="column" spacing={4}>
         <Grid item container direction="row">
           {renderForm()}
@@ -255,7 +263,7 @@ const RegistrationPage = (props) => {
         <Grid item style={{ textAlign: 'center' }}>
           <Grid container direction={'row'} spacing={2}>
             <Grid item>
-              <Button variant="contained" color="primary" type="submit" onClick={cancel}>
+              <Button variant="contained" color="primary" type="submit" onClick={() => setOpenDialogCancel(true)}>
                 {sCancel}
               </Button>
             </Grid>

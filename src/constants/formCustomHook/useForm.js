@@ -1,6 +1,16 @@
 import { useState } from 'react';
 import { emailRegex, nameRegex, lastNameRegex, phoneRegex, ciRegex } from '../regexs';
-import { sLimitNumber, sLimitCharacters } from '../strings';
+import {
+  sLimitNumber,
+  sLimitCharacters,
+  sMustFollowTheFollowingFormat,
+  sTheNameCannotBeEmpty,
+  sOnlyLettersAreAccepted,
+  sNameMustHaveMoreThan2Characters,
+  sCharacterLimit,
+  sTheLastNameCannotBeEmpty,
+  sMustHaveMoreThan2Characters, sCharacterLimit25, sOnlyNumbersAreAllowed, sMustBeGreaterThanNumbers, sNumbersMinimum
+} from '../strings';
 
 export const useEmail = () => {
   const [values, setValues] = useState('');
@@ -9,7 +19,7 @@ export const useEmail = () => {
   const handleEmailChange = (value) => {
     if (!emailRegex.test(value)) {
       setEmailError(true);
-      setEmailMessage('Debe seguir el siguiente formato test@example.com');
+      setEmailMessage(sMustFollowTheFollowingFormat);
     } else if (value.length > 29) {
       setEmailError(true);
       setEmailMessage(sLimitCharacters);
@@ -46,16 +56,16 @@ export const useFullName = () => {
   const [fullNameMesasge, setFullNameErrorMessage] = useState(null);
   const handleFullNameChange = (value) => {
     if (value.length === 0) {
-      setFullNameErrorMessage('El nombre no puede estar vacio');
+      setFullNameErrorMessage(sTheNameCannotBeEmpty);
       setFullNameError(true);
     } else if (!nameRegex.test(value)) {
-      setFullNameErrorMessage('Solo se aceptan letras');
+      setFullNameErrorMessage(sOnlyLettersAreAccepted);
       setFullNameError(true);
     } else if (value.length > 0 && value.length <= 2) {
-      setFullNameErrorMessage('El nombre debe tener mas de 2 caracteres');
+      setFullNameErrorMessage(sNameMustHaveMoreThan2Characters);
       setFullNameError(true);
     } else if (value.length > 24) {
-      setFullNameErrorMessage('limite de caracteres 25');
+      setFullNameErrorMessage(sCharacterLimit25);
       setFullNameError(true);
     } else {
       setFullNameErrorMessage(null);
@@ -72,16 +82,16 @@ export const useLastName = () => {
   const [fullNameMesasge, setFullNameErrorMessage] = useState(null);
   const handleFullNameChange = (value) => {
     if (value.length === 0) {
-      setFullNameErrorMessage('El Apellido no puede estar vacio');
+      setFullNameErrorMessage(sTheLastNameCannotBeEmpty);
       setFullNameError(true);
     } else if (!lastNameRegex.test(value)) {
-      setFullNameErrorMessage('Solo se aceptan letras');
+      setFullNameErrorMessage(sOnlyLettersAreAccepted);
       setFullNameError(true);
     } else if (value.length > 0 && value.length <= 2) {
-      setFullNameErrorMessage('El Apellido debe tener mas de 2 caracteres');
+      setFullNameErrorMessage(sMustHaveMoreThan2Characters);
       setFullNameError(true);
     } else if (value.length > 24) {
-      setFullNameErrorMessage('limite de caracteres 25');
+      setFullNameErrorMessage(sCharacterLimit25);
       setFullNameError(true);
     } else {
       setFullNameErrorMessage(null);
@@ -98,10 +108,10 @@ export const useCi = () => {
   const [ciErrorMessage, setCiMessageError] = useState('');
   const handleCiChange = (value) => {
     if (!ciRegex.test(value)) {
-      setCiMessageError('Solo se permiten numeros');
+      setCiMessageError(sOnlyNumbersAreAllowed);
       setCiError(true);
     } else if (value.length < 5) {
-      setCiMessageError('Debe ser mayor a 5 numeros');
+      setCiMessageError(sMustBeGreaterThanNumbers.replace('{0}', 5));
       setCiError(true);
     } else if (value.length > 7) {
       setCiMessageError(sLimitNumber);
@@ -120,10 +130,10 @@ export const usePhone = () => {
   const [phoneErrorMessage, setPhoneErrorMessage] = useState('');
   const handlePhoneChange = (value) => {
     if (!phoneRegex.test(value)) {
-      setPhoneErrorMessage('Solo se aceptan numeros');
+      setPhoneErrorMessage(sOnlyNumbersAreAllowed);
       setPhoneError(true);
     } else if (value.length < 7) {
-      setPhoneErrorMessage('7 numeros como minimo');
+      setPhoneErrorMessage(sNumbersMinimum.replace('{0}', 7));
       setPhoneError(true);
     } else if (value.length >= 8) {
       setPhoneErrorMessage(sLimitNumber);
@@ -135,4 +145,30 @@ export const usePhone = () => {
     setValues(value);
   };
   return [values, handlePhoneChange, phoneError, setPhoneError, phoneErrorMessage, setPhoneErrorMessage];
+};
+
+export const useNameRol = () => {
+  const [values, setValues] = useState('');
+  const [nameError, setNameError] = useState(false);
+  const [fullNameMesasge, setNameErrorMessage] = useState(null);
+  const handleNameChange = (value) => {
+    if (value.length === 0) {
+      setNameErrorMessage(sTheNameCannotBeEmpty);
+      setNameError(true);
+    } else if (!nameRegex.test(value)) {
+      setNameErrorMessage(sOnlyLettersAreAccepted);
+      setNameError(true);
+    } else if (value.length > 0 && value.length <= 2) {
+      setNameErrorMessage(sMustHaveMoreThan2Characters);
+      setNameError(true);
+    } else if (value.length > 20) {
+      setNameErrorMessage(`${sCharacterLimit} 20`);
+      setNameError(true);
+    } else {
+      setNameErrorMessage(null);
+      setNameError(false);
+    }
+    setValues(value);
+  };
+  return [values, handleNameChange, nameError, setNameError, fullNameMesasge, setNameErrorMessage];
 };
