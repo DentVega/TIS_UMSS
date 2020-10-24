@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { emailRegex, nameRegex, lastNameRegex, phoneRegex, ciRegex } from '../regexs';
+import { sLimitNumber, sLimitCharacters } from '../strings';
 
-import {sLimitCharacters,sLimitNumber} from '../strings';
 export const useEmail = () => {
   const [values, setValues] = useState('');
   const [emailError, setEmailError] = useState(false);
@@ -12,7 +12,7 @@ export const useEmail = () => {
       setEmailMessage('Debe seguir el siguiente formato test@example.com');
     } else if (value.length > 29) {
       setEmailError(true);
-      setEmailMessage('Muchos Caracteres');
+      setEmailMessage(sLimitCharacters);
     } else {
       setEmailError(false);
       setEmailMessage('');
@@ -27,13 +27,9 @@ export const usePassword = () => {
   const [passwordError, setPasswordError] = useState(false);
   const [passMessage, setPassMessage] = useState('');
 
-  const validPass = () => {
-    return values.length > 20 || values.length === 0;
-  };
-
   const handlePassChange = ({ target }) => {
     if (values.length > 29) {
-      setPassMessage('Muchos Caracteres');
+      setPassMessage(sLimitCharacters);
       setPasswordError(true);
     } else {
       setPasswordError(false);
@@ -108,7 +104,7 @@ export const useCi = () => {
       setCiMessageError('Debe ser mayor a 5 numeros');
       setCiError(true);
     } else if (value.length > 7) {
-      setCiMessageError('8 numeros como maximo');
+      setCiMessageError(sLimitNumber);
       setCiError(true);
     } else {
       setCiMessageError('');
@@ -130,7 +126,7 @@ export const usePhone = () => {
       setPhoneErrorMessage('7 numeros como minimo');
       setPhoneError(true);
     } else if (value.length >= 8) {
-      setPhoneErrorMessage('8 numeros como maximo');
+      setPhoneErrorMessage(sLimitNumber);
       setPhoneError(true);
     } else {
       setPhoneErrorMessage('');

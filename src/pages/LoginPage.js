@@ -13,7 +13,7 @@ import { emailRegex } from '../constants/regexs';
 const LoginPage = (props) => {
   const [email, setEmail, emailError, setEmailError, emailMessage, setEmailMessage] = useEmail();
   const [password, setPassword, passwordError, setPasswordError, passMessage, setPassMessage] = usePassword();
-  console.log(props.userReducer);
+
   const handleLogin = () => {
     if (email.length > 5 && emailRegex.test(email)) {
       login();

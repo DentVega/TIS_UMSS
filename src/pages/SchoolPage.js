@@ -1,10 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { routes } from '../router/RoutesConstants';
 import { sSchools } from '../constants/strings';
 
-function SchoolPage(props) {
+function SchoolPage() {
 
   return (
     <div>

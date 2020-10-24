@@ -4,7 +4,7 @@ import {Redirect, Route} from 'react-router-dom';
 export const PrivateRoute=({
     isAuth,
     component:Component,
-    ...rest    
+    ...rest
 })=>{
 
     return(
@@ -20,6 +20,6 @@ export const PrivateRoute=({
 
 PrivateRoute.propTypes={
     isAuth: PropTypes.bool.isRequired,
-    component: PropTypes.func.isRequired
+    component: PropTypes.any.isRequired
 }
 

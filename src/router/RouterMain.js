@@ -22,8 +22,7 @@ import RolePage from '../pages/role/RolePage';
 import RegisterPage from '../pages/users/RegistrationPage';
 import CustomBottombar from '../components/toolbar/CustomBottombar';
 import Toolbar from '@material-ui/core/Toolbar';
-import {PrivateRoute} from '../constants/PrivateRoute';
-import {PublicRoute} from '../constants/PublicRoute';
+import { PrivateRoute } from '../constants/PrivateRoute';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -41,10 +40,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 function RouterMain(props) {
-  
   const classes = useStyles();
   const { user } = props.userReducer;
-  let isAuth = user!=null; 
+  let isAuth = user != null;
   console.log(isAuth);
   return (
     <BrowserRouter>

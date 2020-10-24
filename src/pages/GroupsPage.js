@@ -1,9 +1,8 @@
 import React from 'react';
-import { routes } from '../router/RoutesConstants';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-function GroupsPage(props) {
+function GroupsPage() {
 
   return (
     <div>

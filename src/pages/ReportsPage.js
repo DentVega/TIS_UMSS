@@ -1,9 +1,8 @@
 import React from 'react';
-import { routes } from '../router/RoutesConstants';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-function ReportsPage(props) {
+function ReportsPage() {
 
   return (
     <div>

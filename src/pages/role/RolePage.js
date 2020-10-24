@@ -2,15 +2,15 @@ import React, { useState } from 'react';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import { Button } from '@material-ui/core';
-import { enumMenuDrawer } from '../../constants/mockData';
-import Checkbox from '@material-ui/core/Checkbox';
+// import { enumMenuDrawer } from '../../constants/mockData';
+// import Checkbox from '@material-ui/core/Checkbox';
 import { withRouter } from 'react-router-dom';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
+// import FormControlLabel from '@material-ui/core/FormControlLabel';
 import BackendConnection from '../../api/BackendConnection';
 import { connect } from 'react-redux';
 import { changeRole } from '../../redux/actions/index.actions';
 import { getRoles } from '../../redux/actions/indexthunk.actions';
-import { colorMain } from '../../constants/colors';
+// import { colorMain } from '../../constants/colors';
 import CustomAlertDialog from '../../components/dialogs/CustomAlertDialog';
 import { sConfirm } from '../../constants/strings';
 
@@ -60,17 +60,17 @@ function RolePage(props) {
     props.history.goBack();
   }
 
-  const menuAdmin = [
-    enumMenuDrawer.home,
-    enumMenuDrawer.campus,
-    enumMenuDrawer.school,
-    enumMenuDrawer.subjects,
-    enumMenuDrawer.schedule,
-    enumMenuDrawer.reports,
-    enumMenuDrawer.groups,
-    enumMenuDrawer.administration,
-    enumMenuDrawer.account,
-  ];
+  // const menuAdmin = [
+  //   enumMenuDrawer.home,
+  //   enumMenuDrawer.campus,
+  //   enumMenuDrawer.school,
+  //   enumMenuDrawer.subjects,
+  //   enumMenuDrawer.schedule,
+  //   enumMenuDrawer.reports,
+  //   enumMenuDrawer.groups,
+  //   enumMenuDrawer.administration,
+  //   enumMenuDrawer.account,
+  // ];
 
   const confirmCreation = () => {
     setOpenDialog(true);
@@ -80,19 +80,19 @@ function RolePage(props) {
     setOpenDialog(false);
   };
 
-  const renderListAccess = () => {
-    return (
-      <div>
-        {menuAdmin.map((menu) => {
-          return (
-            <div key={menu.id}>
-              <FormControlLabel control={<Checkbox color={colorMain} />} label={menu.name} />
-            </div>
-          );
-        })}
-      </div>
-    );
-  };
+  // const renderListAccess = () => {
+  //   return (
+  //     <div>
+  //       {menuAdmin.map((menu) => {
+  //         return (
+  //           <div key={menu.id}>
+  //             <FormControlLabel control={<Checkbox color={colorMain} />} label={menu.name} />
+  //           </div>
+  //         );
+  //       })}
+  //     </div>
+  //   );
+  // };
 
   return (
     <div>

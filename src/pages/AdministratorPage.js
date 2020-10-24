@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { routes } from '../router/RoutesConstants';
 import { connect } from 'react-redux';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   root: {
     display: 'flex',
   },
@@ -33,4 +33,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default AdministratorPage;
+export default connect(mapStateToProps)(withRouter(AdministratorPage));
