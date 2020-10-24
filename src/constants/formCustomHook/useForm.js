@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { emailRegex, nameRegex, lastNameRegex, phoneRegex, ciRegex } from '../regexs';
 
+import {sLimitCharacters,sLimitNumber} from '../strings';
 export const useEmail = () => {
   const [values, setValues] = useState('');
   const [emailError, setEmailError] = useState(false);

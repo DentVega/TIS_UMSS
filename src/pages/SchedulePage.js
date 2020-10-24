@@ -4,10 +4,6 @@ import { withRouter } from 'react-router-dom';
 import { routes } from '../router/RoutesConstants';
 
 function SchedulePage(props) {
-  const { user } = props.userReducer;
-  if (user === null) {
-    props.history.push(routes.login);
-  }
 
   return (
     <div>

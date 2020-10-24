@@ -14,11 +14,6 @@ const useStyles = makeStyles((theme) => ({
 
 function AdministratorPage(props) {
   const classes = useStyles();
-  const { user } = props.userReducer;
-  if (user === null) {
-    props.history.push(routes.login);
-  }
-
   const goToRoles = () => props.history.push(routes.roles);
 
   return (
@@ -38,4 +33,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(withRouter(AdministratorPage));
+export default AdministratorPage;

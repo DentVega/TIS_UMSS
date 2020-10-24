@@ -8,12 +8,12 @@ import { routes } from '../router/RoutesConstants';
 import { changeUser } from '../redux/actions/index.actions';
 import BackendConnection from '../api/BackendConnection';
 import { sBadCredentials, sForgotYourPassword, sIncorrectPassword, sInvalidEmail, sLogin } from '../constants/strings';
+import {emailregex} from '../constants/regexs';
 
 const LoginPage = (props) => {
-  const emailregex = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
   const [email, setEmail, emailError, setEmailError, emailMessage, setEmailMessage] = useEmail();
   const [password, setPassword, passwordError, setPasswordError, passMessage, setPassMessage] = usePassword();
-
+  console.log(props.userReducer);
   const handleLogin = () => {
     if (email.length > 5 && emailregex.test(email)) {
       login();
@@ -53,7 +53,7 @@ const LoginPage = (props) => {
           <Grid item>
             <TextField
               error={emailError}
-              id="filled-error-helper-text"
+              id="email"
               label="Email"
               helperText={emailMessage}
               autoComplete="off"
@@ -68,7 +68,7 @@ const LoginPage = (props) => {
           <Grid item>
             <TextField
               error={passwordError}
-              id="filled-error-helper-text"
+              id="pass"
               label="Password"
               name="password"
               type="password"

@@ -1,14 +1,8 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-import { routes } from '../router/RoutesConstants';
 import { sHome } from '../constants/strings';
-function HomePage(props) {
-  const { user } = props.userReducer;
-  if (user === null) {
-    props.history.push(routes.login);
-  }
 
+function HomePage() {
+ 
   return (
     <div>
       <h1>{sHome}</h1>
@@ -16,11 +10,4 @@ function HomePage(props) {
   );
 }
 
-const mapStateToProps = (state) => {
-  return {
-    app: state.app,
-    userReducer: state.userReducer,
-  };
-};
-
-export default connect(mapStateToProps)(withRouter(HomePage));
+export default HomePage;
