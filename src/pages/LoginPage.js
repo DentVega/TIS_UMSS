@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import TextField from '@material-ui/core/TextField';
@@ -11,9 +11,17 @@ import { sBadCredentials, sForgotYourPassword, sIncorrectPassword, sInvalidEmail
 import {emailregex} from '../constants/regexs';
 
 const LoginPage = (props) => {
+  const e=sessionStorage.getItem("email")
+  const p=sessionStorage.getItem("password")
+  if(e!==null && p!==null){
+    BackendConnection.login(e, p).then((user) => {  
+      props.changeUser(user[0]);
+      props.history.push(sessionStorage.getItem("path"));    
+    });
+  }
+      
   const [email, setEmail, emailError, setEmailError, emailMessage, setEmailMessage] = useEmail();
   const [password, setPassword, passwordError, setPasswordError, passMessage, setPassMessage] = usePassword();
-  console.log(props.userReducer);
   const handleLogin = () => {
     if (email.length > 5 && emailregex.test(email)) {
       login();
@@ -25,9 +33,12 @@ const LoginPage = (props) => {
     }
   };
 
+
   const login = () => {
     BackendConnection.login(email, password).then((user) => {
       if (user.length > 0) {
+        sessionStorage.setItem('email',email);
+        sessionStorage.setItem('password',password);
         props.changeUser(user[0]);
         props.history.push(routes.home);
       } else {

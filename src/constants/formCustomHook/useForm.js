@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import {sLimitCharacters,sLimitNumber} from '../strings';
+import {re} from '../regexs';
+
 export const useEmail = () => {
   const [values, setValues] = useState('');
   const [emailError, setEmailError] = useState(false);
   const [emailMessage, setEmailMessage] = useState('');
   const handleEmailChange = (value) => {
-    if (values.length > 29) {
+    if (values.length > 29 || re.test(value)) {
       setEmailError(true);
       setEmailMessage('');
     } else {
@@ -41,8 +43,9 @@ export const useFullName=()=>{
   const [fullNameError,setFullNameError] = useState(false);
   const [fullNameMesasge,setFullNameErrorMessage] = useState('');
   const handleFullNameChange =(value)=>{
-    if(values.length > 24){
-      setFullNameErrorMessage(sLimitCharacters);
+    
+    if(values.length > 24 || !re.test(value)){
+      setFullNameErrorMessage("");
       setFullNameError(true);
     }else{
       setFullNameErrorMessage("");

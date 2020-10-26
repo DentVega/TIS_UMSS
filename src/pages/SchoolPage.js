@@ -5,7 +5,7 @@ import { routes } from '../router/RoutesConstants';
 import { sSchools } from '../constants/strings';
 
 function SchoolPage(props) {
-
+  sessionStorage.setItem("path",props.history.location.pathname);
   return (
     <div>
       <h1>{sSchools}</h1>

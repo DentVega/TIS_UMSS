@@ -13,8 +13,10 @@ import { getRoles } from '../../redux/actions/indexthunk.actions';
 import { colorMain } from '../../constants/colors';
 import CustomAlertDialog from '../../components/dialogs/CustomAlertDialog';
 import { sConfirm } from '../../constants/strings';
+import {re} from '../../constants/regexs';
 
 function RolePage(props) {
+  
   const [createRoleComplete, setCreateRoleComplete] = useState(false);
   const [updateRoleComplete, setUpdateRoleComplete] = useState(false);
   const [idRole, setIdRole] = useState(null);
@@ -36,18 +38,16 @@ function RolePage(props) {
   };
 
   const createRole = () => {
-    if (nameRole.length === 0) {
-      setMessageError('El campo no puede estar vacio');
-    } else {
+   
       BackendConnection.createRole(nameRole).then(() => {
         setCreateRoleComplete(true);
       });
-    }
+    
   };
 
   const updateRole = () => {
-    if (nameRole.length === 0) {
-      setMessageError('El campo no puede estar vacio');
+    if (nameRole.length === 0 || !re.test(nameRole)) {
+      setMessageError('nombre de rol invalido');
     } else {
       BackendConnection.updateRole(idRole, nameRole).then(() => {
         setUpdateRoleComplete(true);
@@ -73,7 +73,11 @@ function RolePage(props) {
   ];
 
   const confirmCreation = () => {
+    if (nameRole.length === 0 || !re.test(nameRole)) {
+      setMessageError('nombre de rol invalido');
+    } else {
     setOpenDialog(true);
+    }
   };
 
   const closeDialog = () => {

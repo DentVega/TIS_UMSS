@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 import LoginPage from '../pages/LoginPage';
 import { routes } from './RoutesConstants';
@@ -23,7 +23,7 @@ import RegisterPage from '../pages/users/RegistrationPage';
 import CustomBottombar from '../components/toolbar/CustomBottombar';
 import Toolbar from '@material-ui/core/Toolbar';
 import {PrivateRoute} from '../constants/PrivateRoute';
-import {PublicRoute} from '../constants/PublicRoute';
+import { changeUser } from '../redux/actions/index.actions';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -40,12 +40,13 @@ const useStyles = makeStyles((theme) => ({
     zIndex: 10,
   },
 }));
+
 function RouterMain(props) {
-  
+   
   const classes = useStyles();
   const { user } = props.userReducer;
   let isAuth = user!=null; 
-  console.log(isAuth);
+
   return (
     <BrowserRouter>
       <div className={user != null ? classes.root : null}>
@@ -88,5 +89,7 @@ const mapStateToProps = (state) => {
     userReducer: state.userReducer,
   };
 };
-
-export default connect(mapStateToProps)(RouterMain);
+const mapDispatchToProps = (dispatch) => ({
+  changeUser: (user) => dispatch(changeUser(user)),
+});
+export default connect(mapStateToProps,mapDispatchToProps)(RouterMain);

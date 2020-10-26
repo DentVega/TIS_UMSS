@@ -16,7 +16,7 @@ export const getUsers = () => {
         dispatch(changeUsers(users));
       })
       .catch((e) => {
-        console.warn(e.message);
+        console.warn("error at getUsers"+e.message);
       });
   };
 };

@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
-import { TextField, Grid, Button } from '@material-ui/core';
+import { TextField, Grid, Button,Typography,Container } from '@material-ui/core';
 import { useEmail, useFullName, useCi, usePhone } from '../../constants/formCustomHook/useForm';
 import { getUsers } from '../../redux/actions/indexthunk.actions';
 import { changeUserSelected } from '../../redux/actions/index.actions';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import BackendConnection from '../../api/BackendConnection';
-import { routes } from '../../router/RoutesConstants';
 import {
   sCancel,
   sCI,
@@ -22,11 +21,7 @@ import { emailregex } from '../../constants/regexs';
 import CustomAlertDialog from '../../components/dialogs/CustomAlertDialog';
 
 const RegistrationPage = (props) => {
-  const { user } = props.userReducer;
-  if (user === null) {
-    props.history.push(routes.login);
-  }
-
+  sessionStorage.setItem("path",props.history.location.pathname);
   const [createUserComplete, setCreateUserComplete] = useState(false);
   const [updateUserComplete, setUpdateUserComplete] = useState(false);
   const [loadCurrentUser, setLoadCurrentUser] = useState(false);
@@ -49,32 +44,7 @@ const RegistrationPage = (props) => {
   const validName = () => {};
 
   const register = () => {
-    if (!nameError && name.length > 0) {
-      if (!lastNameError && lastName.length > 0) {
-        if (!phoneError && phone.length > 0) {
-          if (!emailError && email.length > 4 && emailregex.test(email)) {
-            if (!ciError && ci > 0) {
-              registerUser();
-            } else {
-              setCiMessageError('carnet incorrecto');
-              setCiError(true);
-            }
-          } else {
-            setEmailMessage('email incorrecto');
-            setEmailError(true);
-          }
-        } else {
-          setPhoneErrorMessage('telefono incorrecto');
-          setPhoneError(true);
-        }
-      } else {
-        setLastNameErrorMessage('dato incorrecto');
-        setLastNameError(true);
-      }
-    } else {
-      setNameErrorMessage('dato incorrecto');
-      setNameError(true);
-    }
+    registerUser();
   };
 
   const { userSelected } = props.usersReducer;
@@ -121,7 +91,33 @@ const RegistrationPage = (props) => {
   };
 
   const confirmCreation = () => {
-    setOpenDialog(true);
+    
+    if (!nameError && name.length > 0) {
+      if (!lastNameError && lastName.length > 0) {
+        if (!phoneError && phone.length > 0) {
+          if (!emailError && email.length > 4 && emailregex.test(email)) {
+            if (!ciError && ci > 0) {
+              setOpenDialog(true);
+            } else {
+              setCiMessageError('carnet incorrecto');
+              setCiError(true);
+            }
+          } else {
+            setEmailMessage('email incorrecto');
+            setEmailError(true);
+          }
+        } else {
+          setPhoneErrorMessage('telefono incorrecto');
+          setPhoneError(true);
+        }
+      } else {
+        setLastNameErrorMessage('dato incorrecto');
+        setLastNameError(true);
+      }
+    } else {
+      setNameErrorMessage('dato incorrecto');
+      setNameError(true);
+    }
   };
 
   const closeDialog = () => {
@@ -137,17 +133,22 @@ const RegistrationPage = (props) => {
         handleClose={closeDialog}
         handleAccept={idUser === null ? register : updateUser}
       />
-      <Grid container autoComplete="off" style={{ minHeight: '100vh' }} alignItems="center" justify="center">
+      <Container
+        style={{  borderRadius: '40px', boxShadow: '0px 10px 10px 0px grey' }}
+        
+        maxWidth="xs"
+        > 
+
+        <Typography  component="h1" variant="h5">
+          Sign up
+        </Typography>
         <Grid
-          container
-          justify="center"
+          container          
+          
           direction="column"
-          spacing={4}
-          style={{ height: '90vh', width: '100vh', borderRadius: '40px', boxShadow: '0px 10px 10px 0px grey' }}>
-          <Grid item>
-            <Grid item style={{ textAlign: 'center' }}>
-              <h2>{sCreateUser}</h2>
-            </Grid>
+          spacing={3}
+          >
+          <Grid item >
             <TextField
               label={sName}
               type="text"
@@ -156,9 +157,12 @@ const RegistrationPage = (props) => {
               error={nameError}
               helperText={nameMesasge}
               autoFocus
+              margin="normal"
+              variant="outlined"
+              required
             />
           </Grid>
-          <Grid item>
+          <Grid item >
             <TextField
               label={sLastName}
               type="text"
@@ -166,6 +170,9 @@ const RegistrationPage = (props) => {
               onChange={({ target }) => handleLastNameChange(target.value)}
               error={lastNameError}
               helperText={lastNameMesasge}
+              margin="normal"
+              variant="outlined"
+              required
             />
           </Grid>
           <Grid item>
@@ -176,6 +183,9 @@ const RegistrationPage = (props) => {
               onChange={({ target }) => handlePhoneChange(target.value)}
               error={phoneError}
               helperText={phoneErrorMessage}
+              margin="normal"
+              variant="outlined"
+              required
             />
           </Grid>
 
@@ -187,6 +197,9 @@ const RegistrationPage = (props) => {
               onChange={({ target }) => setEmail(target.value)}
               error={emailError}
               helperText={emailMessage}
+              margin="normal"
+              variant="outlined"
+              required
             />
           </Grid>
           <Grid item>
@@ -197,6 +210,9 @@ const RegistrationPage = (props) => {
               onChange={({ target }) => handleCiChange(target.value)}
               error={ciError}
               helperText={ciErrorMessage}
+              margin="normal"
+              variant="outlined"
+              required
             />
           </Grid>
           <Grid item style={{ textAlign: 'center' }}>
@@ -209,7 +225,8 @@ const RegistrationPage = (props) => {
             </Button>
           </Grid>
         </Grid>
-      </Grid>
+     
+      </Container>
     </div>
   );
 };

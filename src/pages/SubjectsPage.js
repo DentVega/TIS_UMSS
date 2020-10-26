@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 import { routes } from '../router/RoutesConstants';
 
 function SubjectPage(props) {
-
+  sessionStorage.setItem("path",props.history.location.pathname);
   return (
     <div>
       <h1>Materias</h1>

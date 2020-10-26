@@ -35,16 +35,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function CampusPage(props) {
-  const { user } = props.userReducer;
-  if (user === null) {
-    props.history.push(routes.login);
-  }
-
   const { loading, users } = props.usersReducer;
   const [userSelected, setUserSelected] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
   const classes = useStyles();
-
+  sessionStorage.setItem("path",props.history.location.pathname);
   useEffect(() => {
     if (loading) {
       props.getUsers();
