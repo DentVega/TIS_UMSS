@@ -4,7 +4,14 @@ import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
-import { useEmail, useFullName, useCi, usePhone, useLastName } from '../../constants/formCustomHook/useForm';
+import {
+  useEmail,
+  useFullName,
+  useCi,
+  usePhone,
+  useLastName,
+  usePassword,
+} from '../../constants/formCustomHook/useForm';
 import { getRoles, getUsers } from '../../redux/actions/indexthunk.actions';
 import { changeUserSelected } from '../../redux/actions/index.actions';
 import { connect } from 'react-redux';
@@ -15,12 +22,16 @@ import {
   sAreYouSureYourWantCancel,
   sCancel,
   sCI,
-  sConfirm, sConfirmTheCreation, sConfirmTheUpdate,
+  sConfirm,
+  sConfirmTheCreation,
+  sConfirmTheUpdate,
   sCreateUser,
   sEmail,
   sLastName,
   sName,
-  sPhone, sTheNameCannotBeEmpty,
+  sPassword,
+  sPhone,
+  sTheNameCannotBeEmpty,
   sUpdateUser,
 } from '../../constants/strings';
 import CustomAlertDialog from '../../components/dialogs/CustomAlertDialog';
@@ -48,7 +59,7 @@ const RegistrationPage = (props) => {
   const [phone, handlePhoneChange, phoneError, setPhoneError, phoneErrorMessage, setPhoneErrorMessage] = usePhone();
   const [email, setEmail, emailError, setEmailError, emailMessage, setEmailMessage] = useEmail();
   const [ci, handleCiChange, ciError, setCiError, ciErrorMessage, setCiMessageError] = useCi();
-  const [password, setPassword] = useState('');
+  const [password, setPassword, passwordError, setPasswordError, passMessage, setPassMessage] = usePassword();
   const [idUser, setIdUser] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
   const [openDialogCancel, setOpenDialogCancel] = useState(false);
@@ -76,7 +87,7 @@ const RegistrationPage = (props) => {
       setLastNameError(true);
     }
 
-    const phoneIsNoEmpty = !phoneError && phone.length > 0;
+    const phoneIsNoEmpty = !phoneError && phone > 0;
     if (!phoneIsNoEmpty) {
       setPhoneErrorMessage(sTheNameCannotBeEmpty);
       setPhoneError(true);
@@ -109,6 +120,7 @@ const RegistrationPage = (props) => {
     setPassword(userSelected.userpassword);
     setIdUser(userSelected.idusers);
     setLoadCurrentUser(true);
+    setPassword(userSelected.userpassword);
   }
 
   if (createUserComplete || updateUserComplete) {
@@ -234,6 +246,18 @@ const RegistrationPage = (props) => {
               helperText={ciErrorMessage}
             />
           </Grid>
+          {userSelected && (
+            <Grid item>
+              <TextField
+                label={sPassword}
+                type="text"
+                value={password}
+                onChange={({ target }) => setPassword(target.value)}
+                error={passwordError}
+                helperText={passMessage}
+              />
+            </Grid>
+          )}
         </Grid>
       </Grid>
     );
