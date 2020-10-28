@@ -37,7 +37,7 @@ export const usePassword = () => {
   const [passwordError, setPasswordError] = useState(false);
   const [passMessage, setPassMessage] = useState('');
 
-  const handlePassChange = ({ target }) => {
+  const handlePassChange = (value) => {
     if (values.length > 29) {
       setPassMessage(sLimitCharacters);
       setPasswordError(true);
@@ -45,7 +45,7 @@ export const usePassword = () => {
       setPasswordError(false);
       setPassMessage('');
     }
-    setValues(target.value);
+    setValues(value);
   };
   return [values, handlePassChange, passwordError, setPasswordError, passMessage, setPassMessage];
 };
@@ -135,7 +135,7 @@ export const usePhone = () => {
     } else if (value.length < 7) {
       setPhoneErrorMessage(sNumbersMinimum.replace('{0}', 7));
       setPhoneError(true);
-    } else if (value.length >= 8) {
+    } else if (value.length >= 9) {
       setPhoneErrorMessage(sLimitNumber);
       setPhoneError(true);
     } else {

@@ -76,7 +76,7 @@ const LoginPage = (props) => {
               helperText={passMessage}
               variant="filled"
               autoComplete="off"
-              onChange={setPassword}
+              onChange={({ target }) => setPassword(target.value)}
             />
           </Grid>
           <Grid item>
