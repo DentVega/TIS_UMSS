@@ -48,3 +48,4 @@ export const sConfirmTheCreationRol = 'Confirma la creacion del rol';
 export const sConfirmTheUpdateOfRol = 'Confirma la actualizacion del rol';
 export const sConfirmTheUpdate = 'Confirma la actualizacion';
 export const sConfirmTheCreation = 'Confirma la creacion';
+export const sEmailIsAlreadyInUse = 'El email ya esta en uso';

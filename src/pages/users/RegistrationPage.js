@@ -26,7 +26,7 @@ import {
   sConfirmTheCreation,
   sConfirmTheUpdate,
   sCreateUser,
-  sEmail,
+  sEmail, sEmailIsAlreadyInUse,
   sLastName,
   sName,
   sPassword,
@@ -74,6 +74,18 @@ const RegistrationPage = (props) => {
     setRoleSelected(parseInt(event.target.value));
   };
 
+  const verifyEmail = () => {
+    BackendConnection.verifyEmail(email)
+      .then((response) => {
+        if (response === 0) {
+          confirmCreation();
+        } else {
+          setEmailMessage(sEmailIsAlreadyInUse);
+          setEmailError(true);
+        }
+      });
+  };
+
   const validName = () => {
     const nameValidIsNoEmpty = !nameError && name.length > 0;
     if (!nameValidIsNoEmpty) {
@@ -106,7 +118,7 @@ const RegistrationPage = (props) => {
     }
 
     if (nameValidIsNoEmpty && lastNameIsNoEmpty && phoneIsNoEmpty && emailIsNoEmpty && ci) {
-      confirmCreation();
+      verifyEmail();
     }
   };
 
