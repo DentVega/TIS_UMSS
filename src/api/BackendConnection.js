@@ -162,6 +162,25 @@ class BackendConnection {
         .catch((e) => reject(e));
     });
   }
+
+  verifyEmail(email) {
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'GET',
+        url: `${baseUrl}/users/email/${email}`,
+        headers: {
+          'content-type': 'application/json',
+          'cache-control': 'no-cache',
+        },
+      })
+        .then((response) => {
+          resolve(response.data);
+        })
+        .catch((e) => {
+          reject(e);
+        })
+    });
+  }
 }
 
 export default new BackendConnection();
