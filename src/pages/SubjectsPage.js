@@ -2,8 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-function SubjectPage() {
-
+function SubjectPage(props) {
+  sessionStorage.setItem("path",props.history.location.pathname);
   return (
     <div>
       <h1>Materias</h1>

@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { sSchools } from '../constants/strings';
 
-function SchoolPage() {
-
+function SchoolPage(props) {
+  sessionStorage.setItem("path",props.history.location.pathname);
   return (
     <div>
       <h1>{sSchools}</h1>

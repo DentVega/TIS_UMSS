@@ -37,12 +37,10 @@ import {
 import CustomAlertDialog from '../../components/dialogs/CustomAlertDialog';
 
 const RegistrationPage = (props) => {
-  const { user } = props.userReducer;
+  sessionStorage.setItem("path",props.history.location.pathname);
+  
   const { roles } = props.rolesReducer;
   const { getRoles } = props;
-  if (user === null) {
-    props.history.push(routes.login);
-  }
 
   const [createUserComplete, setCreateUserComplete] = useState(false);
   const [updateUserComplete, setUpdateUserComplete] = useState(false);

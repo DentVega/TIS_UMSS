@@ -65,6 +65,7 @@ function CustomAppBar(props) {
 
   const handleLogout = () => {
     props.changeUser(null);
+    sessionStorage.clear();
     props.history.push(routes.login);
   };
 
