@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
-import { Button } from '@material-ui/core';
+import { Button,Checkbox,FormControl,FormGroup,FormHelperText,FormControlLabel,FormLabel } from '@material-ui/core';
 // import { enumMenuDrawer } from '../../constants/mockData';
 // import Checkbox from '@material-ui/core/Checkbox';
 import { withRouter } from 'react-router-dom';
@@ -22,6 +22,7 @@ import {
 import { useNameRol } from '../../constants/formCustomHook/useForm';
 
 function RolePage(props) {
+  sessionStorage.setItem("path",props.history.location.pathname);
   const [createRoleComplete, setCreateRoleComplete] = useState(false);
   const [updateRoleComplete, setUpdateRoleComplete] = useState(false);
   const [idRole, setIdRole] = useState(null);
@@ -140,7 +141,24 @@ function RolePage(props) {
           />
         </Grid>
         <Grid item xs={12} sm={6}>
-          {/*<h3>Lista de accessos</h3>*/}
+        <FormControl required error={true} component="fieldset" >
+        <FormLabel component="legend">Pick two</FormLabel>
+        <FormGroup>
+          <FormControlLabel
+            control={<Checkbox  name="gilad" />}
+            label="Gilad Gray"
+          />
+          <FormControlLabel
+            control={<Checkbox  name="jason" />}
+            label="Jason Killian"
+          />
+          <FormControlLabel
+            control={<Checkbox  name="antoine" />}
+            label="Antoine Llorca"
+          />
+        </FormGroup>
+        <FormHelperText>You can display an error</FormHelperText>
+      </FormControl>
           {/*{renderListAccess()}*/}
         </Grid>
         <Grid item xs={12}>

@@ -2,8 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-function SchedulePage() {
-
+function SchedulePage(props) {
+  sessionStorage.setItem("path",props.history.location.pathname);
   return (
     <div>
       <h1>Horarios</h1>

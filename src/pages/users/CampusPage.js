@@ -35,10 +35,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function CampusPage(props) {
-  const { user } = props.userReducer;
-  if (user === null) {
-    props.history.push(routes.login);
-  }
+  sessionStorage.setItem("path",props.history.location.pathname);
 
   const { loading, users } = props.usersReducer;
   const [userSelected, setUserSelected] = useState(null);

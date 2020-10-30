@@ -11,6 +11,14 @@ import { sBadCredentials, sForgotYourPassword, sIncorrectPassword, sInvalidEmail
 import { emailRegex } from '../constants/regexs';
 
 const LoginPage = (props) => {
+  const e=sessionStorage.getItem("email")
+  const p=sessionStorage.getItem("password")
+  if(e!==null && p!==null){
+    BackendConnection.login(e, p).then((user) => {  
+      props.changeUser(user[0]);
+      props.history.push(sessionStorage.getItem("path"));    
+    });
+  }
   const [email, setEmail, emailError, setEmailError, emailMessage, setEmailMessage] = useEmail();
   const [password, setPassword, passwordError, setPasswordError, passMessage, setPassMessage] = usePassword();
 
@@ -28,6 +36,8 @@ const LoginPage = (props) => {
   const login = () => {
     BackendConnection.login(email, password).then((user) => {
       if (user.length > 0) {
+        sessionStorage.setItem('email',email);
+        sessionStorage.setItem('password',password);
         props.changeUser(user[0]);
         props.history.push(routes.home);
       } else {
