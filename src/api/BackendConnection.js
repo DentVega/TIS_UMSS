@@ -179,8 +179,68 @@ class BackendConnection {
         .catch((e) => {
           reject(e);
         })
-    });
-  }
-}
+      });
+    }
 
+    roleFunction(idRole,idFuncion){
+      return new Promise((resolve,reject)=>{
+        axios({
+          method:'POST',
+          url:`https://tis-backend.herokuapp.com/rolfun`,
+          headers: {
+            'content-type': 'application/json',
+            'cache-control': 'no-cache'        
+          },
+          data:{
+            roles_idroles:idRole,
+            funcion_idfuncion:idFuncion
+          }
+        }).then((response) => {
+          console.warn(response);
+          resolve(response);
+        })
+        .catch((e) => {
+          console.warn(e.message);
+          reject(e);
+        });
+      });
+    }
+
+    getRolesFunc(){
+      return new Promise((resolve,reject)=>{
+        axios({
+          method:'GET',
+          url:`https://tis-backend.herokuapp.com/rolfun`,
+          headers: {
+            'content-type': 'application/json',
+            'cache-control': 'no-cache'        
+          },
+        }).then((response) => {          
+          resolve(response.data);
+        }).catch((e) => {
+          console.warn(e.message);
+          reject(e);
+        });
+      })
+    }
+    deleteRoleFunc(idRol,idFunc){
+      return new Promise((resolve,reject)=>{
+        axios({
+          method:'DELETE',
+          url:`https://tis-backend.herokuapp.com/rolfun/${idRol}/${idFunc}`,
+          headers: {
+            'content-type': 'application/json',
+            'cache-control': 'no-cache'        
+          },
+        }).then((response) => {          
+          resolve(response.data);
+        }).catch((e) => {
+          console.warn(e.message);
+          reject(e);
+        });
+      })
+    }
+
+  } 
+  
 export default new BackendConnection();
