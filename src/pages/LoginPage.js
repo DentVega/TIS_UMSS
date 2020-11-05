@@ -5,17 +5,21 @@ import TextField from '@material-ui/core/TextField';
 import { Button, Grid } from '@material-ui/core';
 import { usePassword, useEmail } from '../constants/formCustomHook/useForm';
 import { routes } from '../router/RoutesConstants';
-import { changeUser } from '../redux/actions/index.actions';
+import { changeUser,changeUserRole } from '../redux/actions/index.actions';
 import BackendConnection from '../api/BackendConnection';
 import { sBadCredentials, sForgotYourPassword, sIncorrectPassword, sInvalidEmail, sLogin } from '../constants/strings';
 import { emailRegex } from '../constants/regexs';
-
+import { getRoleFuncs } from '../redux/actions/indexthunk.actions';
 const LoginPage = (props) => {
   const e=sessionStorage.getItem("email")
   const p=sessionStorage.getItem("password")
   if(e!==null && p!==null){
     BackendConnection.login(e, p).then((user) => {  
       props.changeUser(user[0]);
+      props.getRoleFun();
+      BackendConnection.getUserRol(user[0].idusers).then(rol=>{
+        props.changeUserRole((rol[0]));
+      });
       props.history.push(sessionStorage.getItem("path"));    
     });
   }
@@ -39,6 +43,10 @@ const LoginPage = (props) => {
         sessionStorage.setItem('email',email);
         sessionStorage.setItem('password',password);
         props.changeUser(user[0]);
+        props.getRoleFun();
+        BackendConnection.getUserRol(user[0].idusers).then(rol=>{
+          props.changeUserRole((rol[0]));
+        });
         props.history.push(routes.home);
       } else {
         setEmailError(true);
@@ -112,6 +120,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
   changeUser: (user) => dispatch(changeUser(user)),
+  getRoleFun: ()=>dispatch(getRoleFuncs()),
+  changeUserRole: (rol)=>dispatch(changeUserRole(rol)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(LoginPage));

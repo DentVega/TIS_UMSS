@@ -52,7 +52,25 @@ class BackendConnection {
         .catch((e) => reject(e));
     });
   }
-
+  getUserRol(idUser){
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'GET',
+        url: `${baseUrl}/userRol/${idUser}`,
+        headers: {
+          'content-type': 'application/json',
+          'cache-control': 'no-cache',
+        },
+      })
+        .then((response) => {
+          resolve(response.data);
+        })
+        .catch((e) => {
+          reject(e);
+        });
+    });
+  }
+  
   updateRole(id, rolename) {
     return new Promise((resolve, reject) => {
       axios({
@@ -206,7 +224,7 @@ class BackendConnection {
       });
     }
 
-    getRolesFunc(){
+    getRoleFuncs(){
       return new Promise((resolve,reject)=>{
         axios({
           method:'GET',

@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
@@ -37,18 +37,6 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const menuAdmin = [
-  enumMenuDrawer.home,
-  enumMenuDrawer.campus,
-  // enumMenuDrawer.school,
-  // enumMenuDrawer.subjects,
-  // enumMenuDrawer.schedule,
-  // enumMenuDrawer.reports,
-  // enumMenuDrawer.groups,
-  enumMenuDrawer.administration,
-  // enumMenuDrawer.account,
-];
-
 function CustomDrawer(props) {
   const classes = useStyles();
   const [state, setState] = React.useState({
@@ -58,14 +46,31 @@ function CustomDrawer(props) {
     right: false,
   });
 
+  const {roleFuncs}=props.roleFun;
+  const {userRole}=props.rolesReducer;
+  let userFunctions= [],menuAdmin=[];
+  if(roleFuncs!==null && userRole!==null){
+    roleFuncs.map(r=>r.roles_idroles===userRole.idroles&&userFunctions.push(r.funcion_idfuncion));
+  } 
+  if(userFunctions !==[]){
+    menuAdmin.push(enumMenuDrawer.home,enumMenuDrawer.campus)
+    userFunctions.includes(enumMenuDrawer.school.id) && menuAdmin.push(enumMenuDrawer.school);
+    userFunctions.includes(enumMenuDrawer.subjects.id) && menuAdmin.push(enumMenuDrawer.subjects);
+    userFunctions.includes(enumMenuDrawer.schedule.id) && menuAdmin.push(enumMenuDrawer.schedule);
+    userFunctions.includes(enumMenuDrawer.reports.id) && menuAdmin.push(enumMenuDrawer.reports);
+    userFunctions.includes(enumMenuDrawer.groups.id) && menuAdmin.push(enumMenuDrawer.groups);
+    userFunctions.includes(enumMenuDrawer.administration.id) && menuAdmin.push(enumMenuDrawer.administration);
+    menuAdmin.push(enumMenuDrawer.account)
+  }
+
+ 
   const toggleDrawer = (anchor, open) => (event) => {
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
       return;
     }
-
     setState({ ...state, [anchor]: open });
   };
-
+ 
   const openPage = (id) => {
     switch (id) {
       case 0:
@@ -159,6 +164,9 @@ const mapStateToProps = (state) => {
   return {
     app: state.app,
     userReducer: state.userReducer,
+    roleFun:state.roleFuncsReducer,
+    rolesReducer:state.rolesReducer,
+    
   };
 };
 

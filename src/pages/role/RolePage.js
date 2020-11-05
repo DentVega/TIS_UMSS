@@ -10,6 +10,7 @@ import BackendConnection from '../../api/BackendConnection';
 import { connect } from 'react-redux';
 import { changeRole } from '../../redux/actions/index.actions';
 import { getRoles } from '../../redux/actions/indexthunk.actions';
+import { getRoleFuncs } from '../../redux/actions/indexthunk.actions';
 // import { colorMain } from '../../constants/colors';
 import CustomAlertDialog from '../../components/dialogs/CustomAlertDialog';
 import {
@@ -47,7 +48,7 @@ function RolePage(props) {
     setLoadCurrentRole(true);
   }
   useEffect(()=>{     
-    BackendConnection.getRolesFunc().then(res=>{
+    BackendConnection.getRoleFuncs().then(res=>{
       let arr=[...state]; 
       setPrevFunc(res);
       res.forEach(element=>{
@@ -139,24 +140,8 @@ function RolePage(props) {
     setOpenDialog(false);
   };
 
-  // const renderListAccess = () => {
-  //   return (
-  //     <div>
-  //       {menuAdmin.map((menu) => {
-  //         return (
-  //           <div key={menu.id}>
-  //             <FormControlLabel control={<Checkbox color={colorMain} />} label={menu.name} />
-  //           </div>
-  //         );
-  //       })}
-  //     </div>
-  //   );
-  // };
-
   return (
-    <div>
-      
-    
+    <div>   
       <CustomAlertDialog
         title={sConfirm}
         messageText={idRole === null ? sConfirmTheCreationRol : sConfirmTheUpdateOfRol}
@@ -212,13 +197,15 @@ const mapStateToProps = (state) => {
   return {
     app: state.app,
     rolesReducer: state.rolesReducer,
-    userReducer:state.userReducer
+    userReducer:state.userReducer,
+    roleFuncs:state.roleFuncsReducer
   };
 };
 
 const mapDispatchToProps = (dispatch) => ({
   changeRole: (rol) => dispatch(changeRole(rol)),
   getRoles: () => dispatch(getRoles()),
+  getRoleFunc: () =>dispatch(getRoleFuncs())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(RolePage));

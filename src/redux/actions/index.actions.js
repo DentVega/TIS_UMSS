@@ -23,6 +23,9 @@ export const changeRoles = (roles) => {
 export const changeRole = (role) => {
   return { type: actions.CHANGE_ROLE, role };
 };
+export const changeUserRole = (userRole) => {
+  return { type: actions.CHANGE_USER_ROLE, userRole };
+};
 
 export const changeUsers = (users) => {
   return { type: actions.CHANGE_USERS, users };
@@ -31,3 +34,7 @@ export const changeUsers = (users) => {
 export const changeUserSelected = (userSelected) => {
   return { type: actions.CHANGE_USER_SELECTED, userSelected };
 };
+
+export const changeRoleFuncs = (roleFuncs) => {
+  return {type:actions.CHANGE_ROLEFUNCS, roleFuncs};
+}
