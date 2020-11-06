@@ -6,6 +6,7 @@ import rolesReducer from './roles.reducer';
 import usersReducer from './users.reducer';
 import schoolReducer from './school.reducer';
 import universityCareersReducer from './universityCareers.reducer';
+import roleFuncsReducer from './roleFun.reducer';
 
 export default combineReducers({
   configReducer: configReducer,
@@ -15,4 +16,5 @@ export default combineReducers({
   usersReducer: usersReducer,
   schoolReducer: schoolReducer,
   careersReducer: universityCareersReducer,
+  roleFuncsReducer: roleFuncsReducer,
 });

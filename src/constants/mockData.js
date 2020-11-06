@@ -37,7 +37,7 @@ export const enumMenuDrawer = {
   administration: {
     id: 7,
     name: 'administration',
-    nameEs: 'Admnistracion',
+    nameEs: 'Administracion',
   },
   account: {
     id: 8,

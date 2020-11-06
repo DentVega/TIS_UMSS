@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
-import { Button,Checkbox,FormControl,FormGroup,FormHelperText,FormControlLabel,FormLabel } from '@material-ui/core';
+import { Button} from '@material-ui/core';
 // import { enumMenuDrawer } from '../../constants/mockData';
 // import Checkbox from '@material-ui/core/Checkbox';
 import { withRouter } from 'react-router-dom';
@@ -10,6 +10,7 @@ import BackendConnection from '../../api/BackendConnection';
 import { connect } from 'react-redux';
 import { changeRole } from '../../redux/actions/index.actions';
 import { getRoles } from '../../redux/actions/indexthunk.actions';
+import { getRoleFuncs } from '../../redux/actions/indexthunk.actions';
 // import { colorMain } from '../../constants/colors';
 import CustomAlertDialog from '../../components/dialogs/CustomAlertDialog';
 import {
@@ -20,7 +21,7 @@ import {
   sTheNameCannotBeEmpty
 } from '../../constants/strings';
 import { useNameRol } from '../../constants/formCustomHook/useForm';
-
+import {ListAccess} from './ListAccess';
 function RolePage(props) {
   sessionStorage.setItem("path",props.history.location.pathname);
   const [createRoleComplete, setCreateRoleComplete] = useState(false);
@@ -29,16 +30,41 @@ function RolePage(props) {
   const [loadCurrentRole, setLoadCurrentRole] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
   const [openDialogCancel, setOpenDialogCancel] = useState(false);
-
   const [nameRole, setNameRole, nameError, setNameError, nameMessage, setNameErrorMessage] = useNameRol();
-
+  const [state, setState] = useState([
+    {id:1,checked:false},
+    {id:2,checked:false},
+    {id:3,checked:false},
+    {id:4,checked:false},
+    {id:5,checked:false},
+    {id:6,checked:false},
+    {id:7,checked:false}
+  ]);
   const { role } = props.rolesReducer;
-  if (role != null && !loadCurrentRole) {
-    setNameRole(role.rolename);
-    setIdRole(role.idroles);
-    setLoadCurrentRole(true);
-  }
-
+  const {roleFuncs}=props.roleFuncs;
+  let roleFun=[];
+ 
+    if (role != null && !loadCurrentRole) {
+      setNameRole(role.rolename);
+      setIdRole(role.idroles);
+      setLoadCurrentRole(true);
+    }
+    console.log(props.history.location);
+  useEffect(()=>{ 
+    if(props.history.location.pathname!=="/newrole"){
+      let arr=[...state]; 
+      if(roleFuncs!==null){       
+        roleFuncs.forEach(element=>{
+          if(element.roles_idroles===idRole){
+            roleFun.push(element);
+            let newObj={...arr[(element.funcion_idfuncion)-1],checked:true};
+            arr[element.funcion_idfuncion-1]=newObj;          
+          };
+        })
+      }
+    setState(arr);
+    }
+  },[])
   const cancelCreateRole = () => {
     props.changeRole(null);
     props.history.goBack();
@@ -49,9 +75,19 @@ function RolePage(props) {
       setNameErrorMessage(sTheNameCannotBeEmpty);
       setNameError(true);
     } else {
-      BackendConnection.createRole(nameRole).then(() => {
+      BackendConnection.createRole(nameRole)
+      .then(() => {
         setCreateRoleComplete(true);
-      });
+        BackendConnection.getRoles()
+        .then((res) =>{
+          const id=res.find(c=>c.rolename===nameRole).idroles; 
+          for(let i=0;i<state.length;i++){
+            if(state[i].checked)BackendConnection.roleFunction(id,state[i].id);            
+          }
+          props.getRoleFunc();
+        })
+        .catch((err) => console.warn(err))
+      });     
     }
   };
 
@@ -59,10 +95,24 @@ function RolePage(props) {
     if (nameRole.length === 0) {
       setNameErrorMessage(sTheNameCannotBeEmpty);
       setNameError(true);
-    } else {
-      BackendConnection.updateRole(idRole, nameRole).then(() => {
-        setUpdateRoleComplete(true);
-      });
+    } else {          
+      BackendConnection.updateRole(idRole, nameRole)
+      .then(() => {        
+        roleFun.forEach(element=>{
+          if(element.roles_idroles===idRole){
+          BackendConnection.deleteRoleFunc(idRole,element.funcion_idfuncion);
+          props.getRoleFunc();
+          }          
+        })
+      }).then(()=>{
+          for(let i=0;i<state.length;i++){
+            if(state[i].checked){
+              BackendConnection.roleFunction(idRole,state[i].id);
+              props.getRoleFunc();
+            }            
+          }
+        })         
+        setUpdateRoleComplete(true);     
     }
   };
 
@@ -70,18 +120,6 @@ function RolePage(props) {
     props.getRoles();
     props.history.goBack();
   }
-
-  // const menuAdmin = [
-  //   enumMenuDrawer.home,
-  //   enumMenuDrawer.campus,
-  //   enumMenuDrawer.school,
-  //   enumMenuDrawer.subjects,
-  //   enumMenuDrawer.schedule,
-  //   enumMenuDrawer.reports,
-  //   enumMenuDrawer.groups,
-  //   enumMenuDrawer.administration,
-  //   enumMenuDrawer.account,
-  // ];
 
   const confirmCreation = () => {
     const nameIsNoEmpty = !nameError && nameRole.length > 0;
@@ -97,22 +135,8 @@ function RolePage(props) {
     setOpenDialog(false);
   };
 
-  // const renderListAccess = () => {
-  //   return (
-  //     <div>
-  //       {menuAdmin.map((menu) => {
-  //         return (
-  //           <div key={menu.id}>
-  //             <FormControlLabel control={<Checkbox color={colorMain} />} label={menu.name} />
-  //           </div>
-  //         );
-  //       })}
-  //     </div>
-  //   );
-  // };
-
   return (
-    <div>
+    <div>   
       <CustomAlertDialog
         title={sConfirm}
         messageText={idRole === null ? sConfirmTheCreationRol : sConfirmTheUpdateOfRol}
@@ -141,24 +165,7 @@ function RolePage(props) {
           />
         </Grid>
         <Grid item xs={12} sm={6}>
-        <FormControl required error={true} component="fieldset" >
-        <FormLabel component="legend">Pick two</FormLabel>
-        <FormGroup>
-          <FormControlLabel
-            control={<Checkbox  name="gilad" />}
-            label="Gilad Gray"
-          />
-          <FormControlLabel
-            control={<Checkbox  name="jason" />}
-            label="Jason Killian"
-          />
-          <FormControlLabel
-            control={<Checkbox  name="antoine" />}
-            label="Antoine Llorca"
-          />
-        </FormGroup>
-        <FormHelperText>You can display an error</FormHelperText>
-      </FormControl>
+          <ListAccess setState={setState} state={state} />
           {/*{renderListAccess()}*/}
         </Grid>
         <Grid item xs={12}>
@@ -185,12 +192,15 @@ const mapStateToProps = (state) => {
   return {
     app: state.app,
     rolesReducer: state.rolesReducer,
+    userReducer:state.userReducer,
+    roleFuncs:state.roleFuncsReducer
   };
 };
 
 const mapDispatchToProps = (dispatch) => ({
   changeRole: (rol) => dispatch(changeRole(rol)),
   getRoles: () => dispatch(getRoles()),
+  getRoleFunc: () =>dispatch(getRoleFuncs())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(RolePage));
