@@ -12,11 +12,11 @@ class BackendConnection {
           'cache-control': 'no-cache',
         },
       })
-        .then(user => {
-          console.warn(user.data)
-          resolve(user.data)
+        .then((user) => {
+          console.warn(user.data);
+          resolve(user.data);
         })
-        .catch(e => reject(e));
+        .catch((e) => reject(e));
     });
   }
 
@@ -178,7 +178,146 @@ class BackendConnection {
         })
         .catch((e) => {
           reject(e);
+        });
+    });
+  }
+
+  getUserRolByIdUser(idUser) {
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'GET',
+        url: `${baseUrl}/userRol/${idUser}`,
+        headers: {
+          'content-type': 'application/json',
+          'cache-control': 'no-cache',
+        },
+      })
+        .then((response) => {
+          resolve(response.data);
         })
+        .catch((e) => {
+          reject(e);
+        });
+    });
+  }
+
+  createUserRol(userId, rolId) {
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'POST',
+        url: `${baseUrl}/userRol/`,
+        headers: {
+          'content-type': 'application/json',
+          'cache-control': 'no-cache',
+        },
+        data: {
+          users_idusers: userId,
+          roles_idroles: rolId,
+        },
+      })
+        .then((response) => {
+          console.warn('response save role', response);
+          resolve(response.data);
+        })
+        .catch((e) => {
+          reject(e);
+        });
+    });
+  }
+
+  deleteUserRol(userId, rolId) {
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'DELETE',
+        url: `${baseUrl}/userRol/${userId}/${rolId}`,
+      })
+        .then((response) => {
+          resolve(response.data);
+        })
+        .catch((e) => {
+          reject(e);
+        });
+    });
+  }
+
+  getSchools() {
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'GET',
+        url: `${baseUrl}/facultad`,
+      })
+        .then((response) => {
+          resolve(response.data);
+        })
+        .catch((e) => {
+          reject(e);
+        });
+    });
+  }
+
+  createSchools(namefacultad) {
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'POST',
+        url: `${baseUrl}/facultad`,
+        data: {
+          namefacultad: namefacultad,
+        },
+      })
+        .then((response) => {
+          resolve(response.data);
+        })
+        .catch((e) => {
+          reject(e);
+        });
+    });
+  }
+
+  updateSchools(idFacultad, namefacultad) {
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'PUT',
+        url: `${baseUrl}/facultad/${idFacultad}`,
+        data: {
+          namefacultad: namefacultad,
+        },
+      })
+        .then((response) => {
+          resolve(response.data);
+        })
+        .catch((e) => {
+          reject(e);
+        });
+    });
+  }
+
+  deleteSchools(idFacultad) {
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'DELETE',
+        url: `${baseUrl}/facultad/${idFacultad}`,
+      })
+        .then((response) => {
+          resolve(response.data);
+        })
+        .catch((e) => {
+          reject(e);
+        });
+    });
+  }
+
+  getCarreras() {
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'GET',
+        url: `${baseUrl}/carrera`,
+      })
+        .then((response) => {
+          resolve(response.data);
+        })
+        .catch((e) => {
+          reject(e);
+        });
     });
   }
 }
