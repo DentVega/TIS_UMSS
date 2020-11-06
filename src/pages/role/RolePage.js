@@ -31,7 +31,6 @@ function RolePage(props) {
   const [openDialog, setOpenDialog] = useState(false);
   const [openDialogCancel, setOpenDialogCancel] = useState(false);
   const [nameRole, setNameRole, nameError, setNameError, nameMessage, setNameErrorMessage] = useNameRol();
-  const [prevFunc,setPrevFunc]=useState(null);
   const [state, setState] = useState([
     {id:1,checked:false},
     {id:2,checked:false},
@@ -42,24 +41,26 @@ function RolePage(props) {
     {id:7,checked:false}
   ]);
   const { role } = props.rolesReducer;
+  const {roleFuncs}=props.roleFuncs;
+  let roleFun=[];
   if (role != null && !loadCurrentRole) {
     setNameRole(role.rolename);
     setIdRole(role.idroles);
     setLoadCurrentRole(true);
   }
-  useEffect(()=>{     
-    BackendConnection.getRoleFuncs().then(res=>{
+  useEffect(()=>{ 
+    console.log(props.history);
       let arr=[...state]; 
-      setPrevFunc(res);
-      res.forEach(element=>{
-        if(element.roles_idroles===idRole){
-          let newObj={...arr[(element.funcion_idfuncion)-1],checked:true};
-          arr[element.funcion_idfuncion-1]=newObj;          
-        };
-      })
+      if(roleFuncs!==null){       
+        roleFuncs.forEach(element=>{
+          if(element.roles_idroles===idRole){
+            roleFun.push(element);
+            let newObj={...arr[(element.funcion_idfuncion)-1],checked:true};
+            arr[element.funcion_idfuncion-1]=newObj;          
+          };
+        })
+      }
     setState(arr);
-    });
-
   },[])
   const cancelCreateRole = () => {
     props.changeRole(null);
@@ -71,16 +72,16 @@ function RolePage(props) {
       setNameErrorMessage(sTheNameCannotBeEmpty);
       setNameError(true);
     } else {
-
       BackendConnection.createRole(nameRole)
       .then(() => {
         setCreateRoleComplete(true);
         BackendConnection.getRoles()
         .then((res) =>{
-          const id=res.find(c=>c.rolename===nameRole).idroles;          
+          const id=res.find(c=>c.rolename===nameRole).idroles; 
           for(let i=0;i<state.length;i++){
             if(state[i].checked)BackendConnection.roleFunction(id,state[i].id);            
           }
+          props.getRoleFunc();
         })
         .catch((err) => console.warn(err))
       });     
@@ -93,19 +94,22 @@ function RolePage(props) {
       setNameError(true);
     } else {          
       BackendConnection.updateRole(idRole, nameRole)
-      .then(() => {
-        setUpdateRoleComplete(true);
-        prevFunc.forEach(element=>{
+      .then(() => {        
+        roleFun.forEach(element=>{
           if(element.roles_idroles===idRole){
           BackendConnection.deleteRoleFunc(idRole,element.funcion_idfuncion);
-          }
+          props.getRoleFunc();
+          }          
         })
+      }).then(()=>{
           for(let i=0;i<state.length;i++){
             if(state[i].checked){
               BackendConnection.roleFunction(idRole,state[i].id);
-            }
+              props.getRoleFunc();
+            }            
           }
-      });
+        })         
+        setUpdateRoleComplete(true);     
     }
   };
 
@@ -113,18 +117,6 @@ function RolePage(props) {
     props.getRoles();
     props.history.goBack();
   }
-
-  // const menuAdmin = [
-  //   enumMenuDrawer.home,
-  //   enumMenuDrawer.campus,
-  //   enumMenuDrawer.school,
-  //   enumMenuDrawer.subjects,
-  //   enumMenuDrawer.schedule,
-  //   enumMenuDrawer.reports,
-  //   enumMenuDrawer.groups,
-  //   enumMenuDrawer.administration,
-  //   enumMenuDrawer.account,
-  // ];
 
   const confirmCreation = () => {
     const nameIsNoEmpty = !nameError && nameRole.length > 0;

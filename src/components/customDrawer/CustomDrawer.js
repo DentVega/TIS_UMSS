@@ -1,4 +1,4 @@
-import React,{useEffect} from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
@@ -49,11 +49,11 @@ function CustomDrawer(props) {
   const {roleFuncs}=props.roleFun;
   const {userRole}=props.rolesReducer;
   let userFunctions= [],menuAdmin=[];
-  if(roleFuncs!==null && userRole!==null){
+  if(roleFuncs!==null && userRole!==null && roleFuncs !==undefined && userRole !== undefined){
     roleFuncs.map(r=>r.roles_idroles===userRole.idroles&&userFunctions.push(r.funcion_idfuncion));
   } 
   if(userFunctions !==[]){
-    menuAdmin.push(enumMenuDrawer.home,enumMenuDrawer.campus)
+    menuAdmin.push(enumMenuDrawer.home)
     userFunctions.includes(enumMenuDrawer.school.id) && menuAdmin.push(enumMenuDrawer.school);
     userFunctions.includes(enumMenuDrawer.subjects.id) && menuAdmin.push(enumMenuDrawer.subjects);
     userFunctions.includes(enumMenuDrawer.schedule.id) && menuAdmin.push(enumMenuDrawer.schedule);
