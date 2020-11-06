@@ -66,7 +66,10 @@ function CampusPage(props) {
     props.history.push(`${routes.campus}/${user.idusers}`);
   };
 
-  const deleteUser = () => {
+  const deleteUser = async () => {
+    const userRol = await BackendConnection.getUserRolByIdUser(userSelected.idusers);
+    await BackendConnection.deleteUserRol(userSelected.idusers, userRol[0].idroles);
+
     BackendConnection.deleteUsers(userSelected.idusers)
       .then((response) => {
         console.warn('finish delete user', response);
@@ -132,6 +135,7 @@ const mapStateToProps = (state) => {
     app: state.app,
     userReducer: state.userReducer,
     usersReducer: state.usersReducer,
+    rolesReducer: state.rolesReducer,
   };
 };
 

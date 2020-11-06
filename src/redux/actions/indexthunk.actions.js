@@ -1,4 +1,4 @@
-import { changeRoles, changeUsers, changeRoleFuncs } from './index.actions';
+import { changeCarreras, changeRoles, changeSchools, changeUsers, changeRoleFuncs } from './index.actions';
 import BackendConnection from '../../api/BackendConnection';
 
 export const getRoles = () => {
@@ -21,6 +21,29 @@ export const getUsers = () => {
   };
 };
 
+export const getSchools = () => {
+  return (dispatch) => {
+    BackendConnection.getSchools()
+      .then((schools) => {
+        dispatch(changeSchools(schools));
+      })
+      .catch((e) => {
+        console.log(e.message);
+      });
+  };
+};
+
+export const getCarreras = () => {
+  return (dispatch) => {
+    BackendConnection.getCarreras()
+      .then((carreras) => {
+        dispatch(changeCarreras(carreras));
+      })
+      .catch((e) => {
+        console.log(e)
+      });
+  };
+};
 
 export const getRoleFuncs = () =>{
   return (dispatch) =>{
@@ -28,7 +51,7 @@ export const getRoleFuncs = () =>{
       .then(RoleFuncs=>{
         dispatch(changeRoleFuncs(RoleFuncs));
       })
-      .catch((e) =>{ 
+      .catch((e) =>{
         console.warn(e.message)
       })
   }

@@ -50,10 +50,10 @@ const CustomDrawer=(props)=> {
   const {userRole}=props.rolesReducer;
   let userFunctions= [],menuAdmin=[];
   console.log("render");
-  
+
   if(roleFuncs!==null && userRole!==null && roleFuncs !==undefined && userRole !== undefined){
     roleFuncs.map(r=>r.roles_idroles===userRole.idroles&&userFunctions.push(r.funcion_idfuncion));
-  } 
+  }
   if(userFunctions !==[]){
     menuAdmin.push(enumMenuDrawer.home)
     userFunctions.includes(enumMenuDrawer.school.id) && menuAdmin.push(enumMenuDrawer.school);
@@ -64,15 +64,15 @@ const CustomDrawer=(props)=> {
     userFunctions.includes(enumMenuDrawer.administration.id) && menuAdmin.push(enumMenuDrawer.administration);
     menuAdmin.push(enumMenuDrawer.account)
   }
- 
- 
+
+
   const toggleDrawer = (anchor, open) => (event) => {
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
       return;
     }
     setState({ ...state, [anchor]: open });
   };
- 
+
   const openPage = (id) => {
     switch (id) {
       case 0:
@@ -101,6 +101,9 @@ const CustomDrawer=(props)=> {
         break;
       case 8:
         props.history.push(routes.account);
+        break;
+      case 9:
+        props.history.push(routes.career);
         break;
       default:
         props.history.push(routes.home);
@@ -168,7 +171,7 @@ const mapStateToProps = (state) => {
     userReducer: state.userReducer,
     roleFun:state.roleFuncsReducer,
     rolesReducer:state.rolesReducer,
-    
+
   };
 };
 

@@ -4,6 +4,8 @@ import { combineReducers } from 'redux';
 import userReducer from './user.reducer';
 import rolesReducer from './roles.reducer';
 import usersReducer from './users.reducer';
+import schoolReducer from './school.reducer';
+import universityCareersReducer from './universityCareers.reducer';
 import roleFuncsReducer from './roleFun.reducer';
 
 export default combineReducers({
@@ -12,5 +14,7 @@ export default combineReducers({
   userReducer: userReducer,
   rolesReducer: rolesReducer,
   usersReducer: usersReducer,
-  roleFuncsReducer: roleFuncsReducer
+  schoolReducer: schoolReducer,
+  careersReducer: universityCareersReducer,
+  roleFuncsReducer: roleFuncsReducer,
 });
