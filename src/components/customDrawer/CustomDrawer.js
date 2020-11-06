@@ -56,6 +56,7 @@ const CustomDrawer=(props)=> {
   }
   if(userFunctions !==[]){
     menuAdmin.push(enumMenuDrawer.home)
+    userFunctions.includes(enumMenuDrawer.campus.id) && menuAdmin.push(enumMenuDrawer.campus);
     userFunctions.includes(enumMenuDrawer.school.id) && menuAdmin.push(enumMenuDrawer.school);
     userFunctions.includes(enumMenuDrawer.subjects.id) && menuAdmin.push(enumMenuDrawer.subjects);
     userFunctions.includes(enumMenuDrawer.schedule.id) && menuAdmin.push(enumMenuDrawer.schedule);
