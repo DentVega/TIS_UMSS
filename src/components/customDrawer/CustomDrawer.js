@@ -40,8 +40,9 @@ const useStyles = makeStyles(() => ({
 const menuAdmin = [
   enumMenuDrawer.home,
   enumMenuDrawer.campus,
-  // enumMenuDrawer.school,
-  // enumMenuDrawer.subjects,
+  enumMenuDrawer.career,
+  enumMenuDrawer.school,
+  enumMenuDrawer.subjects,
   // enumMenuDrawer.schedule,
   // enumMenuDrawer.reports,
   // enumMenuDrawer.groups,
@@ -94,6 +95,9 @@ function CustomDrawer(props) {
         break;
       case 8:
         props.history.push(routes.account);
+        break;
+      case 9:
+        props.history.push(routes.career);
         break;
       default:
         props.history.push(routes.home);
