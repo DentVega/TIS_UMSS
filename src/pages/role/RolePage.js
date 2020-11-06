@@ -43,13 +43,15 @@ function RolePage(props) {
   const { role } = props.rolesReducer;
   const {roleFuncs}=props.roleFuncs;
   let roleFun=[];
-  if (role != null && !loadCurrentRole) {
-    setNameRole(role.rolename);
-    setIdRole(role.idroles);
-    setLoadCurrentRole(true);
-  }
+ 
+    if (role != null && !loadCurrentRole) {
+      setNameRole(role.rolename);
+      setIdRole(role.idroles);
+      setLoadCurrentRole(true);
+    }
+    console.log(props.history.location);
   useEffect(()=>{ 
-    console.log(props.history);
+    if(props.history.location.pathname!=="/newrole"){
       let arr=[...state]; 
       if(roleFuncs!==null){       
         roleFuncs.forEach(element=>{
@@ -61,6 +63,7 @@ function RolePage(props) {
         })
       }
     setState(arr);
+    }
   },[])
   const cancelCreateRole = () => {
     props.changeRole(null);

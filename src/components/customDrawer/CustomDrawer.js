@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo,useLayoutEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
@@ -37,7 +37,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-function CustomDrawer(props) {
+const CustomDrawer=(props)=> {
   const classes = useStyles();
   const [state, setState] = React.useState({
     top: false,
@@ -49,6 +49,8 @@ function CustomDrawer(props) {
   const {roleFuncs}=props.roleFun;
   const {userRole}=props.rolesReducer;
   let userFunctions= [],menuAdmin=[];
+  console.log("render");
+  
   if(roleFuncs!==null && userRole!==null && roleFuncs !==undefined && userRole !== undefined){
     roleFuncs.map(r=>r.roles_idroles===userRole.idroles&&userFunctions.push(r.funcion_idfuncion));
   } 
@@ -62,7 +64,7 @@ function CustomDrawer(props) {
     userFunctions.includes(enumMenuDrawer.administration.id) && menuAdmin.push(enumMenuDrawer.administration);
     menuAdmin.push(enumMenuDrawer.account)
   }
-
+ 
  
   const toggleDrawer = (anchor, open) => (event) => {
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
