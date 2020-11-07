@@ -31,3 +31,11 @@ export const changeUsers = (users) => {
 export const changeUserSelected = (userSelected) => {
   return { type: actions.CHANGE_USER_SELECTED, userSelected };
 };
+
+export const changeUserslogs = (userslogs) => {
+  return { type: actions.CHANGE_USERSLOGS, userslogs };
+}
+
+export const changeUserslog = (userslog) => {
+  return { type: actions.CHANGE_USERSLOG, userslog };
+}

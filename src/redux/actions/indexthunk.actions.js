@@ -1,4 +1,4 @@
-import { changeRoles, changeUsers } from './index.actions';
+import { changeRoles, changeUsers, changeUserslogs } from './index.actions';
 import BackendConnection from '../../api/BackendConnection';
 
 export const getRoles = () => {
@@ -14,6 +14,18 @@ export const getUsers = () => {
     BackendConnection.getUsers()
       .then((users) => {
         dispatch(changeUsers(users));
+      })
+      .catch((e) => {
+        console.warn(e.message);
+      });
+  };
+};
+
+export const getUserslogs = () => {
+  return (dispatch) => {
+    BackendConnection.getUserslogs()
+      .then((userslogs) => {
+        dispatch(changeUserslogs(userslogs));
       })
       .catch((e) => {
         console.warn(e.message);

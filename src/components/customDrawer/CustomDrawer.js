@@ -18,6 +18,7 @@ import DescriptionIcon from '@material-ui/icons/Description';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import AssignmentIndIcon from '@material-ui/icons/AssignmentInd';
 import SettingsApplicationsIcon from '@material-ui/icons/SettingsApplications';
+import StorageIcon from '@material-ui/icons/Storage';
 import { colorMain } from '../../constants/colors';
 
 const drawerWidth = 240;
@@ -47,6 +48,7 @@ const menuAdmin = [
   // enumMenuDrawer.groups,
   enumMenuDrawer.administration,
   // enumMenuDrawer.account,
+  enumMenuDrawer.userslog,
 ];
 
 function CustomDrawer(props) {
@@ -95,6 +97,9 @@ function CustomDrawer(props) {
       case 8:
         props.history.push(routes.account);
         break;
+      case 9:
+        props.history.push(routes.userslog);
+        break;
       default:
         props.history.push(routes.home);
         return null;
@@ -119,6 +124,8 @@ function CustomDrawer(props) {
         return <SettingsApplicationsIcon style={{ color: '#ffffff' }} />;
       case 8:
         return <AccountCircleIcon style={{ color: '#ffffff' }} />;
+      case 9:
+        return <StorageIcon style={{ color: '#ffffff' }}/>
       default:
         return <HomeIcon style={{ color: '#ffffff' }} />;
     }

@@ -20,6 +20,7 @@ import AccountPage from '../pages/AccountPage';
 import RolesPage from '../pages/role/RolesPage';
 import RolePage from '../pages/role/RolePage';
 import RegisterPage from '../pages/users/RegistrationPage';
+import UserslogPage from '../pages/UserslogPage';
 import CustomBottombar from '../components/toolbar/CustomBottombar';
 import Toolbar from '@material-ui/core/Toolbar';
 import { PrivateRoute } from '../constants/PrivateRoute';
@@ -67,6 +68,7 @@ function RouterMain(props) {
           <PrivateRoute isAuth={isAuth} exact={true} path={routes.newRole} component={RolePage} />
           <PrivateRoute isAuth={isAuth} exact={true} path={routes.editRole} component={RolePage} />
           <PrivateRoute isAuth={isAuth} exact={true} path={routes.account} component={AccountPage} />
+          <PrivateRoute isAuth={isAuth} exact={true} path={routes.userslog} component={UserslogPage} />
           <PrivateRoute isAuth={isAuth} exact={true} path={routes.testUi} component={TestUi} />
           <PrivateRoute isAuth={isAuth} exact={true} path={routes.route404} component={NotFoundPage} />
         </main>

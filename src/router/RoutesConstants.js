@@ -16,4 +16,5 @@ export const routes = {
   testUi: '/testui',
   registerUser: '/registerUser',
   editUser: '/users/:id',
+  userslog: '/userslog',
 };
