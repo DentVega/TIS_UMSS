@@ -12,7 +12,6 @@ import BackendConnection from '../../api/BackendConnection';
 import { changeRole } from '../../redux/actions/index.actions';
 import CustomAlertDialog from '../../components/dialogs/CustomAlertDialog';
 import { sConfirm } from '../../constants/strings';
-
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.paper,
@@ -39,7 +38,7 @@ function RolesPage(props) {
   const { roles, loading } = props.rolesReducer;
   const { getRoles } = props;
   const classes = useStyles();
-
+  
   const [roleSelected, setRoleSelected] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
 
@@ -72,6 +71,7 @@ function RolesPage(props) {
 
   const updateRole = (rol) => {
     props.history.push(`${routes.roles}/${rol.idroles}`);
+   
     props.changeRole(rol);
   };
 
@@ -88,9 +88,11 @@ function RolesPage(props) {
   const renderRoles = () => {
     return (
       <div>
+
         {roles.map((rol) => {
           return (
             <div key={rol.idroles}>
+            
               <CardItem
                 text={rol.rolename}
                 width={500}

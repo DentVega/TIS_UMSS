@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { getUserslogs } from '../redux/actions/indexthunk.actions';
+import { getUserslogs, getUsers } from '../redux/actions/indexthunk.actions';
 import CardItem from '../components/CardItem';
 
 function UserslogPage(props) {
   sessionStorage.setItem("path",props.history.location.pathname);
   const { userslogs, loading } = props.userslogsReducer;
-  const { getUserslogs } = props;
+  const { users } = props.usersReducer;
 
   useEffect(() => {
     if (loading) {
-      getUserslogs();
+      props.getUserslogs();
+      props.getUsers();
     }
   });
 
@@ -23,11 +24,20 @@ function UserslogPage(props) {
     <div>
       <h1>UsersLog</h1>
       {userslogs.length > 0 && userslogs.map((item) => {
+        let text = "Usuario ";
+        if(users.length > 0){
+          const userSelected = users.filter((user) => user.idusers == item.users_idusers );
+          console.log("este es el usuario", userSelected);
+          text += userSelected[0].firstname + " ";
+          text += userSelected[0].lastname + " hizo un ";
+          text += getTransaction(item.transaction_idtransaction);
+        }
         return (
           <div key={item.iduserslog}>
+
             <CardItem
               onClick={() => onClick(item.iduserslog)}
-              text={getTransaction(item.transaction_idtransaction)}
+              text={text}
               width={500}
               showEditIcon={false}
               showDeleteIcon={false}
@@ -55,11 +65,13 @@ const getTransaction = (id) => {
 const mapStateToProps = (state) => {
   return {
     app: state.app,
+    usersReducer: state.usersReducer,
     userslogsReducer: state.userslogsReducer,
   };
 };
 
 const mapDispatchToProps = (dispatch) => ({
+  getUsers: () => dispatch(getUsers()),
   getUserslogs: () => dispatch(getUserslogs()),
   getTransaction: () => dispatch(getTransaction()),
 });

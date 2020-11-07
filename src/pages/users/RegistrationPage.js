@@ -17,7 +17,6 @@ import { changeUserSelected } from '../../redux/actions/index.actions';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import BackendConnection from '../../api/BackendConnection';
-import { routes } from '../../router/RoutesConstants';
 import {
   sAreYouSureYourWantCancel,
   sCancel,
@@ -26,7 +25,8 @@ import {
   sConfirmTheCreation,
   sConfirmTheUpdate,
   sCreateUser,
-  sEmail, sEmailIsAlreadyInUse,
+  sEmail,
+  sEmailIsAlreadyInUse,
   sLastName,
   sName,
   sPassword,
@@ -37,8 +37,8 @@ import {
 import CustomAlertDialog from '../../components/dialogs/CustomAlertDialog';
 
 const RegistrationPage = (props) => {
-  sessionStorage.setItem("path",props.history.location.pathname);
-  
+  sessionStorage.setItem('path', props.history.location.pathname);
+
   const { roles } = props.rolesReducer;
   const { getRoles } = props;
 
@@ -72,9 +72,12 @@ const RegistrationPage = (props) => {
     setRoleSelected(parseInt(event.target.value));
   };
 
+  const { userSelected } = props.usersReducer;
   const verifyEmail = () => {
-    BackendConnection.verifyEmail(email)
-      .then((response) => {
+    if (userSelected != null) {
+      confirmCreation();
+    } else {
+      BackendConnection.verifyEmail(email).then((response) => {
         if (response === 0) {
           confirmCreation();
         } else {
@@ -82,6 +85,7 @@ const RegistrationPage = (props) => {
           setEmailError(true);
         }
       });
+    }
   };
 
   const validName = () => {
@@ -120,7 +124,12 @@ const RegistrationPage = (props) => {
     }
   };
 
-  const { userSelected } = props.usersReducer;
+  const getRol = (idUser) => {
+    BackendConnection.getUserRolByIdUser(idUser).then((response) => {
+      setRoleSelected(response[0].idroles);
+    });
+  };
+
   if (userSelected != null && !loadCurrentUser) {
     handleNameChange(userSelected.firstname);
     handleLastNameChange(userSelected.lastname);
@@ -131,6 +140,7 @@ const RegistrationPage = (props) => {
     setIdUser(userSelected.idusers);
     setLoadCurrentUser(true);
     setPassword(userSelected.userpassword);
+    getRol(userSelected.idusers);
   }
 
   if (createUserComplete || updateUserComplete) {
@@ -146,13 +156,24 @@ const RegistrationPage = (props) => {
   };
 
   const registerUser = () => {
-    BackendConnection.createUser(name, lastName, phone, email, ci, createPassword()).then(() => {
+    BackendConnection.createUser(name, lastName, phone, email, ci, createPassword()).then((response) => {
+      asignRol(response.body.res[0]);
+    });
+  };
+
+  const asignRol = (user) => {
+    const { idusers } = user;
+    BackendConnection.createUserRol(idusers, roleSelected).then(() => {
       setOpenDialog(false);
       setCreateUserComplete(true);
     });
   };
 
-  const updateUser = () => {
+  const updateUser = async () => {
+    const userRol = await BackendConnection.getUserRolByIdUser(idUser);
+    await BackendConnection.deleteUserRol(idUser, userRol[0].idroles);
+    await BackendConnection.createUserRol(idUser, roleSelected);
+
     BackendConnection.updateUser(idUser, name, lastName, phone, email, ci, password).then(() => {
       setOpenDialog(false);
       setUpdateUserComplete(true);
