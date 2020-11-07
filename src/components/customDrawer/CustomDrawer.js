@@ -49,7 +49,6 @@ const CustomDrawer=(props)=> {
   const {roleFuncs}=props.roleFun;
   const {userRole}=props.rolesReducer;
   let userFunctions= [],menuAdmin=[];
-  console.log("render");
 
   if(roleFuncs!==null && userRole!==null && roleFuncs !==undefined && userRole !== undefined){
     roleFuncs.map(r=>r.roles_idroles===userRole.idroles&&userFunctions.push(r.funcion_idfuncion));

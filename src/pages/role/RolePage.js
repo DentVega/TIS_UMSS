@@ -42,26 +42,28 @@ function RolePage(props) {
   ]);
   const { role } = props.rolesReducer;
   const {roleFuncs}=props.roleFuncs;
-  let roleFun=[];
+  const [rolFun,setRolFun]=useState([]);
  
     if (role != null && !loadCurrentRole) {
       setNameRole(role.rolename);
       setIdRole(role.idroles);
       setLoadCurrentRole(true);
     }
-    console.log(props.history.location);
   useEffect(()=>{ 
     if(props.history.location.pathname!=="/newrole"){
       let arr=[...state]; 
+      let roleFunction=[];
       if(roleFuncs!==null){       
         roleFuncs.forEach(element=>{
           if(element.roles_idroles===idRole){
-            roleFun.push(element);
+            roleFunction.push(element);
             let newObj={...arr[(element.funcion_idfuncion)-1],checked:true};
             arr[element.funcion_idfuncion-1]=newObj;          
           };
         })
       }
+     
+    setRolFun(roleFunction);
     setState(arr);
     }
   },[])
@@ -92,30 +94,52 @@ function RolePage(props) {
   };
 
   const updateRole = () => {
+    let cont=0;
     if (nameRole.length === 0) {
       setNameErrorMessage(sTheNameCannotBeEmpty);
       setNameError(true);
-    } else {          
-      BackendConnection.updateRole(idRole, nameRole)
-      .then(() => {        
-        roleFun.forEach(element=>{
-          if(element.roles_idroles===idRole){
+    } else {         
+      BackendConnection.updateRole(idRole, nameRole).then(()=>{
+      rolFun.forEach((element)=>{ 
+        setTimeout(()=>{  
           BackendConnection.deleteRoleFunc(idRole,element.funcion_idfuncion);
-          props.getRoleFunc();
-          }          
-        })
-      }).then(()=>{
-          for(let i=0;i<state.length;i++){
-            if(state[i].checked){
-              BackendConnection.roleFunction(idRole,state[i].id);
-              props.getRoleFunc();
-            }            
-          }
-        })         
-        setUpdateRoleComplete(true);     
-    }
+        },cont*400)
+        cont++;  
+            
+      }) 
+    }).then(()=> {    
+      for(let i=0;i<state.length;i++){
+        if(state[i].checked){
+          setTimeout(()=>{  
+          BackendConnection.roleFunction(idRole,state[i].id);  
+        },cont*400)
+        } 
+        cont++;
+      }
+    })
+    setTimeout(()=>{  
+    props.getRoleFunc();
+    },cont*400)
+      setUpdateRoleComplete(true);
+    } 
   };
-
+  
+//   .then(() => {     
+  //   roleFun.forEach(async element=>{          
+  //      BackendConnection.deleteRoleFunc(idRole,element.funcion_idfuncion).then(res=>console.log(res));               
+  //  })
+   
+//    props.getRoleFunc();
+//  })
+//  .then(async()=>{
+//      for(let i=0;i<state.length;i++){
+//        if(state[i].checked){
+//          BackendConnection.roleFunction(idRole,state[i].id);              
+//        }            
+//      }
+//    })      
+//    props.getRoleFunc();   
+//    setUpdateRoleComplete(true);  
   if (createRoleComplete || updateRoleComplete) {
     props.getRoles();
     props.history.goBack();
