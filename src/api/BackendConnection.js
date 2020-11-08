@@ -204,7 +204,7 @@ class BackendConnection {
     return new Promise((resolve, reject) => {
       axios({
         method: 'GET',
-        url: `${baseUrl}/userRol/${idUser}`,
+        url: `${baseUrl}/userrol/${idUser}`,
         headers: {
           'content-type': 'application/json',
           'cache-control': 'no-cache',
@@ -223,7 +223,7 @@ class BackendConnection {
     return new Promise((resolve, reject) => {
       axios({
         method: 'POST',
-        url: `${baseUrl}/userRol/`,
+        url: `${baseUrl}/userrol/`,
         headers: {
           'content-type': 'application/json',
           'cache-control': 'no-cache',
@@ -247,7 +247,7 @@ class BackendConnection {
     return new Promise((resolve, reject) => {
       axios({
         method: 'DELETE',
-        url: `${baseUrl}/userRol/${userId}/${rolId}`,
+        url: `${baseUrl}/userrol/${userId}/${rolId}`,
       })
         .then((response) => {
           resolve(response.data);
@@ -343,7 +343,7 @@ class BackendConnection {
     return new Promise((resolve,reject)=>{
       axios({
         method:'POST',
-        url:`https://tis-backend.herokuapp.com/rolfun`,
+        url:`${baseUrl}/rolfun`,
         headers: {
           'content-type': 'application/json',
           'cache-control': 'no-cache'
@@ -367,7 +367,7 @@ class BackendConnection {
       return new Promise((resolve,reject)=>{
         axios({
           method:'GET',
-          url:`https://tis-backend.herokuapp.com/rolfun`,
+          url:`${baseUrl}/rolfun`,
           headers: {
             'content-type': 'application/json',
             'cache-control': 'no-cache'
@@ -384,19 +384,36 @@ class BackendConnection {
       return new Promise((resolve,reject)=>{
         axios({
           method:'DELETE',
-          url:`https://tis-backend.herokuapp.com/rolfun/${idRol}/${idFunc}`,
+          url:`${baseUrl}/rolfun/${idRol}/${idFunc}`,
           headers: {
             'content-type': 'application/json',
             'cache-control': 'no-cache'
           },
         }).then((response) => {
-          resolve(console.log("roleFunDelte: "+response.status));
+          resolve(response.data);
         }).catch((e) => {
           console.warn(e.message);
           reject(e);
         });
       })
     }
+    getAllUsersRol(){
+      return new Promise((resolve,reject)=>{
+        axios({
+          method:'GET',
+          url: `${baseUrl}/userrol`,
+          headers: {
+            'content-type': 'application/json',
+            'cache-control': 'no-cache'
+          },
+        }).then((response) => {
+          resolve(response.data);
+        }).catch((e) => {
+          console.warn(e.message);
+          reject(e);
+        });
+      })
+    }    
 }
 
 export default new BackendConnection();

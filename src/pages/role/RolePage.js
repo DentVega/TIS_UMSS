@@ -43,7 +43,6 @@ function RolePage(props) {
   const { role } = props.rolesReducer;
   const {roleFuncs}=props.roleFuncs;
   const [rolFun,setRolFun]=useState([]);
- 
     if (role != null && !loadCurrentRole) {
       setNameRole(role.rolename);
       setIdRole(role.idroles);
@@ -66,6 +65,10 @@ function RolePage(props) {
     setRolFun(roleFunction);
     setState(arr);
     }
+    if(props.history.location.pathname==="/newrole"){
+      setIdRole(null);
+      setNameRole("");
+    }
   },[])
   const cancelCreateRole = () => {
     props.changeRole(null);
@@ -73,6 +76,7 @@ function RolePage(props) {
   };
 
   const createRole = () => {
+    let cont=0;
     if (nameRole.length === 0) {
       setNameErrorMessage(sTheNameCannotBeEmpty);
       setNameError(true);
@@ -84,9 +88,16 @@ function RolePage(props) {
         .then((res) =>{
           const id=res.find(c=>c.rolename===nameRole).idroles; 
           for(let i=0;i<state.length;i++){
-            if(state[i].checked)BackendConnection.roleFunction(id,state[i].id);            
+            if(state[i].checked){
+              setTimeout(() => {
+                BackendConnection.roleFunction(id,state[i].id);  
+              },cont*200)
+            }  
+            cont++;        
           }
-          props.getRoleFunc();
+          setTimeout(() => {
+            props.getRoleFunc();
+          },cont*200)
         })
         .catch((err) => console.warn(err))
       });     
@@ -118,28 +129,13 @@ function RolePage(props) {
       }
     })
     setTimeout(()=>{  
-    props.getRoleFunc();
-    },cont*400)
-      setUpdateRoleComplete(true);
+     props.getRoleFunc();
+    },8*1000)
+    setUpdateRoleComplete(true);
+    
     } 
   };
-  
-//   .then(() => {     
-  //   roleFun.forEach(async element=>{          
-  //      BackendConnection.deleteRoleFunc(idRole,element.funcion_idfuncion).then(res=>console.log(res));               
-  //  })
-   
-//    props.getRoleFunc();
-//  })
-//  .then(async()=>{
-//      for(let i=0;i<state.length;i++){
-//        if(state[i].checked){
-//          BackendConnection.roleFunction(idRole,state[i].id);              
-//        }            
-//      }
-//    })      
-//    props.getRoleFunc();   
-//    setUpdateRoleComplete(true);  
+ 
   if (createRoleComplete || updateRoleComplete) {
     props.getRoles();
     props.history.goBack();

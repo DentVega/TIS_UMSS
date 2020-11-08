@@ -46,7 +46,6 @@ function RouterMain(props) {
   const classes = useStyles();
   const { user } = props.userReducer;
   let isAuth = user != null;
-  console.log(isAuth);
   return (
     <BrowserRouter>
       <div className={user != null ? classes.root : null}>
