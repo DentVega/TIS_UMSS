@@ -127,7 +127,7 @@ function UniversityCareers(props) {
       />
 
       <h1>Carreras</h1>
-      <ContainerFilter showFFacultad={true} />
+      {/*<ContainerFilter showFFacultad={true} />*/}
       {careers.length > 0 ? renderCareers() : <div />}
       {loading && <h3>Cargando...</h3>}
       <Fab aria-label={fab.label} className={fab.className} color={fab.color} onClick={newCarrera}>
