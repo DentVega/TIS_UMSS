@@ -2,25 +2,25 @@ import React, { useEffect, useState } from 'react';
 
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import { makeStyles } from '@material-ui/core/styles';
+import { getCarreras, getMateriasBackend } from '../../redux/actions/indexthunk.actions';
 import { useFullName } from '../../constants/formCustomHook/useForm';
-import { getCarreras, getSchools } from '../../redux/actions/indexthunk.actions';
-import { Button, Grid, TextField } from '@material-ui/core';
+import BackendConnection from '../../api/BackendConnection';
 import {
   sAreYouSureYourWantCancel,
   sCancel,
   sConfirm,
   sConfirmTheCreation,
-  sCreateCareer,
+  sCreateMateria,
   sName,
   sTheNameCannotBeEmpty,
 } from '../../constants/strings';
-import CustomAlertDialog from '../../components/dialogs/CustomAlertDialog';
-import BackendConnection from '../../api/BackendConnection';
+import { Button, Grid, TextField } from '@material-ui/core';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
-import { makeStyles } from '@material-ui/core/styles';
+import CustomAlertDialog from '../../components/dialogs/CustomAlertDialog';
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -32,28 +32,28 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function NewUniversityCareers(props) {
+function NewMateria(props) {
   const [name, handleNameChange, nameError, setNameError, nameMesasge, setNameErrorMessage] = useFullName();
   const [openDialog, setOpenDialog] = useState(false);
   const [openDialogCancel, setOpenDialogCancel] = useState(false);
-  const [createCareersComplete, setCreateCareersComplete] = useState(false);
+  const [createMateriaComplete, setCreateMateriaComplete] = useState(false);
 
-  const [schools, setSchools] = useState([]);
-  const [schoolSelected, setSchoolSelected] = useState(0);
+  const [careers, setCareers] = useState([]);
+  const [careerSelected, setCareersSelected] = useState(0);
 
   const classes = useStyles();
 
   useEffect(() => {
-    BackendConnection.getSchools().then((schools) => {
-      if (schools && schools.length > 0) {
-        setSchoolSelected(schools[0].idfacultad);
-        setSchools(schools);
+    BackendConnection.getCarreras().then((carerras) => {
+      if (carerras && carerras.length > 0) {
+        setCareersSelected(carerras[0].idcarrera);
+        setCareers(carerras);
       }
     });
   }, []);
 
-  if (createCareersComplete) {
-    props.getCareers();
+  if (createMateriaComplete) {
+    props.getMateriasBackend();
     props.history.goBack();
   }
 
@@ -81,23 +81,23 @@ function NewUniversityCareers(props) {
     }
   };
 
-  const registerCareers = () => {
-    BackendConnection.createCareer(schoolSelected, name).then((response) => {
-      console.log(`create career complete ${response}`);
+  const registerMateria = () => {
+    BackendConnection.createMateria(careerSelected, name).then((response) => {
+      console.log(`create materia complete ${response}`);
       setOpenDialog(false);
-      setCreateCareersComplete(true);
+      setCreateMateriaComplete(true);
     });
   };
 
   const handleChange = (event) => {
-    setSchoolSelected(event.target.value);
+    setCareersSelected(event.target.value);
   };
 
   const renderForm = () => {
     return (
       <Grid item style={{ width: '100vh', borderRadius: '40px' }}>
         <Grid item style={{ textAlign: 'center' }}>
-          <h2>{sCreateCareer}</h2>
+          <h2>{sCreateMateria}</h2>
         </Grid>
         <Grid container direction="row" spacing={4}>
           <Grid item>
@@ -112,19 +112,19 @@ function NewUniversityCareers(props) {
             />
           </Grid>
 
-          {schools.length > 0 && (
+          {careers.length > 0 && (
             <Grid item>
               <FormControl className={classes.formControl}>
-                <InputLabel id="facultad-selecionada">Facultad</InputLabel>
+                <InputLabel id="carerra-selecionada">Facultad</InputLabel>
                 <Select
-                  labelId="facultad-selecionada"
-                  id="facultad-selecionada-select"
-                  value={schoolSelected}
+                  labelId="carerra-selecionada"
+                  id="carerra-selecionada-select"
+                  value={careerSelected}
                   onChange={handleChange}>
-                  {schools.map((facultad) => {
+                  {careers.map((carrera) => {
                     return (
-                      <MenuItem key={facultad.idfacultad} value={facultad.idfacultad}>
-                        {facultad.namefacultad}
+                      <MenuItem key={carrera.idcarrera} value={carrera.idcarrera}>
+                        {carrera.namecarrera}
                       </MenuItem>
                     );
                   })}
@@ -144,7 +144,7 @@ function NewUniversityCareers(props) {
         messageText={sConfirmTheCreation}
         open={openDialog}
         handleClose={closeDialog}
-        handleAccept={registerCareers}
+        handleAccept={registerMateria}
       />
       <CustomAlertDialog
         title={sConfirm}
@@ -169,7 +169,7 @@ function NewUniversityCareers(props) {
 
             <Grid item>
               <Button variant="contained" color="primary" type="submit" onClick={validName}>
-                {sCreateCareer}
+                {sCreateMateria}
               </Button>
             </Grid>
           </Grid>
@@ -181,14 +181,14 @@ function NewUniversityCareers(props) {
 
 const mapStateToProps = (state) => {
   return {
+    materiasReducer: state.materiasReducer,
     careersReducer: state.careersReducer,
-    schoolReducer: state.schoolReducer,
   };
 };
 
 const mapDispatchToProps = (dispatch) => ({
   getCareers: () => dispatch(getCarreras()),
-  getSchools: () => dispatch(getSchools()),
+  getMateriasBackend: () => dispatch(getMateriasBackend()),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(NewUniversityCareers));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(NewMateria));

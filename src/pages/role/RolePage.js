@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
-import { Button} from '@material-ui/core';
+import { Button } from '@material-ui/core';
 // import { enumMenuDrawer } from '../../constants/mockData';
 // import Checkbox from '@material-ui/core/Checkbox';
 import { withRouter } from 'react-router-dom';
@@ -9,19 +9,22 @@ import { withRouter } from 'react-router-dom';
 import BackendConnection from '../../api/BackendConnection';
 import { connect } from 'react-redux';
 import { changeRole } from '../../redux/actions/index.actions';
-import { getRoles } from '../../redux/actions/indexthunk.actions';
-import { getRoleFuncs } from '../../redux/actions/indexthunk.actions';
+import { getRoleFuncs, getRoles } from '../../redux/actions/indexthunk.actions';
 // import { colorMain } from '../../constants/colors';
 import CustomAlertDialog from '../../components/dialogs/CustomAlertDialog';
 import {
   sAreYouSureYourWantCancel,
   sConfirm,
   sConfirmTheCreationRol,
-  sConfirmTheUpdateOfRol, sCreateRol, sEditRol, sNameTheRol,
+  sConfirmTheUpdateOfRol,
+  sCreateRol,
+  sEditRol,
+  sNameTheRol,
   sTheNameCannotBeEmpty
 } from '../../constants/strings';
 import { useNameRol } from '../../constants/formCustomHook/useForm';
-import {ListAccess} from './ListAccess';
+import { ListAccess } from './ListAccess';
+
 function RolePage(props) {
   sessionStorage.setItem("path",props.history.location.pathname);
   const [createRoleComplete, setCreateRoleComplete] = useState(false);
@@ -60,13 +63,13 @@ function RolePage(props) {
         roleFuncs.forEach(element=>{
           if(element.roles_idroles===idRole){
             roleFun.push(element);
-            let newObj={...arr[(element.funcion_idfuncion)-1],checked:true};
-            arr[element.funcion_idfuncion-1]=newObj;
-          };
+            arr[element.funcion_idfuncion-1]={ ...arr[(element.funcion_idfuncion) - 1], checked: true };
+          }
         })
       }
     setState(arr);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
 
   const cancelCreateRole = () => {

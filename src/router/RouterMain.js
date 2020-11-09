@@ -11,7 +11,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import CampusPage from '../pages/users/CampusPage';
 import SchoolPage from '../pages/schools/SchoolPage';
-import SubjectPage from '../pages/SubjectsPage';
+import SubjectPage from '../pages/materias/SubjectsPage';
 import ReportsPage from '../pages/ReportsPage';
 import SchedulePage from '../pages/SchedulePage';
 import GroupsPage from '../pages/GroupsPage';
@@ -28,6 +28,8 @@ import NewSchoolPage from '../pages/schools/NewSchoolPage';
 import EditSchoolPage from '../pages/schools/EditSchoolPage';
 import NewUniversityCareers from '../pages/universityCareers/NewUniversityCareers';
 import EditUniversityCareers from '../pages/universityCareers/EditUniversityCareers';
+import NewMateria from '../pages/materias/NewMateria';
+import EditarMateria from '../pages/materias/EditarMateria';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -73,6 +75,8 @@ function RouterMain(props) {
           <PrivateRoute isAuth={isAuth} exact={true} path={routes.editSchool} component={EditSchoolPage} />
           {/*Subject*/}
           <PrivateRoute isAuth={isAuth} exact={true} path={routes.subjects} component={SubjectPage} />
+          <PrivateRoute isAuth={isAuth} exact={true} path={routes.registerMateria} component={NewMateria}/>
+          <PrivateRoute isAuth={isAuth} exact={true} path={routes.editMateria} component={EditarMateria}/>
           {/*Reportes*/}
           <PrivateRoute isAuth={isAuth} exact={true} path={routes.reports} component={ReportsPage} />
           {/*Horarios*/}

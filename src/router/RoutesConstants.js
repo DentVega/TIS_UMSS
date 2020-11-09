@@ -9,6 +9,8 @@ export const routes = {
   registerSchool: '/newschool',
   editSchool: '/school/:id',
   subjects: '/subjects',
+  registerMateria: '/newsubjects',
+  editMateria: '/subjects/:id',
   reports: '/reports',
   schedule: '/schedule',
   groups: '/groups',

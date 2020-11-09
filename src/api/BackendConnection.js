@@ -396,6 +396,47 @@ class BackendConnection {
     });
   }
 
+  createMateria(carrera_idcarrera, namemateria) {
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'POST',
+        url: `${baseUrl}/materia`,
+        data: {
+          carrera_idcarrera: carrera_idcarrera,
+          namemateria: namemateria,
+        },
+      })
+        .then((response) => resolve(response.data))
+        .catch((e) => reject(e));
+    });
+  }
+
+  updateMateria(idmateria, carrera_idcarrera, namemateria) {
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'PUT',
+        url: `${baseUrl}/materia/${idmateria}`,
+        data: {
+          carrera_idcarrera: carrera_idcarrera,
+          namemateria: namemateria,
+        },
+      })
+        .then((response) => resolve(response.data))
+        .catch((e) => reject(e));
+    });
+  }
+
+  deleteMateria(idMateria) {
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'DELETE',
+        url: `${baseUrl}/materia/${idMateria}`,
+      })
+        .then((response) => resolve(response.data))
+        .catch((e) => reject(e));
+    });
+  }
+
   roleFunction(idRole, idFuncion) {
     return new Promise((resolve, reject) => {
       axios({
