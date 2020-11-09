@@ -44,9 +44,10 @@ function SchoolPage(props) {
     if (loading) {
       props.getSchools();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-    const confirmDelete = (school) => {
+  const confirmDelete = (school) => {
     setOpenDialog(true);
     setSchoolSelected(school);
   };
@@ -67,13 +68,13 @@ function SchoolPage(props) {
   };
 
   const deleteSchool = () => {
-    BackendConnection.deleteSchools(schoolSelected.idfacultad).then((response) => {
+    BackendConnection.deleteSchools(schoolSelected.idfacultad).then(() => {
       props.getSchools();
       setOpenDialog(false);
     });
   };
 
-    const fab = {
+  const fab = {
     color: 'primary',
     className: classes.fab,
     icon: <AddIcon />,

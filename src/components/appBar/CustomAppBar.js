@@ -49,11 +49,12 @@ const useStyles = makeStyles((theme) => ({
 function CustomAppBar(props) {
   const { user } = props.userReducer;
   const classes = useStyles();
+  // eslint-disable-next-line no-unused-vars
   const [numberNotification, setNumberNotification] = React.useState(0);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
-  const handleProfileMenuOpen = (event) => {};
+  const handleProfileMenuOpen = () => {};
 
   const handleMobileMenuClose = () => {
     setMobileMoreAnchorEl(null);
