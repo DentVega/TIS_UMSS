@@ -97,32 +97,6 @@ function RolesPage(props) {
         setOpenDialog(false);
       })
     },5000)
-    // const userRol = await BackendConnection.getUserRolByIdUser(userSelected.idusers);
-    // await BackendConnection.deleteUserRol(userSelected.idusers, userRol[0].idroles);
-
-    // BackendConnection.deleteUsers(userSelected.idusers)
-      // .then((response) => {
-      //   console.warn('finish delete user', response);
-      //   setOpenDialog(false);
-      //   props.getUsers();
-      // })
-      // .catch((e) => console.warn('Error Delete User', e));
-      // BackendConnection.deleteRole(roleSelected.idroles)
-      //   .then((response) => {
-      //     console.warn('finish Delete', response);
-      //     setOpenDialog(false);
-      //     props.getRoles();
-      //   }).catch((e) => console.warn('Error Delete', e));
-    // deleteRolDependencies();
-    // setTimeout(()=>{
-    // BackendConnection.deleteRole(roleSelected.idroles)
-    //   .then((response) => {
-    //     console.warn('finish Delete', response);
-    //     setOpenDialog(false);
-    //     props.getRoles();
-    //   })
-    //   .catch((e) => console.warn('Error Delete', e));
-    // },5000)
   };
 
   const updateRole = (rol) => {

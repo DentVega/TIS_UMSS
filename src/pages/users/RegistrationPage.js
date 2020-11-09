@@ -203,7 +203,7 @@ const RegistrationPage = (props) => {
           <Grid item>
             <h2>Roles</h2>
           </Grid>
-          <Grid item>
+          <Grid item >
             <FormControl component={'fieldset'}>
               <RadioGroup name={'Rol1'} value={roleSelected} onChange={handleChangeRol}>
                 {roles.map((rol) => {
@@ -223,6 +223,7 @@ const RegistrationPage = (props) => {
 
   const renderForm = () => {
     return (
+     
       <Grid item style={{ width: '100vh', borderRadius: '40px' }}>
         <Grid container justify="center" direction="column" spacing={4}>
           <Grid item style={{ textAlign: 'center' }}>

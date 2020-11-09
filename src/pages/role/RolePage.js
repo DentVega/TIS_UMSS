@@ -21,7 +21,7 @@ import {
   sTheNameCannotBeEmpty
 } from '../../constants/strings';
 import { useNameRol } from '../../constants/formCustomHook/useForm';
-import {ListAccess} from './ListAccess';
+import {ListAccess} from '../../components/ListAccess';
 function RolePage(props) {
   sessionStorage.setItem("path",props.history.location.pathname);
   const [createRoleComplete, setCreateRoleComplete] = useState(false);
@@ -119,7 +119,7 @@ function RolePage(props) {
             
       }) 
     }).then(()=> {    
-      for(let i=0;i<state.length;i++){
+      for(let i=0;i<=state.length-1;i++){
         if(state[i].checked){
           setTimeout(()=>{  
           BackendConnection.roleFunction(idRole,state[i].id);  
