@@ -3,6 +3,8 @@ export const routes = {
   login: '/login',
   campus: '/users',
   career: '/career',
+  registerCareer: '/newcareer',
+  editCareer: '/career/:id',
   school: '/school',
   registerSchool: '/newschool',
   editSchool: '/school/:id',

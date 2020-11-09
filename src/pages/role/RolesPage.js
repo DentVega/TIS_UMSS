@@ -38,7 +38,7 @@ function RolesPage(props) {
   const { roles, loading } = props.rolesReducer;
   const { getRoles } = props;
   const classes = useStyles();
-  
+
   const [roleSelected, setRoleSelected] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
 
@@ -61,8 +61,7 @@ function RolesPage(props) {
 
   const deleteRole = () => {
     BackendConnection.deleteRole(roleSelected.idroles)
-      .then((response) => {
-        console.warn('finish Delete', response);
+      .then(() => {
         setOpenDialog(false);
         props.getRoles();
       })
@@ -71,7 +70,7 @@ function RolesPage(props) {
 
   const updateRole = (rol) => {
     props.history.push(`${routes.roles}/${rol.idroles}`);
-   
+
     props.changeRole(rol);
   };
 
@@ -92,7 +91,7 @@ function RolesPage(props) {
         {roles.map((rol) => {
           return (
             <div key={rol.idroles}>
-            
+
               <CardItem
                 text={rol.rolename}
                 width={500}

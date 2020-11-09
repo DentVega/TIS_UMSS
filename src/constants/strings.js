@@ -22,6 +22,8 @@ export const sCopyright = '@ 2020, DevZ-UMSS todos los derecchos reservados.';
 export const sPassword = 'Contraseña';
 export const sCreateSchool = 'Crear Facultades';
 export const sUpdateSchool = 'Actualizar Facultad';
+export const sCreateCareer = 'Crear Carreras';
+export const sUpdateCareer = 'Actualizar Carreras';
 
 
 //Error messages
