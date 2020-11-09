@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { getCarreras } from '../../redux/actions/indexthunk.actions';
 import CardItem from '../../components/CardItem';
-import ContainerFilter from '../../components/filters/ContainerFilter';
+// import ContainerFilter from '../../components/filters/ContainerFilter';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import makeStyles from '@material-ui/core/styles/makeStyles';

@@ -8,6 +8,7 @@ import schoolReducer from './school.reducer';
 import universityCareersReducer from './universityCareers.reducer';
 import roleFuncsReducer from './roleFun.reducer';
 import filtersReducer from './filters.reducer';
+import materiasReducer from './materias.reducer';
 
 export default combineReducers({
   configReducer: configReducer,
@@ -19,4 +20,5 @@ export default combineReducers({
   careersReducer: universityCareersReducer,
   roleFuncsReducer: roleFuncsReducer,
   filtersReducer: filtersReducer,
+  materiasReducer: materiasReducer,
 });

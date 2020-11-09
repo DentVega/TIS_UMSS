@@ -70,3 +70,11 @@ export const changeRoleFuncs = (roleFuncs) => {
 export const filterCareer = (careers) => {
   return { type: actions.CHANGE_AUX_CARRERA, careers };
 };
+
+export const changeMaterias = (materias) => {
+  return { type: actions.CHANGE_MATERIAS, materias };
+};
+
+export const changeMateria = (materia) => {
+  return { type: actions.CHANGE_MATERIA, materia };
+};
