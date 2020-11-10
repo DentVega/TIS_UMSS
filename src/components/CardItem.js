@@ -19,6 +19,7 @@ const useStyles = makeStyles((theme) => ({
     width: 200,
   },
 }));
+
 function CardItem(props) {
   const { text, showIconRow, width, onClick, showEditIcon, editClick, showDeleteIcon, deleteClick } = props;
   const classes = useStyles();

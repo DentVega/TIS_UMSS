@@ -5,7 +5,9 @@ import {
   changeUsers,
   changeRoleFuncs,
   changeMaterias,
+  changeUserslogs,
 } from './index.actions';
+
 import BackendConnection from '../../api/BackendConnection';
 
 export const getRoles = () => {
@@ -28,6 +30,17 @@ export const getUsers = () => {
   };
 };
 
+export const getUserslogs = () => {
+  return (dispatch) => {
+    BackendConnection.getUserslogs()
+      .then((userslogs) => {
+        dispatch(changeUserslogs(userslogs));
+      })
+      .catch((e) => {
+        console.warn(e.message);
+      });
+  };
+};
 export const getSchools = () => {
   return (dispatch) => {
     BackendConnection.getSchools()

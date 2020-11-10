@@ -48,7 +48,12 @@ export const enumMenuDrawer = {
     id: 9,
     name: 'career',
     nameEs: 'Carreras'
-  }
+  },
+  userslog: {
+    id: 10,
+    name: 'userslog',
+    nameEs: 'Bitacoras',
+  },
 };
 
 export const rolesMock = [

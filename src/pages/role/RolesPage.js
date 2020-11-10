@@ -65,32 +65,32 @@ function RolesPage(props) {
     let cont=0;
     let roleFunction=[];
     BackendConnection.getAllUsersRol().then((res)=>{
-      if(roleFuncs!==null){       
+      if(roleFuncs!==null){
         roleFuncs.forEach(element=>{
           if(element.roles_idroles===roleSelected.idroles){
-            roleFunction.push(element);                    
+            roleFunction.push(element);
           };
         })
       }
-      roleFunction.forEach((element)=>{ 
-        setTimeout(()=>{  
+      roleFunction.forEach((element)=>{
+        setTimeout(()=>{
           BackendConnection.deleteRoleFunc(roleSelected.idroles,element.funcion_idfuncion);
         },cont*400)
-        cont++;             
+        cont++;
       })
       res.forEach(element=>{
         if(element.roles_idroles===roleSelected.idroles){
-          setTimeout(()=>{ 
+          setTimeout(()=>{
           BackendConnection.deleteUserRol(element.users_idusers,roleSelected.idroles);
         },cont*400)
         }
         cont++;
       })
     })
-      
+
   }
   const deleteRole = async () => {
-    deleteRolDependencies();    
+    deleteRolDependencies();
     setTimeout(()=>{
       BackendConnection.deleteRole(roleSelected.idroles).then(()=>{
         props.getRoles();
@@ -101,7 +101,7 @@ function RolesPage(props) {
 
   const updateRole = (rol) => {
     props.history.push(`${routes.roles}/${rol.idroles}`);
-    
+
     props.changeRole(rol);
   };
 

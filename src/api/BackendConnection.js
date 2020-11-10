@@ -310,6 +310,24 @@ class BackendConnection {
     });
   }
 
+  getUserslogs() {
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'GET',
+        url: `${baseUrl}/userslog`,
+        headers: {
+          'content-type': 'application/json',
+          'cache-control': 'no-cache',
+        }
+      }).then((response) => {
+        resolve(response.data);
+      })
+      .catch((e) => {
+        reject(e);
+      });
+    });
+  }
+
   deleteSchools(idFacultad) {
     return new Promise((resolve, reject) => {
       axios({

@@ -20,12 +20,14 @@ import AccountPage from '../pages/AccountPage';
 import RolesPage from '../pages/role/RolesPage';
 import RolePage from '../pages/role/RolePage';
 import RegisterPage from '../pages/users/RegistrationPage';
+import UserslogPage from '../pages/UserslogPage';
 import CustomBottombar from '../components/toolbar/CustomBottombar';
 import Toolbar from '@material-ui/core/Toolbar';
 import { PrivateRoute } from '../constants/PrivateRoute';
 import UniversityCareers from '../pages/universityCareers/UniversityCareers';
 import NewSchoolPage from '../pages/schools/NewSchoolPage';
 import EditSchoolPage from '../pages/schools/EditSchoolPage';
+import UserslogViewPage from '../pages/userslog/UserslogViewPage';
 import NewUniversityCareers from '../pages/universityCareers/NewUniversityCareers';
 import EditUniversityCareers from '../pages/universityCareers/EditUniversityCareers';
 import NewMateria from '../pages/materias/NewMateria';
@@ -88,6 +90,9 @@ function RouterMain(props) {
           <PrivateRoute isAuth={isAuth} exact={true} path={routes.roles} component={RolesPage} />
           <PrivateRoute isAuth={isAuth} exact={true} path={routes.newRole} component={RolePage} />
           <PrivateRoute isAuth={isAuth} exact={true} path={routes.editRole} component={RolePage} />
+          {/*userslog*/}
+          <PrivateRoute isAuth={isAuth} exact={true} path={routes.userslog} component={UserslogPage} />
+          <PrivateRoute isAuth={isAuth} exact={true} path={routes.userslogView} component={UserslogViewPage} />
           {/*Account*/}
           <PrivateRoute isAuth={isAuth} exact={true} path={routes.account} component={AccountPage} />
           <PrivateRoute isAuth={isAuth} exact={true} path={routes.testUi} component={TestUi} />

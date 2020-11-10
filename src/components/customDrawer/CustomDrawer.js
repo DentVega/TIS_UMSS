@@ -18,6 +18,7 @@ import DescriptionIcon from '@material-ui/icons/Description';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import AssignmentIndIcon from '@material-ui/icons/AssignmentInd';
 import SettingsApplicationsIcon from '@material-ui/icons/SettingsApplications';
+import StorageIcon from '@material-ui/icons/Storage';
 import { colorMain } from '../../constants/colors';
 
 const drawerWidth = 240;
@@ -37,7 +38,20 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const CustomDrawer=(props)=> {
+const menuAdmin = [
+  enumMenuDrawer.home,
+  enumMenuDrawer.campus,
+  // enumMenuDrawer.school,
+  // enumMenuDrawer.subjects,
+  // enumMenuDrawer.schedule,
+  // enumMenuDrawer.reports,
+  // enumMenuDrawer.groups,
+  enumMenuDrawer.administration,
+  // enumMenuDrawer.account,
+  enumMenuDrawer.userslog,
+];
+
+function CustomDrawer(props) {
   const classes = useStyles();
   const [state, setState] = React.useState({
     top: false,
@@ -64,8 +78,8 @@ const CustomDrawer=(props)=> {
     userFunctions.includes(enumMenuDrawer.groups.id) && menuAdmin.push(enumMenuDrawer.groups);
     userFunctions.includes(enumMenuDrawer.administration.id) && menuAdmin.push(enumMenuDrawer.administration);
     menuAdmin.push(enumMenuDrawer.account)
+    menuAdmin.push(enumMenuDrawer.userslog)
   }
-
 
   const toggleDrawer = (anchor, open) => (event) => {
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
@@ -106,6 +120,9 @@ const CustomDrawer=(props)=> {
       case 9:
         props.history.push(routes.career);
         break;
+      case 10:
+        props.history.push(routes.userslog);
+        break;
       default:
         props.history.push(routes.home);
         return null;
@@ -130,6 +147,10 @@ const CustomDrawer=(props)=> {
         return <SettingsApplicationsIcon style={{ color: '#ffffff' }} />;
       case 8:
         return <AccountCircleIcon style={{ color: '#ffffff' }} />;
+      case 9:
+        return <StorageIcon style={{ color: '#ffffff' }}/>
+      case 10:
+        return <StorageIcon style={{ color: '#ffffff' }}/>
       default:
         return <HomeIcon style={{ color: '#ffffff' }} />;
     }
