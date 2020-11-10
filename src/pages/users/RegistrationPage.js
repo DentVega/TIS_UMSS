@@ -57,6 +57,7 @@ const RegistrationPage = (props) => {
   const [phone, handlePhoneChange, phoneError, setPhoneError, phoneErrorMessage, setPhoneErrorMessage] = usePhone();
   const [email, setEmail, emailError, setEmailError, emailMessage, setEmailMessage] = useEmail();
   const [ci, handleCiChange, ciError, setCiError, ciErrorMessage, setCiMessageError] = useCi();
+  // eslint-disable-next-line no-unused-vars
   const [password, setPassword, passwordError, setPasswordError, passMessage, setPassMessage] = usePassword();
   const [idUser, setIdUser] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);

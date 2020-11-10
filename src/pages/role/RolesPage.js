@@ -122,7 +122,7 @@ function RolesPage(props) {
         {roles.map((rol) => {
           return (
             <div key={rol.idroles}>
-            
+
               <CardItem
                 text={rol.rolename}
                 width={500}

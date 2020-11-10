@@ -1,7 +1,8 @@
-import { CHANGE_CARRERA, CHANGE_CARRERAS, CLEAN_ALL_REDUCERS } from '../actions/actions';
+import { CHANGE_AUX_CARRERA, CHANGE_CARRERA, CHANGE_CARRERAS, CLEAN_ALL_REDUCERS } from '../actions/actions';
 
 const initialState = {
   careers: [],
+  careersAux: [],
   career: null,
   loading: true,
 };
@@ -12,6 +13,7 @@ function universityCareersReducer(state= initialState, action) {
       return {
         ...state,
         careers: action.careers,
+        careersAux: action.careers,
         loading: false,
       }
     }
@@ -19,6 +21,12 @@ function universityCareersReducer(state= initialState, action) {
       return {
         ...state,
         career: action.career,
+      }
+    }
+    case CHANGE_AUX_CARRERA: {
+      return {
+        ...state,
+        careersAux: action.careers,
       }
     }
     case CLEAN_ALL_REDUCERS: {

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
-import { Button} from '@material-ui/core';
+import { Button } from '@material-ui/core';
 // import { enumMenuDrawer } from '../../constants/mockData';
 // import Checkbox from '@material-ui/core/Checkbox';
 import { withRouter } from 'react-router-dom';
@@ -9,19 +9,23 @@ import { withRouter } from 'react-router-dom';
 import BackendConnection from '../../api/BackendConnection';
 import { connect } from 'react-redux';
 import { changeRole } from '../../redux/actions/index.actions';
-import { getRoles } from '../../redux/actions/indexthunk.actions';
-import { getRoleFuncs } from '../../redux/actions/indexthunk.actions';
+import { getRoleFuncs, getRoles } from '../../redux/actions/indexthunk.actions';
 // import { colorMain } from '../../constants/colors';
 import CustomAlertDialog from '../../components/dialogs/CustomAlertDialog';
+
 import {
   sAreYouSureYourWantCancel,
   sConfirm,
   sConfirmTheCreationRol,
-  sConfirmTheUpdateOfRol, sCreateRol, sEditRol, sNameTheRol,
+  sConfirmTheUpdateOfRol,
+  sCreateRol,
+  sEditRol,
+  sNameTheRol,
   sTheNameCannotBeEmpty
 } from '../../constants/strings';
 import { useNameRol } from '../../constants/formCustomHook/useForm';
-import {ListAccess} from '../../components/ListAccess';
+import { ListAccess } from '../../components/ListAccess';
+
 function RolePage(props) {
   sessionStorage.setItem("path",props.history.location.pathname);
   const [createRoleComplete, setCreateRoleComplete] = useState(false);
@@ -38,7 +42,9 @@ function RolePage(props) {
     {id:4,checked:false},
     {id:5,checked:false},
     {id:6,checked:false},
-    {id:7,checked:false}
+    {id:7,checked:false},
+    {id:8,checked:false},
+    {id:9,checked:false}
   ]);
   const { role } = props.rolesReducer;
   const {roleFuncs}=props.roleFuncs;
@@ -70,6 +76,7 @@ function RolePage(props) {
       setNameRole("");
     }
   },[])
+
   const cancelCreateRole = () => {
     props.changeRole(null);
     props.history.goBack();
@@ -86,7 +93,7 @@ function RolePage(props) {
         setCreateRoleComplete(true);
         BackendConnection.getRoles()
         .then((res) =>{
-          const id=res.find(c=>c.rolename===nameRole).idroles; 
+          const id=res.find(c=>c.rolename===nameRole).idroles;
           for(let i=0;i<state.length;i++){
             if(state[i].checked){
               setTimeout(() => {
@@ -100,7 +107,7 @@ function RolePage(props) {
           },cont*200)
         })
         .catch((err) => console.warn(err))
-      });     
+      });
     }
   };
 
@@ -130,7 +137,7 @@ function RolePage(props) {
     })
     setTimeout(()=>{  
      props.getRoleFunc();
-    },8*1000)
+    },8.5*1000)
     setUpdateRoleComplete(true);
     
     } 
@@ -156,7 +163,7 @@ function RolePage(props) {
   };
 
   return (
-    <div>   
+    <div>
       <CustomAlertDialog
         title={sConfirm}
         messageText={idRole === null ? sConfirmTheCreationRol : sConfirmTheUpdateOfRol}

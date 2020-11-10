@@ -11,7 +11,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import CampusPage from '../pages/users/CampusPage';
 import SchoolPage from '../pages/schools/SchoolPage';
-import SubjectPage from '../pages/SubjectsPage';
+import SubjectPage from '../pages/materias/SubjectsPage';
 import ReportsPage from '../pages/ReportsPage';
 import SchedulePage from '../pages/SchedulePage';
 import GroupsPage from '../pages/GroupsPage';
@@ -26,6 +26,10 @@ import { PrivateRoute } from '../constants/PrivateRoute';
 import UniversityCareers from '../pages/universityCareers/UniversityCareers';
 import NewSchoolPage from '../pages/schools/NewSchoolPage';
 import EditSchoolPage from '../pages/schools/EditSchoolPage';
+import NewUniversityCareers from '../pages/universityCareers/NewUniversityCareers';
+import EditUniversityCareers from '../pages/universityCareers/EditUniversityCareers';
+import NewMateria from '../pages/materias/NewMateria';
+import EditarMateria from '../pages/materias/EditarMateria';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -62,15 +66,23 @@ function RouterMain(props) {
           <PrivateRoute isAuth={isAuth} exact={true} path={routes.editUser} component={RegisterPage} />
           {/*Career*/}
           <PrivateRoute isAuth={isAuth} exact={true} path={routes.career} component={UniversityCareers} />
+          <PrivateRoute isAuth={isAuth} exact={true} path={routes.registerCareer} component={NewUniversityCareers}/>
+          <PrivateRoute isAuth={isAuth} exact={true} path={routes.editCareer} component={EditUniversityCareers} />
           {/*School*/}
           <PrivateRoute isAuth={isAuth} exact={true} path={routes.school} component={SchoolPage} />
           <PrivateRoute isAuth={isAuth} exact={true} path={routes.registerSchool} component={NewSchoolPage}/>
           <PrivateRoute isAuth={isAuth} exact={true} path={routes.editSchool} component={EditSchoolPage} />
           {/*Subject*/}
           <PrivateRoute isAuth={isAuth} exact={true} path={routes.subjects} component={SubjectPage} />
+          <PrivateRoute isAuth={isAuth} exact={true} path={routes.registerMateria} component={NewMateria}/>
+          <PrivateRoute isAuth={isAuth} exact={true} path={routes.editMateria} component={EditarMateria}/>
+          {/*Reportes*/}
           <PrivateRoute isAuth={isAuth} exact={true} path={routes.reports} component={ReportsPage} />
+          {/*Horarios*/}
           <PrivateRoute isAuth={isAuth} exact={true} path={routes.schedule} component={SchedulePage} />
+          {/*Grupos*/}
           <PrivateRoute isAuth={isAuth} exact={true} path={routes.groups} component={GroupsPage} />
+          {/*Admnistracion*/}
           <PrivateRoute isAuth={isAuth} exact={true} path={routes.administration} component={AdministratorPage} />
           {/*Roles*/}
           <PrivateRoute isAuth={isAuth} exact={true} path={routes.roles} component={RolesPage} />

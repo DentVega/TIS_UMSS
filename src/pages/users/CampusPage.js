@@ -71,8 +71,7 @@ function CampusPage(props) {
     await BackendConnection.deleteUserRol(userSelected.idusers, userRol[0].idroles);
 
     BackendConnection.deleteUsers(userSelected.idusers)
-      .then((response) => {
-        console.warn('finish delete user', response);
+      .then(() => {
         setOpenDialog(false);
         props.getUsers();
       })

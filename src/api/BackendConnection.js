@@ -52,7 +52,8 @@ class BackendConnection {
         .catch((e) => reject(e));
     });
   }
-  getUserRol(idUser){
+
+  getUserRol(idUser) {
     return new Promise((resolve, reject) => {
       axios({
         method: 'GET',
@@ -204,7 +205,7 @@ class BackendConnection {
     return new Promise((resolve, reject) => {
       axios({
         method: 'GET',
-        url: `${baseUrl}/userrol/${idUser}`,
+        url: `${baseUrl}/userRol/${idUser}`,
         headers: {
           'content-type': 'application/json',
           'cache-control': 'no-cache',
@@ -223,7 +224,7 @@ class BackendConnection {
     return new Promise((resolve, reject) => {
       axios({
         method: 'POST',
-        url: `${baseUrl}/userrol/`,
+        url: `${baseUrl}/userRol/`,
         headers: {
           'content-type': 'application/json',
           'cache-control': 'no-cache',
@@ -247,7 +248,7 @@ class BackendConnection {
     return new Promise((resolve, reject) => {
       axios({
         method: 'DELETE',
-        url: `${baseUrl}/userrol/${userId}/${rolId}`,
+        url: `${baseUrl}/userRol/${userId}/${rolId}`,
       })
         .then((response) => {
           resolve(response.data);
@@ -339,81 +340,167 @@ class BackendConnection {
     });
   }
 
-  roleFunction(idRole,idFuncion){
-    return new Promise((resolve,reject)=>{
+  createCareer(facultad_idfacultad, namecarrera) {
+    return new Promise((resolve, reject) => {
       axios({
-        method:'POST',
-        url:`${baseUrl}/rolfun`,
-        headers: {
-          'content-type': 'application/json',
-          'cache-control': 'no-cache'
+        method: 'POST',
+        url: `${baseUrl}/carrera`,
+        data: {
+          facultad_idfacultad: facultad_idfacultad,
+          namecarrera: namecarrera,
         },
-        data:{
-          roles_idroles:idRole,
-          funcion_idfuncion:idFuncion
-        }
-      }).then((response) => {
-        console.warn(response);
-        resolve(response);
       })
-      .catch((e) => {
-        console.warn(e.message);
-        reject(e);
-      });
+        .then((response) => resolve(response.data))
+        .catch((e) => reject(e));
     });
   }
 
-    getRoleFuncs(){
-      return new Promise((resolve,reject)=>{
-        axios({
-          method:'GET',
-          url:`${baseUrl}/rolfun`,
-          headers: {
-            'content-type': 'application/json',
-            'cache-control': 'no-cache'
-          },
-        }).then((response) => {
+  updateCareer(idCarrera, facultad_idfacultad, namecarrera) {
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'PUT',
+        url: `${baseUrl}/carrera/${idCarrera}`,
+        data: {
+          facultad_idfacultad: facultad_idfacultad,
+          namecarrera: namecarrera,
+        },
+      })
+        .then((response) => resolve(response.data))
+        .catch((e) => reject(e));
+    });
+  }
+
+  deleteCareer(facultad_idfacultad) {
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'DELETE',
+        url: `${baseUrl}/carrera/${facultad_idfacultad}`,
+      })
+        .then((response) => resolve(response.data))
+        .catch((e) => reject(e));
+    });
+  }
+
+  getMaterias() {
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'GET',
+        url: `${baseUrl}/materia`,
+      })
+        .then((response) => {
           resolve(response.data);
-        }).catch((e) => {
+        })
+        .catch((e) => {
+          reject(e);
+        });
+    });
+  }
+
+  createMateria(carrera_idcarrera, namemateria) {
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'POST',
+        url: `${baseUrl}/materia`,
+        data: {
+          carrera_idcarrera: carrera_idcarrera,
+          namemateria: namemateria,
+        },
+      })
+        .then((response) => resolve(response.data))
+        .catch((e) => reject(e));
+    });
+  }
+
+  updateMateria(idmateria, carrera_idcarrera, namemateria) {
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'PUT',
+        url: `${baseUrl}/materia/${idmateria}`,
+        data: {
+          carrera_idcarrera: carrera_idcarrera,
+          namemateria: namemateria,
+        },
+      })
+        .then((response) => resolve(response.data))
+        .catch((e) => reject(e));
+    });
+  }
+
+  deleteMateria(idMateria) {
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'DELETE',
+        url: `${baseUrl}/materia/${idMateria}`,
+      })
+        .then((response) => resolve(response.data))
+        .catch((e) => reject(e));
+    });
+  }
+
+  roleFunction(idRole, idFuncion) {
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'POST',
+        url: `https://tis-backend.herokuapp.com/rolfun`,
+        headers: {
+          'content-type': 'application/json',
+          'cache-control': 'no-cache',
+        },
+        data: {
+          roles_idroles: idRole,
+          funcion_idfuncion: idFuncion,
+        },
+      })
+        .then((response) => {
+          console.warn(response);
+          resolve(response);
+        })
+        .catch((e) => {
           console.warn(e.message);
           reject(e);
         });
+    });
+  }
+
+  getRoleFuncs() {
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'GET',
+        url: `https://tis-backend.herokuapp.com/rolfun`,
+        headers: {
+          'content-type': 'application/json',
+          'cache-control': 'no-cache',
+        },
       })
-    }
-    deleteRoleFunc(idRol,idFunc){
-      return new Promise((resolve,reject)=>{
-        axios({
-          method:'DELETE',
-          url:`${baseUrl}/rolfun/${idRol}/${idFunc}`,
-          headers: {
-            'content-type': 'application/json',
-            'cache-control': 'no-cache'
-          },
-        }).then((response) => {
+        .then((response) => {
           resolve(response.data);
-        }).catch((e) => {
+        })
+        .catch((e) => {
           console.warn(e.message);
           reject(e);
         });
+    });
+  }
+
+  deleteRoleFunc(idRol, idFunc) {
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'DELETE',
+        url: `https://tis-backend.herokuapp.com/rolfun/${idRol}/${idFunc}`,
+        headers: {
+          'content-type': 'application/json',
+          'cache-control': 'no-cache',
+        },
       })
-    }
-    getAllUsersRol(){
-      return new Promise((resolve,reject)=>{
-        axios({
-          method:'GET',
-          url: `${baseUrl}/userrol`,
-          headers: {
-            'content-type': 'application/json',
-            'cache-control': 'no-cache'
-          },
-        }).then((response) => {
+        .then((response) => {
           resolve(response.data);
-        }).catch((e) => {
+        })
+        .catch((e) => {
           console.warn(e.message);
           reject(e);
         });
-      })
-    }    
+    });
+  }
 }
 
 export default new BackendConnection();
