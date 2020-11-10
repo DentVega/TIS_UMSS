@@ -1,4 +1,4 @@
-import React, { memo,useLayoutEffect } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
@@ -63,7 +63,6 @@ function CustomDrawer(props) {
   const {roleFuncs}=props.roleFun;
   const {userRole}=props.rolesReducer;
   let userFunctions= [],menuAdmin=[];
-  console.log("render");
 
   if(roleFuncs!==null && userRole!==null && roleFuncs !==undefined && userRole !== undefined){
     roleFuncs.map(r=>r.roles_idroles===userRole.idroles&&userFunctions.push(r.funcion_idfuncion));
@@ -72,6 +71,7 @@ function CustomDrawer(props) {
     menuAdmin.push(enumMenuDrawer.home)
     userFunctions.includes(enumMenuDrawer.campus.id) && menuAdmin.push(enumMenuDrawer.campus);
     userFunctions.includes(enumMenuDrawer.school.id) && menuAdmin.push(enumMenuDrawer.school);
+    userFunctions.includes(enumMenuDrawer.career.id) && menuAdmin.push(enumMenuDrawer.career);
     userFunctions.includes(enumMenuDrawer.subjects.id) && menuAdmin.push(enumMenuDrawer.subjects);
     userFunctions.includes(enumMenuDrawer.schedule.id) && menuAdmin.push(enumMenuDrawer.schedule);
     userFunctions.includes(enumMenuDrawer.reports.id) && menuAdmin.push(enumMenuDrawer.reports);

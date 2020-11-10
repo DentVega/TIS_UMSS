@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
-import { Button} from '@material-ui/core';
+import { Button } from '@material-ui/core';
 // import { enumMenuDrawer } from '../../constants/mockData';
 // import Checkbox from '@material-ui/core/Checkbox';
 import { withRouter } from 'react-router-dom';
@@ -9,19 +9,22 @@ import { withRouter } from 'react-router-dom';
 import BackendConnection from '../../api/BackendConnection';
 import { connect } from 'react-redux';
 import { changeRole } from '../../redux/actions/index.actions';
-import { getRoles } from '../../redux/actions/indexthunk.actions';
-import { getRoleFuncs } from '../../redux/actions/indexthunk.actions';
+import { getRoleFuncs, getRoles } from '../../redux/actions/indexthunk.actions';
 // import { colorMain } from '../../constants/colors';
 import CustomAlertDialog from '../../components/dialogs/CustomAlertDialog';
 import {
   sAreYouSureYourWantCancel,
   sConfirm,
   sConfirmTheCreationRol,
-  sConfirmTheUpdateOfRol, sCreateRol, sEditRol, sNameTheRol,
+  sConfirmTheUpdateOfRol,
+  sCreateRol,
+  sEditRol,
+  sNameTheRol,
   sTheNameCannotBeEmpty
 } from '../../constants/strings';
 import { useNameRol } from '../../constants/formCustomHook/useForm';
-import {ListAccess} from './ListAccess';
+import { ListAccess } from './ListAccess';
+
 function RolePage(props) {
   sessionStorage.setItem("path",props.history.location.pathname);
   const [createRoleComplete, setCreateRoleComplete] = useState(false);
@@ -38,33 +41,37 @@ function RolePage(props) {
     {id:4,checked:false},
     {id:5,checked:false},
     {id:6,checked:false},
-    {id:7,checked:false}
+    {id:7,checked:false},
+    {id:8,checked:false},
+    {id:9,checked:false}
   ]);
   const { role } = props.rolesReducer;
   const {roleFuncs}=props.roleFuncs;
   let roleFun=[];
- 
+
     if (role != null && !loadCurrentRole) {
       setNameRole(role.rolename);
       setIdRole(role.idroles);
       setLoadCurrentRole(true);
     }
-    console.log(props.history.location);
-  useEffect(()=>{ 
+
+
+  useEffect(()=>{
     if(props.history.location.pathname!=="/newrole"){
-      let arr=[...state]; 
-      if(roleFuncs!==null){       
+      let arr=[...state];
+      if(roleFuncs!==null){
         roleFuncs.forEach(element=>{
           if(element.roles_idroles===idRole){
             roleFun.push(element);
-            let newObj={...arr[(element.funcion_idfuncion)-1],checked:true};
-            arr[element.funcion_idfuncion-1]=newObj;          
-          };
+            arr[element.funcion_idfuncion-1]={ ...arr[(element.funcion_idfuncion) - 1], checked: true };
+          }
         })
       }
     setState(arr);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
+
   const cancelCreateRole = () => {
     props.changeRole(null);
     props.history.goBack();
@@ -80,14 +87,14 @@ function RolePage(props) {
         setCreateRoleComplete(true);
         BackendConnection.getRoles()
         .then((res) =>{
-          const id=res.find(c=>c.rolename===nameRole).idroles; 
+          const id=res.find(c=>c.rolename===nameRole).idroles;
           for(let i=0;i<state.length;i++){
-            if(state[i].checked)BackendConnection.roleFunction(id,state[i].id);            
+            if(state[i].checked)BackendConnection.roleFunction(id,state[i].id);
           }
           props.getRoleFunc();
         })
         .catch((err) => console.warn(err))
-      });     
+      });
     }
   };
 
@@ -95,24 +102,24 @@ function RolePage(props) {
     if (nameRole.length === 0) {
       setNameErrorMessage(sTheNameCannotBeEmpty);
       setNameError(true);
-    } else {          
+    } else {
       BackendConnection.updateRole(idRole, nameRole)
-      .then(() => {        
+      .then(() => {
         roleFun.forEach(element=>{
           if(element.roles_idroles===idRole){
           BackendConnection.deleteRoleFunc(idRole,element.funcion_idfuncion);
           props.getRoleFunc();
-          }          
+          }
         })
       }).then(()=>{
           for(let i=0;i<state.length;i++){
             if(state[i].checked){
               BackendConnection.roleFunction(idRole,state[i].id);
               props.getRoleFunc();
-            }            
+            }
           }
-        })         
-        setUpdateRoleComplete(true);     
+        })
+        setUpdateRoleComplete(true);
     }
   };
 
@@ -136,7 +143,7 @@ function RolePage(props) {
   };
 
   return (
-    <div>   
+    <div>
       <CustomAlertDialog
         title={sConfirm}
         messageText={idRole === null ? sConfirmTheCreationRol : sConfirmTheUpdateOfRol}

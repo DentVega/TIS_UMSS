@@ -54,10 +54,34 @@ export const changeCarreras = (careers) => {
   return { type: actions.CHANGE_CARRERAS, careers };
 };
 
-export const changeCarrera = (carrera) => {
-  return { type: actions.CHANGE_CARRERA, carrera }
+export const changeCarrera = (career) => {
+  return { type: actions.CHANGE_CARRERA, career };
+};
+
+export const changeFacultadFiltro = (facultadSeleccionada) => {
+  return { type: actions.CHANGE_FACULTAD_SELECCIONADA_FILTRO, facultadSeleccionada };
+};
+
+export const changeCarreraFiltro = (carreraSeleccionada) => {
+  return { type: actions.CHANGE_CARRERA_SELECCIONADA_FILTRO, carreraSeleccionada };
+};
+
+export const changeMateriaFiltro = (materiaSeleccionada) => {
+  return { type: actions.CHANGE_MATERIA_SELECCIONADA_FILTRO, materiaSeleccionada }
 };
 
 export const changeRoleFuncs = (roleFuncs) => {
-  return {type:actions.CHANGE_ROLEFUNCS, roleFuncs};
-}
+  return { type: actions.CHANGE_ROLEFUNCS, roleFuncs };
+};
+
+export const filterCareer = (careers) => {
+  return { type: actions.CHANGE_AUX_CARRERA, careers };
+};
+
+export const changeMaterias = (materias) => {
+  return { type: actions.CHANGE_MATERIAS, materias };
+};
+
+export const changeMateria = (materia) => {
+  return { type: actions.CHANGE_MATERIA, materia };
+};

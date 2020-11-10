@@ -1,4 +1,12 @@
 import { changeCarreras, changeRoles, changeSchools, changeUsers, changeRoleFuncs, changeUserslogs } from './index.actions';
+import {
+  changeCarreras,
+  changeRoles,
+  changeSchools,
+  changeUsers,
+  changeRoleFuncs,
+  changeMaterias,
+} from './index.actions';
 import BackendConnection from '../../api/BackendConnection';
 
 export const getRoles = () => {
@@ -51,19 +59,31 @@ export const getCarreras = () => {
         dispatch(changeCarreras(carreras));
       })
       .catch((e) => {
-        console.log(e)
+        console.log(e);
       });
   };
 };
 
-export const getRoleFuncs = () =>{
-  return (dispatch) =>{
+export const getRoleFuncs = () => {
+  return (dispatch) => {
     BackendConnection.getRoleFuncs()
-      .then(RoleFuncs=>{
+      .then((RoleFuncs) => {
         dispatch(changeRoleFuncs(RoleFuncs));
       })
-      .catch((e) =>{
-        console.warn(e.message)
+      .catch((e) => {
+        console.warn(e.message);
+      });
+  };
+};
+
+export const getMateriasBackend = () => {
+  return (dispatch) => {
+    BackendConnection.getMaterias()
+      .then((materias) => {
+        dispatch(changeMaterias(materias));
       })
-  }
-}
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+};

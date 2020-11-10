@@ -33,6 +33,7 @@ function EditSchoolPage(props) {
 
   if (updateSchoolComplete) {
     props.getSchools();
+    props.changeSchool(null);
     props.history.goBack();
   }
 
