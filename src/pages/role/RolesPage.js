@@ -12,6 +12,8 @@ import BackendConnection from '../../api/BackendConnection';
 import { changeRole } from '../../redux/actions/index.actions';
 import CustomAlertDialog from '../../components/dialogs/CustomAlertDialog';
 import { sConfirm } from '../../constants/strings';
+import { getUsers } from '../../redux/actions/indexthunk.actions';
+
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.paper,
@@ -37,16 +39,17 @@ function RolesPage(props) {
   sessionStorage.setItem("path",props.history.location.pathname);
   const { roles, loading } = props.rolesReducer;
   const { getRoles } = props;
+  const {getUsers}=props;
   const classes = useStyles();
-
+  const {roleFuncs}=props.roleFun;
   const [roleSelected, setRoleSelected] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
-
   useEffect(() => {
     if (loading) {
       getRoles();
+      getUsers();
     }
-  });
+  },[]);
 
   const fab = {
     color: 'primary',
@@ -58,18 +61,47 @@ function RolesPage(props) {
   const newRole = () => {
     props.history.push(routes.newRole);
   };
-
-  const deleteRole = () => {
-    BackendConnection.deleteRole(roleSelected.idroles)
-      .then(() => {
-        setOpenDialog(false);
-        props.getRoles();
+  const deleteRolDependencies=()=>{
+    let cont=0;
+    let roleFunction=[];
+    BackendConnection.getAllUsersRol().then((res)=>{
+      if(roleFuncs!==null){
+        roleFuncs.forEach(element=>{
+          if(element.roles_idroles===roleSelected.idroles){
+            roleFunction.push(element);
+          };
+        })
+      }
+      roleFunction.forEach((element)=>{
+        setTimeout(()=>{
+          BackendConnection.deleteRoleFunc(roleSelected.idroles,element.funcion_idfuncion);
+        },cont*400)
+        cont++;
       })
-      .catch((e) => console.warn('Error Delete', e));
+      res.forEach(element=>{
+        if(element.roles_idroles===roleSelected.idroles){
+          setTimeout(()=>{
+          BackendConnection.deleteUserRol(element.users_idusers,roleSelected.idroles);
+        },cont*400)
+        }
+        cont++;
+      })
+    })
+
+  }
+  const deleteRole = async () => {
+    deleteRolDependencies();
+    setTimeout(()=>{
+      BackendConnection.deleteRole(roleSelected.idroles).then(()=>{
+        props.getRoles();
+        setOpenDialog(false);
+      })
+    },5000)
   };
 
   const updateRole = (rol) => {
     props.history.push(`${routes.roles}/${rol.idroles}`);
+
     props.changeRole(rol);
   };
 
@@ -127,11 +159,14 @@ function RolesPage(props) {
 const mapStateToProps = (state) => {
   return {
     app: state.app,
+    usersReducer: state.usersReducer,
     rolesReducer: state.rolesReducer,
+    roleFun:state.roleFuncsReducer,
   };
 };
 
 const mapDispatchToProps = (dispatch) => ({
+  getUsers: () => dispatch(getUsers()),
   getRoles: () => dispatch(getRoles()),
   changeRole: (rol) => dispatch(changeRole(rol)),
 });

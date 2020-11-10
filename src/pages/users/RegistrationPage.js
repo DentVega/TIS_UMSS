@@ -62,7 +62,7 @@ const RegistrationPage = (props) => {
   const [idUser, setIdUser] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
   const [openDialogCancel, setOpenDialogCancel] = useState(false);
-  const [roleSelected, setRoleSelected] = useState(1);
+  const [roleSelected, setRoleSelected] = useState(0);
 
   useEffect(() => {
     getRoles();
@@ -127,7 +127,9 @@ const RegistrationPage = (props) => {
 
   const getRol = (idUser) => {
     BackendConnection.getUserRolByIdUser(idUser).then((response) => {
-      setRoleSelected(response[0].idroles);
+      if(response.length>0){
+        setRoleSelected(response[0].idroles);
+      }
     });
   };
 
@@ -172,13 +174,14 @@ const RegistrationPage = (props) => {
 
   const updateUser = async () => {
     const userRol = await BackendConnection.getUserRolByIdUser(idUser);
-    await BackendConnection.deleteUserRol(idUser, userRol[0].idroles);
-    await BackendConnection.createUserRol(idUser, roleSelected);
+    console.log(userRol);
+      if(userRol.length>0) await BackendConnection.deleteUserRol(idUser, userRol[0].idroles);
+      await BackendConnection.createUserRol(idUser, roleSelected);
 
-    BackendConnection.updateUser(idUser, name, lastName, phone, email, ci, password).then(() => {
-      setOpenDialog(false);
-      setUpdateUserComplete(true);
-    });
+      BackendConnection.updateUser(idUser, name, lastName, phone, email, ci, password).then(() => {
+        setOpenDialog(false);
+        setUpdateUserComplete(true);
+      });
   };
 
   const cancel = () => {
@@ -201,7 +204,7 @@ const RegistrationPage = (props) => {
           <Grid item>
             <h2>Roles</h2>
           </Grid>
-          <Grid item>
+          <Grid item >
             <FormControl component={'fieldset'}>
               <RadioGroup name={'Rol1'} value={roleSelected} onChange={handleChangeRol}>
                 {roles.map((rol) => {
@@ -221,6 +224,7 @@ const RegistrationPage = (props) => {
 
   const renderForm = () => {
     return (
+     
       <Grid item style={{ width: '100vh', borderRadius: '40px' }}>
         <Grid container justify="center" direction="column" spacing={4}>
           <Grid item style={{ textAlign: 'center' }}>

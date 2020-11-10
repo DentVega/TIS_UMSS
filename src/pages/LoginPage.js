@@ -10,6 +10,7 @@ import BackendConnection from '../api/BackendConnection';
 import { sBadCredentials, sForgotYourPassword, sIncorrectPassword, sInvalidEmail, sLogin } from '../constants/strings';
 import { emailRegex } from '../constants/regexs';
 import { getRoleFuncs } from '../redux/actions/indexthunk.actions';
+
 const LoginPage = (props) => {
   const e=sessionStorage.getItem("email")
   const p=sessionStorage.getItem("password")
