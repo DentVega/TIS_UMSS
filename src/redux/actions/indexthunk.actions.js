@@ -1,4 +1,3 @@
-import { changeCarreras, changeRoles, changeSchools, changeUsers, changeRoleFuncs, changeUserslogs } from './index.actions';
 import {
   changeCarreras,
   changeRoles,
@@ -6,7 +5,9 @@ import {
   changeUsers,
   changeRoleFuncs,
   changeMaterias,
+  changeUserslogs,
 } from './index.actions';
+
 import BackendConnection from '../../api/BackendConnection';
 
 export const getRoles = () => {
