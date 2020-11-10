@@ -71,7 +71,6 @@ function RolesPage(props) {
 
   const updateRole = (rol) => {
     props.history.push(`${routes.roles}/${rol.idroles}`);
-   
     props.changeRole(rol);
   };
 

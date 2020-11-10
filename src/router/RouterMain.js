@@ -27,6 +27,7 @@ import { PrivateRoute } from '../constants/PrivateRoute';
 import UniversityCareers from '../pages/universityCareers/UniversityCareers';
 import NewSchoolPage from '../pages/schools/NewSchoolPage';
 import EditSchoolPage from '../pages/schools/EditSchoolPage';
+import UserslogViewPage from '../pages/userslog/UserslogViewPage';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -78,9 +79,11 @@ function RouterMain(props) {
           <PrivateRoute isAuth={isAuth} exact={true} path={routes.roles} component={RolesPage} />
           <PrivateRoute isAuth={isAuth} exact={true} path={routes.newRole} component={RolePage} />
           <PrivateRoute isAuth={isAuth} exact={true} path={routes.editRole} component={RolePage} />
+          {/*userslog*/}
+          <PrivateRoute isAuth={isAuth} exact={true} path={routes.userslog} component={UserslogPage} />
+          <PrivateRoute isAuth={isAuth} exact={true} path={routes.userslogView} component={UserslogViewPage} />
           {/*Account*/}
           <PrivateRoute isAuth={isAuth} exact={true} path={routes.account} component={AccountPage} />
-          <PrivateRoute isAuth={isAuth} exact={true} path={routes.userslog} component={UserslogPage} />
           <PrivateRoute isAuth={isAuth} exact={true} path={routes.testUi} component={TestUi} />
           <PrivateRoute isAuth={isAuth} exact={true} path={routes.route404} component={NotFoundPage} />
         </main>

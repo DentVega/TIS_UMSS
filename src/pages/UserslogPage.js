@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
+import { routes } from '../router/RoutesConstants';
 import { withRouter } from 'react-router-dom';
 import { getUserslogs, getUsers } from '../redux/actions/indexthunk.actions';
 import CardItem from '../components/CardItem';
@@ -16,8 +17,8 @@ function UserslogPage(props) {
     }
   });
 
-  const onClick = (id) => {
-    console.log(id);
+  const onClick = (item) => {
+    props.history.push(`${routes.userslog}/${item.iduserslog}`);
   }
 
   return (
@@ -27,16 +28,14 @@ function UserslogPage(props) {
         let text = "Usuario ";
         if(users.length > 0){
           const userSelected = users.filter((user) => user.idusers == item.users_idusers );
-          console.log("este es el usuario", userSelected);
           text += userSelected[0].firstname + " ";
           text += userSelected[0].lastname + " hizo un ";
           text += getTransaction(item.transaction_idtransaction);
         }
         return (
           <div key={item.iduserslog}>
-
             <CardItem
-              onClick={() => onClick(item.iduserslog)}
+              onClick={() => onClick(item)}
               text={text}
               width={500}
               showEditIcon={false}

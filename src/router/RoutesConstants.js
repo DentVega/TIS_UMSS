@@ -20,4 +20,5 @@ export const routes = {
   registerUser: '/registerUser',
   editUser: '/users/:id',
   userslog: '/userslog',
+  userslogView: '/userslog/:id',
 };
