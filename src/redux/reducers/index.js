@@ -10,6 +10,7 @@ import universityCareersReducer from './universityCareers.reducer';
 import roleFuncsReducer from './roleFun.reducer';
 import filtersReducer from './filters.reducer';
 import materiasReducer from './materias.reducer';
+import horarioReducer from './horario.reducer';
 
 export default combineReducers({
   configReducer: configReducer,
@@ -23,4 +24,5 @@ export default combineReducers({
   roleFuncsReducer: roleFuncsReducer,
   filtersReducer: filtersReducer,
   materiasReducer: materiasReducer,
+  horarioReducer: horarioReducer,
 });

@@ -14,13 +14,13 @@ function UserslogViewPage(props) {
 
   const getSelected = (id) => {
     if(userslogs.length > 0){
-      return userslogs.filter((it) => it.iduserslog == id);
+      return userslogs.filter((it) => it.iduserslog === id);
     }
    }
 
   const getUser = (id) => {
     if(users.length > 0){
-      return users.filter((it) => it.idusers == id);
+      return users.filter((it) => it.idusers === id);
     }
   }
 
@@ -79,10 +79,10 @@ function UserslogViewPage(props) {
 }
 
 const getTransaction = (id) => {
-  if(id == 1){
+  if(id === 1){
     return "DELETE";
   }else{
-    if(id == 2){
+    if(id === 2){
       return "UPDATE";
     }else{
       return "INSERT";
