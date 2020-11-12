@@ -85,3 +85,11 @@ export const changeMaterias = (materias) => {
 export const changeMateria = (materia) => {
   return { type: actions.CHANGE_MATERIA, materia };
 };
+
+export const changeHorarios = (horarios) => {
+  return { type: actions.CHANGE_HORARIOS, horarios };
+};
+
+export const changeHorario = (horario) => {
+  return { type: actions.CHANGE_HORARIO, horario };
+};

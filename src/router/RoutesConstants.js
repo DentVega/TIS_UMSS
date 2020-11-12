@@ -13,6 +13,8 @@ export const routes = {
   editMateria: '/subjects/:id',
   reports: '/reports',
   schedule: '/schedule',
+  registerHorario: '/newschedule',
+  editHorario: '/schedule/:id',
   groups: '/groups',
   administration: '/administration',
   roles: '/roles',

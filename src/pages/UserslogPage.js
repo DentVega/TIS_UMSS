@@ -27,7 +27,7 @@ function UserslogPage(props) {
       {userslogs.length > 0 && userslogs.map((item) => {
         let text = "Usuario ";
         if(users.length > 0){
-          const userSelected = users.filter((user) => user.idusers == item.users_idusers );
+          const userSelected = users.filter((user) => user.idusers === item.users_idusers );
           text += userSelected[0].firstname + " ";
           text += userSelected[0].lastname + " hizo un ";
           text += getTransaction(item.transaction_idtransaction);
@@ -50,10 +50,10 @@ function UserslogPage(props) {
 }
 
 const getTransaction = (id) => {
-  if(id == 1){
+  if(id === 1){
     return "DELETE";
   }else{
-    if(id == 2){
+    if(id === 2){
       return "UPDATE";
     }else{
       return "INSERT";

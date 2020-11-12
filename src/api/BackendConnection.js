@@ -519,6 +519,60 @@ class BackendConnection {
         });
     });
   }
+
+  getHorarios() {
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'GET',
+        url: `${baseUrl}/horario`,
+      })
+        .then((response) => resolve(response.data))
+        .catch((e) => reject(e));
+    });
+  }
+
+  createHorario(facultad_idfacultad, horaini, horafin) {
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'POST',
+        url: `${baseUrl}/horario`,
+        data: {
+          facultad_idfacultad: facultad_idfacultad,
+          horaini: horaini,
+          horafin: horafin,
+        }
+      })
+        .then((response) => resolve(response.data))
+        .catch((e) => reject(e));
+    });
+  }
+
+  updateHorario(idHorario, facultad_idfacultad, horaini, horafin) {
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'PUT',
+        url: `${baseUrl}/horario/${idHorario}`,
+        data: {
+          facultad_idfacultad: facultad_idfacultad,
+          horaini: horaini,
+          horafin: horafin,
+        }
+      })
+        .then((response) => resolve(response.data))
+        .catch((e) => reject(e));
+    });
+  }
+
+  deleteHorario(idHorario) {
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'DELETE',
+        url: `${baseUrl}/horario/${idHorario}`,
+      })
+        .then((response) => resolve(response.data))
+        .catch((e) => reject(e));
+    });
+  }
 }
 
 export default new BackendConnection();
