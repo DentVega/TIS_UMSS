@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { getCarreras, getMateriasBackend } from '../../redux/actions/indexthunk.actions';
-import { useFullName } from '../../constants/formCustomHook/useForm';
+import { useFullNameMateria } from '../../constants/formCustomHook/useForm';
 import BackendConnection from '../../api/BackendConnection';
 import {
   sAreYouSureYourWantCancel,
@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function NewMateria(props) {
-  const [name, handleNameChange, nameError, setNameError, nameMesasge, setNameErrorMessage] = useFullName();
+  const [name, handleNameChange, nameError, setNameError, nameMesasge, setNameErrorMessage] = useFullNameMateria();
   const [openDialog, setOpenDialog] = useState(false);
   const [openDialogCancel, setOpenDialogCancel] = useState(false);
   const [createMateriaComplete, setCreateMateriaComplete] = useState(false);
