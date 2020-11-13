@@ -38,19 +38,6 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const menuAdmin = [
-  enumMenuDrawer.home,
-  enumMenuDrawer.campus,
-  // enumMenuDrawer.school,
-  // enumMenuDrawer.subjects,
-  // enumMenuDrawer.schedule,
-  // enumMenuDrawer.reports,
-  // enumMenuDrawer.groups,
-  enumMenuDrawer.administration,
-  // enumMenuDrawer.account,
-  enumMenuDrawer.userslog,
-];
-
 function CustomDrawer(props) {
   const classes = useStyles();
   const [state, setState] = React.useState({
@@ -78,7 +65,7 @@ function CustomDrawer(props) {
     userFunctions.includes(enumMenuDrawer.groups.id) && menuAdmin.push(enumMenuDrawer.groups);
     userFunctions.includes(enumMenuDrawer.administration.id) && menuAdmin.push(enumMenuDrawer.administration);
     menuAdmin.push(enumMenuDrawer.account)
-    menuAdmin.push(enumMenuDrawer.userslog)
+    userFunctions.includes(enumMenuDrawer.userslog.id) && menuAdmin.push(enumMenuDrawer.userslog)
   }
 
   const toggleDrawer = (anchor, open) => (event) => {

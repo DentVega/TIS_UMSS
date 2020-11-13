@@ -25,4 +25,7 @@ export const routes = {
   editUser: '/users/:id',
   userslog: '/userslog',
   userslogView: '/userslog/:id',
+  userAbsences:'/account/absences',
+  newAbsence:'/account/newAbsence',
+  userAbsence:'/account/absences/:id',
 };

@@ -44,7 +44,8 @@ function RolePage(props) {
     {id:6,checked:false},
     {id:7,checked:false},
     {id:8,checked:false},
-    {id:9,checked:false}
+    {id:9,checked:false},
+    {id:10,checked:false},
   ]);
   const { role } = props.rolesReducer;
   const {roleFuncs}=props.roleFuncs;

@@ -172,3 +172,48 @@ export const useNameRol = () => {
   };
   return [values, handleNameChange, nameError, setNameError, fullNameMesasge, setNameErrorMessage];
 };
+
+export const useFiles=()=>{
+  const [values, setValues] = useState(null);
+  const [fileError,setFileError] = useState(false);
+  const [date,setDate]=useState("");
+  const [dateError,setDateError]=useState(false);
+  const [dateErrorMesg,setDateErrorMsg] = useState("");
+
+  const [fileMessage,setFileMessage] = useState("");
+  const [previewSource,setPreviewSource]=useState(null);
+
+  const types = ['application/pdf']
+  const preViewFile=(file)=>{
+    const reader=new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend=()=>{
+      setPreviewSource(reader.result);
+    }
+  }  
+  const handleFileChange = (value) => {
+    
+    if(value===false || types.includes(value.type)===false ){
+      setFileMessage("Introduzca Formato PDF");
+      setFileError(true);
+      setPreviewSource(null);
+    }
+    else{
+      setValues(value);
+      setFileError(false);
+      preViewFile(value);
+    }
+  }
+  const handleDateChange=(value)=>{
+    if(value===""){
+      setDateError(true);
+      setDateErrorMsg("introduzca la fecha");
+    }else{
+      setDateError(false);
+      setDateErrorMsg("");
+      setDate(value);
+    }
+  }
+  return [values,handleFileChange,handleDateChange,fileError,
+    setFileError,fileMessage,setFileMessage,previewSource,date,dateError,setDateError,dateErrorMesg,setDateErrorMsg];
+};
