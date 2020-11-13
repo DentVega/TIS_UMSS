@@ -83,9 +83,12 @@ const useStyles = makeStyles((theme) => ({
           </div>
           ))
         }
-          <Fab aria-label={fab.label} className={fab.className} color={fab.color} onClick={NewAbsence}>
+        { 
+          props.history.location.pathname==="/account/absences" &&
+          (<Fab aria-label={fab.label} className={fab.className} color={fab.color} onClick={NewAbsence}>
               {fab.icon}
-          </Fab>
+          </Fab>)
+        }
       </div>
   )
 };
