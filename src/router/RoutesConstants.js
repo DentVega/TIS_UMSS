@@ -16,6 +16,8 @@ export const routes = {
   registerHorario: '/newschedule',
   editHorario: '/schedule/:id',
   groups: '/groups',
+  registerGroups: '/newgroup',
+  editGroups: '/groups/:id',
   administration: '/administration',
   roles: '/roles',
   newRole: '/newrole',

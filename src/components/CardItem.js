@@ -21,13 +21,28 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function CardItem(props) {
-  const { text, showIconRow, width, onClick, showEditIcon, editClick, showDeleteIcon, deleteClick } = props;
+  const {
+    text,
+    secondaryText,
+    tercerText,
+    showIconRow,
+    width,
+    onClick,
+    showEditIcon,
+    editClick,
+    showDeleteIcon,
+    deleteClick,
+  } = props;
   const classes = useStyles();
   return (
     <div style={{ width: width ? width : 'auto' }}>
       <Card className={classes.content} onClick={onClick ? onClick : () => {}}>
         <Grid container alignItems="center">
-          <h3>{text}</h3>
+          <div>
+            <h3>{text}</h3>
+            {secondaryText && <h3>{secondaryText}</h3>}
+            {tercerText && <h3>{tercerText}</h3>}
+          </div>
           <div className={classes.space} />
           {showIconRow && <ArrowForwardIosIcon />}
           {showEditIcon && (
@@ -48,6 +63,8 @@ function CardItem(props) {
 
 CardItem.propTypes = {
   text: PropTypes.string,
+  secondaryText: PropTypes.string,
+  tercerText: PropTypes.string,
   width: PropTypes.number,
   showIconRow: PropTypes.bool,
   showEditIcon: PropTypes.bool,

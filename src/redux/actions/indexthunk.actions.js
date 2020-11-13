@@ -4,8 +4,11 @@ import {
   changeSchools,
   changeUsers,
   changeRoleFuncs,
-  changeMaterias, changeHorarios,
+  changeMaterias,
+  changeHorarios,
   changeUserslogs,
+  changeGrupoHorarios,
+  changeGrupos,
 } from './index.actions';
 
 import BackendConnection from '../../api/BackendConnection';
@@ -98,5 +101,21 @@ export const getMateriasBackend = () => {
       .catch((e) => {
         console.log(e);
       });
+  };
+};
+
+export const getGrupoHorariosBackend = () => {
+  return (dispatch) => {
+    BackendConnection.getGrupoHorarios().then((grupoHorarios) => {
+      dispatch(changeGrupoHorarios(grupoHorarios));
+    });
+  };
+};
+
+export const getGruposBackend = () => {
+  return (dispatch) => {
+    BackendConnection.getGrupos().then((grupos) => {
+      dispatch(changeGrupos(grupos));
+    });
   };
 };
