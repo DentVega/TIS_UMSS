@@ -219,7 +219,7 @@ class BackendConnection {
         });
     });
   }
-  getAllUsersRol(){
+  getAllUsersRol() {
     return new Promise((resolve, reject) => {
       axios({
         method: 'GET',
@@ -554,8 +554,8 @@ class BackendConnection {
     });
   }
   //faltas CRUD
-  createAbsence(userId,date,link){
-    return new Promise((resolve,reject)=>{
+  createAbsence(userId, date, link) {
+    return new Promise((resolve, reject) => {
       axios({
         method: 'POST',
         url: `${baseUrl}/falta`,
@@ -563,21 +563,23 @@ class BackendConnection {
           'content-type': 'application/json',
           'cache-control': 'no-cache',
         },
-        data:{
-          users_idusers:userId,
-          fecha:date,
-          archivo:link,
-        }
-      }).then((response)=>{
-        resolve(response.data);
-      }).catch((e)=>{
+        data: {
+          users_idusers: userId,
+          fecha: date,
+          archivo: link,
+        },
+      })
+        .then((response) => {
+          resolve(response.data);
+        })
+        .catch((e) => {
           console.warn(e.message);
           reject(e);
-      })
-    })
+        });
+    });
   }
 
-  getAllUsersReport(userid){
+  getAllUsersReport(userid) {
     return new Promise((resolve, reject) => {
       axios({
         method: 'GET',
@@ -597,7 +599,7 @@ class BackendConnection {
     });
   }
 
-  getAbsenceById(AbsenceId){
+  getAbsenceById(AbsenceId) {
     return new Promise((resolve, reject) => {
       axios({
         method: 'GET',
@@ -616,7 +618,7 @@ class BackendConnection {
         });
     });
   }
-  getAllAbsences(){
+  getAllAbsences() {
     return new Promise((resolve, reject) => {
       axios({
         method: 'GET',
@@ -635,7 +637,6 @@ class BackendConnection {
         });
     });
   }
-
 
   getHorarios() {
     return new Promise((resolve, reject) => {
@@ -816,6 +817,29 @@ class BackendConnection {
       })
         .then((response) => resolve(response.data))
         .catch((e) => reject(e));
+    });
+  }
+
+  sendEmail(email, password) {
+    console.log('email', email);
+    console.log('password', password)
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'POST',
+        url: `${baseUrl}/sendmail`,
+        data: {
+          email: email,
+          userpassword: password,
+        },
+      })
+        .then((response) => {
+          console.log(' enviar email', response);
+          resolve(response.data);
+        })
+        .catch((e) => {
+          console.log('error enviar email', e);
+          reject(e);
+        });
     });
   }
 }

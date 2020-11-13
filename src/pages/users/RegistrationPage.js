@@ -159,14 +159,16 @@ const RegistrationPage = (props) => {
   };
 
   const registerUser = () => {
-    BackendConnection.createUser(name, lastName, phone, email, ci, createPassword()).then((response) => {
-      asignRol(response.body.res[0]);
+    const password = createPassword();
+    BackendConnection.createUser(name, lastName, phone, email, ci, password).then((response) => {
+      asignRol(response.body.res[0], password);
     });
   };
 
-  const asignRol = (user) => {
+  const asignRol = (user, password) => {
     const { idusers } = user;
-    BackendConnection.createUserRol(idusers, roleSelected).then(() => {
+    BackendConnection.createUserRol(idusers, roleSelected).then(async () => {
+      await BackendConnection.sendEmail(email, password);
       setOpenDialog(false);
       setCreateUserComplete(true);
     });
@@ -224,7 +226,7 @@ const RegistrationPage = (props) => {
 
   const renderForm = () => {
     return (
-     
+
       <Grid item style={{ width: '100vh', borderRadius: '40px' }}>
         <Grid container justify="center" direction="column" spacing={4}>
           <Grid item style={{ textAlign: 'center' }}>
