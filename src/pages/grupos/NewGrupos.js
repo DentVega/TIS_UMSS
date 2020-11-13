@@ -68,6 +68,9 @@ function NewGrupo(props) {
   const [openDialogCancel, setOpenDialogCancel] = useState(false);
   const [createGrupoComplete, setCreateGrupoComplete] = useState(false);
 
+
+   const [loadingCampos, setLoadingCampos] = useState(false);
+
   const classes = useStyles();
 
   if (createGrupoComplete) {
@@ -94,6 +97,7 @@ function NewGrupo(props) {
     setUsers(users);
     setMaterias(materias);
     setHorarios(horarios);
+    setLoadingCampos(true);
   };
 
   const cancel = () => {
@@ -239,13 +243,14 @@ function NewGrupo(props) {
       />
 
       <h3>Nuevo Grupo</h3>
-      {renderHoraios()}
+      {!loadingCampos && <h3>Cargando...</h3>}
+      {loadingCampos && renderHoraios()}
       <div className={{ height: 20 }} />
-      {renderUsers()}
+      {loadingCampos && renderUsers()}
       <div className={{ height: 20 }} />
-      {renderDia()}
+      {loadingCampos && renderDia()}
       <div className={{ height: 20 }} />
-      {renderMateria()}
+      {loadingCampos && renderMateria()}
       <div className={{ height: 50 }} />
       <Grid container direction={'row'} spacing={2}>
         <Grid item>
