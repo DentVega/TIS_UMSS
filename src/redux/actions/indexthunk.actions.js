@@ -4,7 +4,7 @@ import {
   changeSchools,
   changeUsers,
   changeRoleFuncs,
-  changeMaterias,
+  changeMaterias, changeHorarios,
   changeUserslogs,
 } from './index.actions';
 
@@ -73,6 +73,18 @@ export const getRoleFuncs = () => {
       })
       .catch((e) => {
         console.warn(e.message);
+      });
+  };
+};
+
+export const getHorariosBackend = () => {
+  return (dispatch) => {
+    BackendConnection.getHorarios()
+      .then((horarios) => {
+        dispatch(changeHorarios(horarios));
+      })
+      .catch((e) => {
+        console.log(e);
       });
   };
 };

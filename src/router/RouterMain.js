@@ -13,7 +13,7 @@ import CampusPage from '../pages/users/CampusPage';
 import SchoolPage from '../pages/schools/SchoolPage';
 import SubjectPage from '../pages/materias/SubjectsPage';
 import ReportsPage from '../pages/ReportsPage';
-import SchedulePage from '../pages/SchedulePage';
+import SchedulePage from '../pages/horarios/SchedulePage';
 import GroupsPage from '../pages/GroupsPage';
 import AdministratorPage from '../pages/AdministratorPage';
 import AccountPage from '../pages/AccountPage';
@@ -35,6 +35,9 @@ import EditarMateria from '../pages/materias/EditarMateria';
 import Absences from '../pages/userAbsences/Absences';
 import NewAbsence from '../pages/userAbsences/NewAbsence';
 import Absence from '../pages/userAbsences/Absence';
+import NewHorario from '../pages/horarios/NewHorario';
+import EditHorario from '../pages/horarios/EditHorario';
+
 const useStyles = makeStyles((theme) => ({
   root: {
     paddingLeft: 240,
@@ -84,6 +87,8 @@ function RouterMain(props) {
           <PrivateRoute isAuth={isAuth} exact={true} path={routes.reports} component={Absences} />
           {/*Horarios*/}
           <PrivateRoute isAuth={isAuth} exact={true} path={routes.schedule} component={SchedulePage} />
+          <PrivateRoute isAuth={isAuth} exact={true} path={routes.registerHorario} component={NewHorario} />
+          <PrivateRoute isAuth={isAuth} exact={true} path={routes.editHorario} component={EditHorario} />
           {/*Grupos*/}
           <PrivateRoute isAuth={isAuth} exact={true} path={routes.groups} component={GroupsPage} />
           {/*Admnistracion*/}
