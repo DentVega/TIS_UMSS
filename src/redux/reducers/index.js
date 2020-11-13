@@ -11,6 +11,7 @@ import roleFuncsReducer from './roleFun.reducer';
 import filtersReducer from './filters.reducer';
 import materiasReducer from './materias.reducer';
 import horarioReducer from './horario.reducer';
+import grupoReducer from './grupo.reducer';
 
 export default combineReducers({
   configReducer: configReducer,
@@ -25,4 +26,5 @@ export default combineReducers({
   filtersReducer: filtersReducer,
   materiasReducer: materiasReducer,
   horarioReducer: horarioReducer,
+  grupoReducer: grupoReducer,
 });

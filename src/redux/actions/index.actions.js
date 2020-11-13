@@ -1,4 +1,5 @@
 import * as actions from './actions';
+import { CHANGE_GRUPO } from './actions';
 
 export const changeTabIndex = (index) => {
   return { type: actions.CHANGE_TAB_INDEX, index };
@@ -92,4 +93,20 @@ export const changeHorarios = (horarios) => {
 
 export const changeHorario = (horario) => {
   return { type: actions.CHANGE_HORARIO, horario };
+};
+
+export const changeGrupos = (grupos) => {
+  return { type: actions.CHANGE_GRUPOS, grupos };
+};
+
+export const changeGrupoHorarios = (grupoHorarios) => {
+  return { type: actions.CHANGE_GRUPO_HORARIOS, grupoHorarios };
+};
+
+export const changeGrupo = (grupo) => {
+  return { type: actions.CHANGE_GRUPO, grupo };
+};
+
+export const changeGrupoHorario = (grupoHorario) => {
+  return { type: actions.CHANGE_GRUPO_HORARIO, grupoHorario };
 };

@@ -28,6 +28,8 @@ export const sCreateMateria = 'Crear Materia';
 export const sUpdateMateria = 'Actualizar Materia';
 export const sCreateHorario = 'Crear Horario';
 export const sUpdateHorario = 'Actualizar Horario';
+export const sCreateGrupo = 'Crear Grupo';
+export const sUpdateGrupo = 'Actualizar Grupo';
 
 //Error messages
 export const sInvalidEmail = 'Email invalido';
