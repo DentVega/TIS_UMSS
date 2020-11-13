@@ -12,6 +12,7 @@ export const ListAccess = (props) => {
   const Administracion = props.state[6].checked;
   const Cuenta = props.state[7].checked;
   const Carreras = props.state[8].checked;
+  const Bitacoras = props.state[9].checked;
 
   const handleChange = ({ target }) => {
     let arr = [...props.state];
@@ -58,6 +59,10 @@ export const ListAccess = (props) => {
         <FormControlLabel
           control={<Checkbox id={9} onChange={handleChange} checked={Carreras} name="Carreras" />}
           label="Carreras"
+        />
+        <FormControlLabel
+          control={<Checkbox id={10} onChange={handleChange} checked={Bitacoras} name="Bitacoras" />}
+          label="Bitacoras"
         />
       </FormGroup>
     </FormControl>

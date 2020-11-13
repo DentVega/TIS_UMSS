@@ -32,6 +32,9 @@ import NewUniversityCareers from '../pages/universityCareers/NewUniversityCareer
 import EditUniversityCareers from '../pages/universityCareers/EditUniversityCareers';
 import NewMateria from '../pages/materias/NewMateria';
 import EditarMateria from '../pages/materias/EditarMateria';
+import Absences from '../pages/userAbsences/Absences';
+import NewAbsence from '../pages/userAbsences/NewAbsence';
+import Absence from '../pages/userAbsences/Absence';
 import NewHorario from '../pages/horarios/NewHorario';
 import EditHorario from '../pages/horarios/EditHorario';
 
@@ -81,7 +84,7 @@ function RouterMain(props) {
           <PrivateRoute isAuth={isAuth} exact={true} path={routes.registerMateria} component={NewMateria}/>
           <PrivateRoute isAuth={isAuth} exact={true} path={routes.editMateria} component={EditarMateria}/>
           {/*Reportes*/}
-          <PrivateRoute isAuth={isAuth} exact={true} path={routes.reports} component={ReportsPage} />
+          <PrivateRoute isAuth={isAuth} exact={true} path={routes.reports} component={Absences} />
           {/*Horarios*/}
           <PrivateRoute isAuth={isAuth} exact={true} path={routes.schedule} component={SchedulePage} />
           <PrivateRoute isAuth={isAuth} exact={true} path={routes.registerHorario} component={NewHorario} />
@@ -99,6 +102,9 @@ function RouterMain(props) {
           <PrivateRoute isAuth={isAuth} exact={true} path={routes.userslogView} component={UserslogViewPage} />
           {/*Account*/}
           <PrivateRoute isAuth={isAuth} exact={true} path={routes.account} component={AccountPage} />
+          <PrivateRoute isAuth={isAuth} exact={true} path={routes.userAbsences} component={Absences} />
+          <PrivateRoute isAuth={isAuth} exact={true} path={routes.userAbsence} component={Absence} />
+          <PrivateRoute isAuth={isAuth} exact={true} path={routes.newAbsence} component={NewAbsence} />
           <PrivateRoute isAuth={isAuth} exact={true} path={routes.testUi} component={TestUi} />
           <PrivateRoute isAuth={isAuth} exact={true} path={routes.route404} component={NotFoundPage} />
         </main>
