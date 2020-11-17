@@ -230,7 +230,7 @@ class BackendConnection {
         });
     });
   }
-  getAllUsersRol(){
+  getAllUsersRol() {
     return new Promise((resolve, reject) => {
       axios({
         method: 'GET',
@@ -347,13 +347,14 @@ class BackendConnection {
         headers: {
           'content-type': 'application/json',
           'cache-control': 'no-cache',
-        }
-      }).then((response) => {
-        resolve(response.data);
+        },
       })
-      .catch((e) => {
-        reject(e);
-      });
+        .then((response) => {
+          resolve(response.data);
+        })
+        .catch((e) => {
+          reject(e);
+        });
     });
   }
 
@@ -433,6 +434,21 @@ class BackendConnection {
       axios({
         method: 'GET',
         url: `${baseUrl}/materia`,
+      })
+        .then((response) => {
+          resolve(response.data);
+        })
+        .catch((e) => {
+          reject(e);
+        });
+    });
+  }
+
+  getMateriasById(idMateria) {
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'GET',
+        url: `${baseUrl}/materia/${idMateria}`,
       })
         .then((response) => {
           resolve(response.data);
@@ -549,8 +565,8 @@ class BackendConnection {
     });
   }
   //faltas CRUD
-  createAbsence(userId,date,link){
-    return new Promise((resolve,reject)=>{
+  createAbsence(userId, date, link) {
+    return new Promise((resolve, reject) => {
       axios({
         method: 'POST',
         url: `${baseUrl}/falta`,
@@ -558,21 +574,23 @@ class BackendConnection {
           'content-type': 'application/json',
           'cache-control': 'no-cache',
         },
-        data:{
-          users_idusers:userId,
-          fecha:date,
-          archivo:link,
-        }
-      }).then((response)=>{
-        resolve(response.data);
-      }).catch((e)=>{
+        data: {
+          users_idusers: userId,
+          fecha: date,
+          archivo: link,
+        },
+      })
+        .then((response) => {
+          resolve(response.data);
+        })
+        .catch((e) => {
           console.warn(e.message);
           reject(e);
-      })
-    })
+        });
+    });
   }
 
-  getAllUsersReport(userid){
+  getAllUsersReport(userid) {
     return new Promise((resolve, reject) => {
       axios({
         method: 'GET',
@@ -592,7 +610,7 @@ class BackendConnection {
     });
   }
 
-  getAbsenceById(AbsenceId){
+  getAbsenceById(AbsenceId) {
     return new Promise((resolve, reject) => {
       axios({
         method: 'GET',
@@ -611,7 +629,7 @@ class BackendConnection {
         });
     });
   }
-  getAllAbsences(){
+  getAllAbsences() {
     return new Promise((resolve, reject) => {
       axios({
         method: 'GET',
@@ -631,12 +649,22 @@ class BackendConnection {
     });
   }
 
-
   getHorarios() {
     return new Promise((resolve, reject) => {
       axios({
         method: 'GET',
         url: `${baseUrl}/horario`,
+      })
+        .then((response) => resolve(response.data))
+        .catch((e) => reject(e));
+    });
+  }
+
+  getHorariosById(idHorario) {
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'GET',
+        url: `${baseUrl}/horario/${idHorario}`,
       })
         .then((response) => resolve(response.data))
         .catch((e) => reject(e));
@@ -652,7 +680,7 @@ class BackendConnection {
           facultad_idfacultad: facultad_idfacultad,
           horaini: horaini,
           horafin: horafin,
-        }
+        },
       })
         .then((response) => resolve(response.data))
         .catch((e) => reject(e));
@@ -668,7 +696,7 @@ class BackendConnection {
           facultad_idfacultad: facultad_idfacultad,
           horaini: horaini,
           horafin: horafin,
-        }
+        },
       })
         .then((response) => resolve(response.data))
         .catch((e) => reject(e));
@@ -683,6 +711,146 @@ class BackendConnection {
       })
         .then((response) => resolve(response.data))
         .catch((e) => reject(e));
+    });
+  }
+
+  getGrupos() {
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'GET',
+        url: `${baseUrl}/grupo`,
+      })
+        .then((response) => resolve(response.data))
+        .catch((e) => reject(e));
+    });
+  }
+
+  getGruposbyId(idGrupo) {
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'GET',
+        url: `${baseUrl}/grupo/${idGrupo}`,
+      })
+        .then((response) => resolve(response.data))
+        .catch((e) => reject(e));
+    });
+  }
+
+  createGrupo(materia_idmateria) {
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'POST',
+        url: `${baseUrl}/grupo`,
+        data: {
+          materia_idmateria: materia_idmateria,
+        },
+      })
+        .then((response) => resolve(response.data))
+        .catch((e) => reject(e));
+    });
+  }
+
+  updateGrupo(idGrupo, materia_idmateria) {
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'PUT',
+        url: `${baseUrl}/grupo/${idGrupo}`,
+        data: {
+          materia_idmateria: materia_idmateria,
+        },
+      })
+        .then((response) => resolve(response.data))
+        .catch((e) => reject(e));
+    });
+  }
+
+  deleteGrupo(grupoId) {
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'DELETE',
+        url: `${baseUrl}/grupo/${grupoId}`,
+      })
+        .then((response) => resolve(response.data))
+        .catch((e) => reject(e));
+    });
+  }
+
+  getGrupoHorarios() {
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'GET',
+        url: `${baseUrl}/grupoHorarios`,
+      })
+        .then((response) => resolve(response.data))
+        .catch((e) => reject(e));
+    });
+  }
+
+  deleteGrupoHorario(grupoHorarioId) {
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'DELETE',
+        url: `${baseUrl}/grupoHorarios/${grupoHorarioId}`,
+      })
+        .then((response) => resolve(response.data))
+        .catch((e) => reject(e));
+    });
+  }
+
+  createGrupoHorario(horario_idhorario, grupo_idgrupo, users_idusers, dia) {
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'POST',
+        url: `${baseUrl}/grupoHorarios`,
+        data: {
+          horario_idhorario: horario_idhorario,
+          grupo_idgrupo: grupo_idgrupo,
+          users_idusers: users_idusers,
+          dia: dia,
+        },
+      })
+        .then((response) => resolve(response.data))
+        .catch((e) => reject(e));
+    });
+  }
+
+  updateGrupoHorario(idGrupoHorario, horario_idhorario, grupo_idgrupo, users_idusers, dia) {
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'PUT',
+        url: `${baseUrl}/grupoHorarios/${idGrupoHorario}`,
+        data: {
+          horario_idhorario: horario_idhorario,
+          grupo_idgrupo: grupo_idgrupo,
+          users_idusers: users_idusers,
+          dia: dia,
+        },
+      })
+        .then((response) => resolve(response.data))
+        .catch((e) => reject(e));
+    });
+  }
+
+  sendEmail(email, password) {
+    console.log('email', email);
+    console.log('password', password)
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'POST',
+        url: `${baseUrl}/sendmail`,
+        data: {
+          email: email,
+          userpassword: password,
+        },
+      })
+        .then((response) => {
+          console.log(' enviar email', response);
+          resolve(response.data);
+        })
+        .catch((e) => {
+          console.log('error enviar email', e);
+          reject(e);
+        });
     });
   }
 }
