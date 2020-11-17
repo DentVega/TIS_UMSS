@@ -78,8 +78,8 @@ const RegistrationPage = (props) => {
     if (userSelected != null) {
       confirmCreation();
     } else {
-      BackendConnection.verifyEmail(email).then((response) => {
-        if (response === 0) {
+      BackendConnection.verifyEmail(email).then((user) => {
+        if (user.length === 0) {
           confirmCreation();
         } else {
           setEmailMessage(sEmailIsAlreadyInUse);
