@@ -6,7 +6,7 @@ import { Card } from '@material-ui/core';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 const useStyles = makeStyles({
     root: {
-      width: 400,
+      width: 340,
     },
   })
 
@@ -27,7 +27,7 @@ function AccountPage(props) {
           <CardItem          
             onClick={redirectFaltas}
             text={"Faltas"}
-            
+            showIconRow={true}
             showEditIcon={false}
             showDeleteIcon={false}
           />
