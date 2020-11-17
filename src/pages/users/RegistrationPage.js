@@ -176,7 +176,6 @@ const RegistrationPage = (props) => {
 
   const updateUser = async () => {
     const userRol = await BackendConnection.getUserRolByIdUser(idUser);
-    console.log(userRol);
       if(userRol.length>0) await BackendConnection.deleteUserRol(idUser, userRol[0].idroles);
       await BackendConnection.createUserRol(idUser, roleSelected);
 

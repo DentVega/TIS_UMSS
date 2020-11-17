@@ -116,6 +116,17 @@ class BackendConnection {
     });
   }
 
+  getUserById(id){
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'GET',
+        url: `${baseUrl}/users/${id}`,
+      })
+        .then((response) => resolve(response.data))
+        .catch((e) => reject(e));
+    });
+  }
+  
   createUser(firstname, lastname, phone, email, ci, userpassword) {
     return new Promise((resolve, reject) => {
       axios({
