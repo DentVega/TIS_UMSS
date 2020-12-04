@@ -1,3 +1,4 @@
+import { StarRateSharp } from '@material-ui/icons';
 import axios from 'axios';
 import { baseUrl } from './Keys';
 
@@ -357,6 +358,26 @@ class BackendConnection {
         });
     });
   }
+
+  createUserslog(transaction_idtransaction, users_idusers, timechange, datechange, state, check) {
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'POST',
+        url: `${baseUrl}/userslog`,
+        data: {
+          transaction_idtransaction: transaction_idtransaction,
+          users_idusers: users_idusers,
+          timechange: timechange, 
+          datechange: datechange,
+          state: state,
+          check: check,
+        },
+      })
+        .then((response) => resolve(response.data))
+        .catch((e) => reject(e));
+    });
+  }
+
 
   deleteSchools(idFacultad) {
     return new Promise((resolve, reject) => {

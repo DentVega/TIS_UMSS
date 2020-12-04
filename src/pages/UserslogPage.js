@@ -32,18 +32,20 @@ function UserslogPage(props) {
           text += userSelected[0].lastname + " hizo un ";
           text += getTransaction(item.transaction_idtransaction);
         }
-        return (
-          <div key={item.iduserslog}>
-            <CardItem
-              onClick={() => onClick(item)}
-              text={text}
-              width={500}
-              showEditIcon={false}
-              showDeleteIcon={false}
-            />
-            <div style={{ height: 20 }} />
-          </div>
-        );
+        if(item.check == 0){
+          return (
+            <div key={item.iduserslog}>
+              <CardItem
+                onClick={() => onClick(item)}
+                text={text}
+                width={500}
+                showEditIcon={false}
+                showDeleteIcon={false}
+              />
+              <div style={{ height: 20 }} />
+            </div>
+          );
+        }
       })}
     </div>
   );
@@ -54,9 +56,9 @@ const getTransaction = (id) => {
     return "DELETE";
   }else{
     if(id === 2){
-      return "UPDATE";
-    }else{
       return "INSERT";
+    }else{
+      return "UPDATE";
     }
   }
 }
