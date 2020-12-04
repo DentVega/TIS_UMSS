@@ -11,12 +11,13 @@ import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
+    position:"relative"
   },
   content: {
     padding: theme.spacing(1),
   },
   space: {
-    width: 200,
+    width:200
   },
 }));
 
@@ -35,10 +36,10 @@ function CardItem(props) {
   } = props;
   const classes = useStyles();
   return (
-    <div style={{ width: width ? width : 'auto' }}>
-      <Card className={classes.content} onClick={onClick ? onClick : () => {}}>
-        <Grid container alignItems="center">
-          <div>
+    <div style={{ width: width ? width : 'auto', }}>
+      <Card className={classes.content} onClick={onClick ? onClick : () => {}} >
+        <Grid container alignItems="center" >
+          <div >
             <h3>{text}</h3>
             {secondaryText && <h3>{secondaryText}</h3>}
             {tercerText && <h3>{tercerText}</h3>}

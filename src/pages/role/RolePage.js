@@ -90,7 +90,7 @@ function RolePage(props) {
       setNameError(true);
     } else {
       BackendConnection.createRole(nameRole)
-      .then(() => {
+      .then((res) => {
         setCreateRoleComplete(true);
         BackendConnection.getRoles()
         .then((res) =>{

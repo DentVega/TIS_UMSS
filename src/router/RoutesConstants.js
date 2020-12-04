@@ -11,7 +11,6 @@ export const routes = {
   subjects: '/subjects',
   registerMateria: '/newsubjects',
   editMateria: '/subjects/:id',
-  reports: '/reports',
   schedule: '/schedule',
   registerHorario: '/newschedule',
   editHorario: '/schedule/:id',
@@ -29,7 +28,15 @@ export const routes = {
   editUser: '/users/:id',
   userslog: '/userslog',
   userslogView: '/userslog/:id',
+  //AbcencesRoutes
+  absencesReports:'/reports/Absences',
   userAbsences:'/account/absences',
   newAbsence:'/account/newAbsence',
   userAbsence:'/account/absences/:id',
+  //RegisterProgressRoutes
+  registerProgress:'/account/registerProgress',
+  //Reports
+  reports: '/reports',
+  reportsWeekMonth:'/reports/weeklyMonthly',
+
 };

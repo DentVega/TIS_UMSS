@@ -12,6 +12,9 @@ import { routes } from '../../router/RoutesConstants';
 import BackendConnection from '../../api/BackendConnection';
 import { sConfirm, sUsers } from '../../constants/strings';
 import CustomAlertDialog from '../../components/dialogs/CustomAlertDialog';
+import { TextField } from '@material-ui/core';
+import SearchIcon from '@material-ui/icons/Search';
+import InputAdornment from '@material-ui/core/InputAdornment';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -40,6 +43,8 @@ function CampusPage(props) {
   const { loading, users } = props.usersReducer;
   const [userSelected, setUserSelected] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
+  const [search,setSearch] = useState("");
+  const [usersFiltered,setUsersFiltered]=useState([]);
   const classes = useStyles();
 
   useEffect(() => {
@@ -88,14 +93,21 @@ function CampusPage(props) {
     setUserSelected(null);
   };
 
+  const searchOnChange=(val)=>{
+    setSearch(val);
+    setUsersFiltered(users.filter(item=>
+      `${item.firstname.toLowerCase()} ${item.lastname.toLowerCase()}`.includes(val.toLowerCase())
+      )
+  );  
+  }
   const renderUser = () => {
     return (
       <div>
-        {users.map((user) => {
+        {search==="" ? users.map((user) => {
           return (
             <div key={user.idusers}>
               <CardItem
-                text={user.firstname}
+                text={`${user.firstname} ${user.lastname}`}
                 width={500}
                 showEditIcon={true}
                 showDeleteIcon={true}
@@ -105,13 +117,30 @@ function CampusPage(props) {
               <div style={{ height: 20 }} />
             </div>
           );
-        })}
+        })
+        :usersFiltered.map((user) => {
+          return (
+            <div key={user.idusers}>
+              <CardItem
+                text={`${user.firstname} ${user.lastname}`}
+                width={500}
+                showEditIcon={true}
+                showDeleteIcon={true}
+                deleteClick={() => confirmDelete(user)}
+                editClick={() => updateUser(user)}
+              />
+              <div style={{ height: 20 }} />
+            </div>
+          );
+        })
+        }
       </div>
     );
   };
 
   return (
     <div>
+    
       <CustomAlertDialog
         title={sConfirm}
         messageText={'Seguro que desea eliminar este usuario'}
@@ -120,6 +149,20 @@ function CampusPage(props) {
         handleAccept={deleteUser}
       />
       <h1>{sUsers}</h1>
+      <TextField 
+        label={"Search..."}
+        type="text"
+        value={search}
+        helperText={"Filtrar por Nombre"}
+        onChange={({target})=>searchOnChange(target.value)}
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+              <SearchIcon />
+            </InputAdornment>
+          ),
+        }}
+      />
       {users.length > 0 ? renderUser() : <div />}
       {loading && <h3>Cargando...</h3>}
       <Fab aria-label={fab.label} className={fab.className} color={fab.color} onClick={newUser}>

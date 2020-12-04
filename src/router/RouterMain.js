@@ -12,7 +12,6 @@ import { connect } from 'react-redux';
 import CampusPage from '../pages/users/CampusPage';
 import SchoolPage from '../pages/schools/SchoolPage';
 import SubjectPage from '../pages/materias/SubjectsPage';
-import ReportsPage from '../pages/ReportsPage';
 import SchedulePage from '../pages/horarios/SchedulePage';
 import GroupsPage from '../pages/grupos/GroupsPage';
 import AdministratorPage from '../pages/AdministratorPage';
@@ -33,12 +32,16 @@ import EditUniversityCareers from '../pages/universityCareers/EditUniversityCare
 import NewMateria from '../pages/materias/NewMateria';
 import EditarMateria from '../pages/materias/EditarMateria';
 import Absences from '../pages/userAbsences/Absences';
+import Reports from '../pages/reports/Reports';
 import NewAbsence from '../pages/userAbsences/NewAbsence';
 import Absence from '../pages/userAbsences/Absence';
 import NewHorario from '../pages/horarios/NewHorario';
 import EditHorario from '../pages/horarios/EditHorario';
 import NewGrupo from '../pages/grupos/NewGrupos';
 import EditGrupo from '../pages/grupos/EditGrupo';
+import RegisterProgress from '../pages/weeklyProgressLog/RegisterProgress';
+import ReportsWeeklyMonthly from '../pages/reports/ReportsWeeklyMonthly';
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -86,7 +89,9 @@ function RouterMain(props) {
           <PrivateRoute isAuth={isAuth} exact={true} path={routes.registerMateria} component={NewMateria} />
           <PrivateRoute isAuth={isAuth} exact={true} path={routes.editMateria} component={EditarMateria} />
           {/*Reportes*/}
-          <PrivateRoute isAuth={isAuth} exact={true} path={routes.reports} component={Absences} />
+          <PrivateRoute isAuth={isAuth} exact={true} path={routes.reports} component={Reports} />
+          <PrivateRoute isAuth={isAuth} exact={true} path={routes.absencesReports} component={Absences} />
+          <PrivateRoute isAuth={isAuth} exact={true} path={routes.reportsWeekMonth} component={ReportsWeeklyMonthly} />
           {/*Horarios*/}
           <PrivateRoute isAuth={isAuth} exact={true} path={routes.schedule} component={SchedulePage} />
           <PrivateRoute isAuth={isAuth} exact={true} path={routes.registerHorario} component={NewHorario} />
@@ -110,6 +115,7 @@ function RouterMain(props) {
           <PrivateRoute isAuth={isAuth} exact={true} path={routes.userAbsence} component={Absence} />
           <PrivateRoute isAuth={isAuth} exact={true} path={routes.newAbsence} component={NewAbsence} />
           <PrivateRoute isAuth={isAuth} exact={true} path={routes.testUi} component={TestUi} />
+          <PrivateRoute isAuth={isAuth} exact={true} path={routes.registerProgress} component={RegisterProgress} />
           <PrivateRoute isAuth={isAuth} exact={true} path={routes.route404} component={NotFoundPage} />
         </main>
       </div>
