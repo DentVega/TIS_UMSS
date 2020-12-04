@@ -1,4 +1,4 @@
-import React,{useEffect, useState} from 'react';
+import React,{useEffect, useState,useCallback} from 'react';
 import{withRouter} from 'react-router-dom'; 
 import Fab from '@material-ui/core/Fab';
 import makeStyles from '@material-ui/core/styles/makeStyles';
@@ -13,6 +13,7 @@ import {  getUsers } from '../../redux/actions/indexthunk.actions';
 import { TextField } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 import InputAdornment from '@material-ui/core/InputAdornment';
+
 const useStyles = makeStyles((theme) => ({
     root: {      
       width: 400, 
@@ -46,6 +47,7 @@ const useStyles = makeStyles((theme) => ({
       label: 'Add',
     };
   const [userReports,setUserReports]=useState([]);
+
   useEffect(() => {
     if(props.history.location.pathname==="/account/absences"){
       BackendConnection.getAllUsersReport(user.idusers)
@@ -54,56 +56,48 @@ const useStyles = makeStyles((theme) => ({
         setUserFilter([0]) 
       })
     }
-    if(props.history.location.pathname==='/reports'){
-      back();   
-    }    
-  }, []);
-
-  const back=async()=>{
-    props.getUsers();
-      await BackendConnection.getAllAbsences()
+    if(props.history.location.pathname==='/reports/Absences'){
+      props.getUsers();
+       BackendConnection.getAllAbsences()
       .then((res)=>{
         setUserReports(res);
         users&&setUserFilter(users);
-      })
-  }
+      }) 
+    }    
+  }, []);
+
   const NewAbsence=()=>{
     props.history.push('/account/newAbsence')
-  }
+  };
 
   const seeDetails=(item)=>{   
     props.history.push(`${routes.userAbsences}/${item.idfalta}`);    
-  }
+  };
 
   const getDate = (date) => {
     return new Date(date).toLocaleDateString();
-  }
+  };
   
   const formatedText=(report)=>{
-    if(search===""){
-      if(props.history.location.pathname==='/reports'){
-        const u= users.find((i)=>i.idusers===report.users_idusers);
+      if(props.history.location.pathname==='/reports/Absences'){
+        const u = search==="" 
+                              ? users.find((i)=>i.idusers===report.users_idusers) 
+                              : userFilter.find((i)=>i.idusers===report.users_idusers);
         const texto= "Fecha: "+`${getDate(report.fecha)}`+" "+"Usuario: "+`${u.firstname}`+" "+`${u.lastname}`;      
         return texto;
       }    
       if(props.history.location.pathname==="/account/absences"){      
         return "Fecha: "+`${getDate(report.fecha)}` 
-      }
-    }else{
-      const u= userFilter.find((i)=>i.idusers===report.users_idusers);
-      const texto= "Fecha: "+`${getDate(report.fecha)}`+" "+"Usuario: "+`${u.firstname}`+" "+`${u.lastname}`;      
-      return texto; 
-    }    
-  }
+      }    
+  };
   
   const searchOnChange=(val)=>{  
     setSearch(val);
-    setUserFilter(users.filter(item=>{
-        const te=item.firstname.toLowerCase().includes(val.toLowerCase())||item.lastname.toLowerCase().includes(val.toLowerCase());
-        return te;
-        })
+    setUserFilter(users.filter(item=>
+        `${item.firstname.toLowerCase()} ${item.lastname.toLowerCase()}`.includes(val.toLowerCase())
+        )
     );    
-  }
+  };
   
   const mapReports=()=>{
     let arr=[];
@@ -114,7 +108,7 @@ const useStyles = makeStyles((theme) => ({
         })          
     }
       return search==="" ? userReports.map((item)=>(
-        <div  key={item.idfalta} className={classes.root }>
+        <div  key={item.idfalta} className={classes.root}>
           <CardActionArea>
             <CardItem      
               text={formatedText(item)}  
@@ -139,10 +133,13 @@ const useStyles = makeStyles((theme) => ({
       )
      )
   }
+
+
   return(
       <div>
           <h1>Ausencias</h1>
-          {props.history.location.pathname==='/reports'&&<TextField 
+          {props.history.location.pathname==='/reports/Absences' &&
+          <TextField 
             label={"Search..."}
             type="text"
             value={search}
@@ -156,7 +153,7 @@ const useStyles = makeStyles((theme) => ({
               ),
             }}
           />}       
-             {users.length>0?mapReports():(<h3>Cargando...</h3>)}
+             {user?mapReports():(<h3>Cargando...</h3>)}
         { 
           props.history.location.pathname==="/account/absences" &&
           (<Fab aria-label={fab.label} className={fab.className} color={fab.color} onClick={NewAbsence}>

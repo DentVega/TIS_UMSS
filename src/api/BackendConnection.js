@@ -499,7 +499,7 @@ class BackendConnection {
         .catch((e) => reject(e));
     });
   }
-
+  //Crud RoleFunc
   roleFunction(idRole, idFuncion) {
     return new Promise((resolve, reject) => {
       axios({
@@ -649,6 +649,7 @@ class BackendConnection {
     });
   }
 
+  //Crud Horarios
   getHorarios() {
     return new Promise((resolve, reject) => {
       axios({
@@ -713,7 +714,7 @@ class BackendConnection {
         .catch((e) => reject(e));
     });
   }
-
+  //Crud Grupos
   getGrupos() {
     return new Promise((resolve, reject) => {
       axios({
@@ -774,7 +775,17 @@ class BackendConnection {
         .catch((e) => reject(e));
     });
   }
-
+  //Crud GrupoHorarios
+  getGrupoHByUserId(userId){
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'GET',
+        url: `${baseUrl}/grupoHorarios/user/${userId}`,
+      })
+        .then((response) => resolve(response.data))
+        .catch((e) => reject(e));
+    });
+  }
   getGrupoHorarios() {
     return new Promise((resolve, reject) => {
       axios({
@@ -853,6 +864,70 @@ class BackendConnection {
         });
     });
   }
+  //Crud RegistroAvance
+  registrarAvance(idgrupo,beginweek,endweek,platform,classcontain,observations,sign){
+    return new Promise((resolve,reject)=>{
+      axios({
+        method:'POST',
+        url:`${baseUrl}/assistance`,
+        headers: {
+          'content-type': 'application/json',
+          'cache-control': 'no-cache',
+        },
+        data: {
+          grupohorarios_idgrupohorarios:idgrupo,
+          beginweek:beginweek,
+          endweek:endweek,
+          platform:platform,
+          classcontain:classcontain,
+          observations:observations,
+          sign:sign,
+        },
+      })
+      .then((response) => resolve(response.data))
+      .catch((e) => reject(e));
+    })
+  }
+  getAllReports(){
+    return new Promise((resolve,reject)=>{
+      axios({
+        method: 'GET',
+        url: `${baseUrl}/assistance`,
+        })
+        .then((response) => resolve(response.data))
+        .catch((e) => reject(e));
+      })
+  }
+  getReportsByWeek(date){
+    return new Promise((resolve,reject)=>{
+      axios({
+        method: 'GET',
+        url: `${baseUrl}/assistance/week/${date}`,
+        })
+        .then((response) => resolve(response.data))
+        .catch((e) => reject(e));
+      })
+  }
+    //Crud ReporteAdicional
+  registroReporteAdicional(idAsistencia,archivo){
+    return new Promise((resolve,reject)=>{
+      axios({
+        method:"POST",
+        url:`${baseUrl}/addicional`,
+        headers: {
+          'content-type': 'application/json',
+          'cache-control': 'no-cache',
+        },
+        data:{
+          assistance_idassistance:idAsistencia,
+          archivo:archivo,
+        }
+      }) 
+      .then((response) => resolve(response.data))
+      .catch((e) => reject(e));
+    })
+  }  
+  
 }
 
 export default new BackendConnection();
