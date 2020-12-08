@@ -91,24 +91,19 @@ function RolePage(props) {
     } else {
       BackendConnection.createRole(nameRole)
       .then((res) => {
-        setCreateRoleComplete(true);
-        BackendConnection.getRoles()
-        .then((res) =>{
-          const id=res.find(c=>c.rolename===nameRole).idroles;
+        setCreateRoleComplete(true);        
           for(let i=0;i<state.length;i++){
             if(state[i].checked){
               setTimeout(() => {
-                BackendConnection.roleFunction(id,state[i].id);  
+                BackendConnection.roleFunction(res.data.body.res[0].idroles,state[i].id);  
               },cont*200)
             }  
             cont++;        
           }
           setTimeout(() => {
             props.getRoleFunc();
-          },cont*200)
-        })
-        .catch((err) => console.warn(err))
-      });
+          },cont*200)        
+      }).catch((err) => console.warn(err))
     }
   };
 

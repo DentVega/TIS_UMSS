@@ -39,23 +39,32 @@ function CardItem(props) {
     <div style={{ width: width ? width : 'auto', }}>
       <Card className={classes.content} onClick={onClick ? onClick : () => {}} >
         <Grid container alignItems="center" >
-          <div >
+          <Grid item xs={3}>          
             <h3>{text}</h3>
+            </Grid>
+            <Grid item xs={3}>
             {secondaryText && <h3>{secondaryText}</h3>}
+            </Grid>
+            <Grid item xs={3}>
             {tercerText && <h3>{tercerText}</h3>}
-          </div>
-          <div className={classes.space} />
+            </Grid> 
+            <Grid item xs={1}>
           {showIconRow && <ArrowForwardIosIcon />}
+          </Grid> 
+          <Grid item xs={1}>
           {showEditIcon && (
             <IconButton onClick={editClick}>
               <EditIcon />
             </IconButton>
           )}
+          </Grid> 
+          <Grid item xs={1}>
           {showDeleteIcon && (
             <IconButton style={{ paddingLeft: 20, paddingRight: 20 }} onClick={deleteClick}>
               <DeleteIcon />
             </IconButton>
           )}
+          </Grid> 
         </Grid>
       </Card>
     </div>

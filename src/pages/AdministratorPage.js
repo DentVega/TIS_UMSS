@@ -21,7 +21,7 @@ function AdministratorPage(props) {
     <div className={classes.content}>
       <h1>Administracion</h1>
       <div>
-        <CardItem text={'Roles'} showIconRow={true} width={340} onClick={goToRoles} />
+        <CardItem text={'Roles'} showIconRow={true} width={400} onClick={goToRoles} />
       </div>
     </div>
   );

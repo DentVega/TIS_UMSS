@@ -86,10 +86,10 @@ function SchoolPage(props) {
       <div>
         {schools.map((school) => {
           return (
-            <div key={school.idfacultad}>
+            <div key={school.idfacultad} >
               <CardItem
                 text={school.namefacultad}
-                width={500}
+                width={"120vh"}
                 showEditIcon={true}
                 showDeleteIcon={true}
                 deleteClick={() => confirmDelete(school)}

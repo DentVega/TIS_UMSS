@@ -1,5 +1,5 @@
-import React,{useEffect, useState,useCallback} from 'react';
-import{withRouter} from 'react-router-dom'; 
+import React,{ useEffect, useState } from 'react';
+import { withRouter } from 'react-router-dom'; 
 import Fab from '@material-ui/core/Fab';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import green from '@material-ui/core/colors/green';
@@ -16,7 +16,7 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 
 const useStyles = makeStyles((theme) => ({
     root: {      
-      width: 400, 
+      width: 1150, 
       padding:10,     
     },
     fab: {
@@ -79,11 +79,11 @@ const useStyles = makeStyles((theme) => ({
   };
   
   const formatedText=(report)=>{
-      if(props.history.location.pathname==='/reports/Absences'){
+      if(props.history.location.pathname==='/reports/Absences' && users.length>0){
         const u = search==="" 
                               ? users.find((i)=>i.idusers===report.users_idusers) 
                               : userFilter.find((i)=>i.idusers===report.users_idusers);
-        const texto= "Fecha: "+`${getDate(report.fecha)}`+" "+"Usuario: "+`${u.firstname}`+" "+`${u.lastname}`;      
+        const texto=`${u.firstname} ${u.lastname}`;      
         return texto;
       }    
       if(props.history.location.pathname==="/account/absences"){      
@@ -107,31 +107,46 @@ const useStyles = makeStyles((theme) => ({
         u!==undefined&&arr.push(i);
         })          
     }
-      return search==="" ? userReports.map((item)=>(
-        <div  key={item.idfalta} className={classes.root}>
+      return props.history.location.pathname==="/account/absences" ? userReports.map((item)=>(
+        <div  key={item.idfalta} style={{width:600,padding:10}}>
           <CardActionArea>
             <CardItem      
-              text={formatedText(item)}  
+              text={"Fecha: "+getDate(item.fecha)} 
               showEditIcon={false}
               showDeleteIcon={false}
+              showIconRow={true}
               onClick={()=>seeDetails(item)}
             />
           </CardActionArea>
         </div>
         ))      
-     :arr.map((item)=>(
+     :search>""?arr.map((item)=>(
       <div  key={item.idfalta} className={classes.root }>
         <CardActionArea>
           <CardItem      
             text={formatedText(item)}  
+            secondaryText={"Fecha: "+getDate(item.fecha)}
             showEditIcon={false}
             showDeleteIcon={false}
+            showIconRow={true}
             onClick={()=>seeDetails(item)}
           />
         </CardActionArea>
       </div>
       )
-     )
+     ):userReports.map((item)=>(
+      <div  key={item.idfalta} className={classes.root }>
+        <CardActionArea>
+          <CardItem      
+            text={formatedText(item)}  
+            secondaryText={"Fecha: "+getDate(item.fecha)}
+            showEditIcon={false}
+            showDeleteIcon={false}
+            showIconRow={true}
+            onClick={()=>seeDetails(item)}
+          />
+        </CardActionArea>
+      </div>))
   }
 
 

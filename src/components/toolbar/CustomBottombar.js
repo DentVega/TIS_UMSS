@@ -8,6 +8,8 @@ const useStyles = makeStyles((theme) => ({
   content: {
     width: '100%',
     backgroundColor: colorMain,
+    position:"fixed",
+    bottom:0
   },
   appbar: {
     backgroundColor: colorMain,

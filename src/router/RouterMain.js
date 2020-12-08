@@ -40,8 +40,9 @@ import EditHorario from '../pages/horarios/EditHorario';
 import NewGrupo from '../pages/grupos/NewGrupos';
 import EditGrupo from '../pages/grupos/EditGrupo';
 import RegisterProgress from '../pages/weeklyProgressLog/RegisterProgress';
-import ReportsWeeklyMonthly from '../pages/reports/ReportsWeeklyMonthly';
-
+import UsersList from '../pages/reports/UsersList';
+import UserReports from '../pages/reports/UserReports';
+import Report from '../pages/reports/Report';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -90,8 +91,10 @@ function RouterMain(props) {
           <PrivateRoute isAuth={isAuth} exact={true} path={routes.editMateria} component={EditarMateria} />
           {/*Reportes*/}
           <PrivateRoute isAuth={isAuth} exact={true} path={routes.reports} component={Reports} />
+          <PrivateRoute isAuth={isAuth} exact={true} path={routes.userReport} component={Report} />
+          <PrivateRoute isAuth={isAuth} exact={true} path={routes.reportsByUser} component={UserReports} />
           <PrivateRoute isAuth={isAuth} exact={true} path={routes.absencesReports} component={Absences} />
-          <PrivateRoute isAuth={isAuth} exact={true} path={routes.reportsWeekMonth} component={ReportsWeeklyMonthly} />
+          <PrivateRoute isAuth={isAuth} exact={true} path={routes.usersList} component={UsersList} />
           {/*Horarios*/}
           <PrivateRoute isAuth={isAuth} exact={true} path={routes.schedule} component={SchedulePage} />
           <PrivateRoute isAuth={isAuth} exact={true} path={routes.registerHorario} component={NewHorario} />
