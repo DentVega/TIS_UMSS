@@ -41,6 +41,7 @@ function SubjectPage(props) {
   const [materiaSelecionada, setMateriaSelecionada] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
   const classes = useStyles();
+  const { user } = props.userReducer;
 
   useEffect(() => {
     if (loading) {
@@ -64,6 +65,11 @@ function SubjectPage(props) {
       props.getMateriasBackend();
       setOpenDialog(false);
     });
+    let aux = new Date();
+    let val = "idmateria:" + materiaSelecionada.idmateria + ",carrera_idcarrera:" + materiaSelecionada.carrera_idcarrera + ",namemateria:" + materiaSelecionada.carrera_idcarrera;
+    BackendConnection.createUserslog(1, user.idusers, aux.toLocaleTimeString(), aux.toLocaleDateString(), val, 0).then(() => {
+      console.log("ok deleted");
+    })
   };
 
   const confirmDelete = (materia) => {

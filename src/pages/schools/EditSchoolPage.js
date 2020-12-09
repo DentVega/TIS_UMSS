@@ -3,7 +3,6 @@ import { useFullName } from '../../constants/formCustomHook/useForm';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { getSchools } from '../../redux/actions/indexthunk.actions';
-import { changeSchool } from '../../redux/actions/index.actions';
 import {
   sAreYouSureYourWantCancel, sCancel,
   sConfirm,
@@ -23,8 +22,9 @@ function EditSchoolPage(props) {
 
   const [schoolSelected, setSchoolSelected] = useState(null);
   const [loadCurrentSchool, setLoadCurrentSchool] = useState(false);
-
+  const { user } = props.userReducer;
   const { school } = props.schoolReducer;
+
   if (school!= null && !loadCurrentSchool) {
     setSchoolSelected(school);
     handleNameChange(school.namefacultad);
@@ -33,7 +33,6 @@ function EditSchoolPage(props) {
 
   if (updateSchoolComplete) {
     props.getSchools();
-    props.changeSchool(null);
     props.history.goBack();
   }
 
@@ -62,11 +61,18 @@ function EditSchoolPage(props) {
   };
 
   const updateSchool = () => {
-    BackendConnection.updateSchools(schoolSelected.idfacultad, name)
+    if (!updateSchoolComplete) {
+      BackendConnection.updateSchools(schoolSelected.idfacultad, name)
       .then(() => {
-        setOpenDialog(false);
-        setUpdateSchoolComplete(true);
+        let val = "idfacultad:" + schoolSelected.idfacultad + ",namefacultad:" + schoolSelected.namefacultad + ",idfacultad:" + schoolSelected.idfacultad + ",namefacultad:" + name;
+        let aux = new Date();
+        BackendConnection.createUserslog(3, user.idusers, aux.toLocaleTimeString(), aux.toLocaleDateString(), val, 0).then(() => {
+          console.log("ok updated");
+          setOpenDialog(false);
+          setUpdateSchoolComplete(true);
+        });
       });
+    }
   };
 
   const renderForm = () => {
@@ -99,7 +105,7 @@ function EditSchoolPage(props) {
         messageText={sConfirmTheCreation}
         open={openDialog}
         handleClose={closeDialog}
-        handleAccept={updateSchool}
+        handleAccept={() => updateSchool()}
       />
       <CustomAlertDialog
         title={sConfirm}
@@ -136,6 +142,7 @@ function EditSchoolPage(props) {
 
 const mapStateToProps = (state) => {
   return {
+    userReducer: state.userReducer,
     app: state.app,
     schoolReducer: state.schoolReducer,
   };
@@ -143,7 +150,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
   getSchools: () => dispatch(getSchools()),
-  changeSchool: (school) => dispatch(changeSchool(school)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(EditSchoolPage));

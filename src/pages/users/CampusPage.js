@@ -41,6 +41,7 @@ function CampusPage(props) {
   const [userSelected, setUserSelected] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
   const classes = useStyles();
+  const { user } = props.userReducer;
 
   useEffect(() => {
     if (loading) {
@@ -76,6 +77,12 @@ function CampusPage(props) {
         props.getUsers();
       })
       .catch((e) => console.warn('Error Delete User', e));
+    let aux = new Date();
+    let val = "idusers:" + userSelected.idusers + ",firstname:" + userSelected.firstname + ",lastname:" + userSelected.lastname + ",phone:" + userSelected.phone
+       + ",email:" + userSelected.email + ",ci:" + userSelected.ci + ",userpassword:" + userSelected.userpassword;
+    BackendConnection.createUserslog(1, user.idusers, aux.toLocaleTimeString(), aux.toLocaleDateString(), val, 0).then(() => {
+        console.log("ok deleted");
+      })
   };
 
   const confirmDelete = (user) => {

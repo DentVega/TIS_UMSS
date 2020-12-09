@@ -43,6 +43,8 @@ function NewUniversityCareers(props) {
 
   const classes = useStyles();
 
+  const { user } = props.userReducer;
+
   useEffect(() => {
     BackendConnection.getSchools().then((schools) => {
       if (schools && schools.length > 0) {
@@ -82,17 +84,16 @@ function NewUniversityCareers(props) {
   };
 
   const registerCareers = () => {
+    let id = 0;
     BackendConnection.createCareer(schoolSelected, name).then((response) => {
-      console.log(`create career complete ${response.body.res[0].idcarrera}`);
-      let actual = `idcarrera:${response.body.res[0].idcarrera},facultad_idfacultad:${schoolSelected},namecarrera:${name}`;
-      console.log(actual);
-      BackendConnection.createUserslog(2, 1, "", "", actual, 0).then((res) => {
-        console.log(res);
-      }).catch((err) => {
-        console.log(err);
-      });
       setOpenDialog(false);
       setCreateCareersComplete(true);
+      id = response.body.res[0].idcarrera;
+      let aux = new Date();
+      let val = "idcarrera:" + id + ",facultad_idfacultad:" + schoolSelected + ",namecarrera:" + name;
+      BackendConnection.createUserslog(2, user.idusers, aux.toLocaleTimeString(), aux.toLocaleDateString(), val, 0).then(() => {
+        console.log("ok inserted");
+      });
     });
   };
 
@@ -188,6 +189,7 @@ function NewUniversityCareers(props) {
 
 const mapStateToProps = (state) => {
   return {
+    userReducer: state.userReducer,
     careersReducer: state.careersReducer,
     schoolReducer: state.schoolReducer,
   };

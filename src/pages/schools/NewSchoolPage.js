@@ -22,6 +22,7 @@ function NewSchoolPage(props) {
   const [openDialog, setOpenDialog] = useState(false);
   const [openDialogCancel, setOpenDialogCancel] = useState(false);
   const [createSchoolComplete, setCreateSchoolComplete] = useState(false);
+  const { user } = props.userReducer;
 
   if (createSchoolComplete) {
     props.getSchools();
@@ -53,10 +54,18 @@ function NewSchoolPage(props) {
   };
 
   const registerSchool = () => {
-    BackendConnection.createSchools(name).then(() => {
+    let id = 0;
+    BackendConnection.createSchools(name).then((response) => {
       setOpenDialog(false);
       setCreateSchoolComplete(true);
+      id = response.body.res[0].idfacultad;
+      let aux = new Date();
+      let val = "idfacultad:" + id + ",namefacultad:" + name;
+      BackendConnection.createUserslog(2, user.idusers, aux.toLocaleTimeString(), aux.toLocaleDateString(), val, 0).then(() => {
+        console.log("ok");
+      });
     });
+    
   };
 
   const renderForm = () => {
@@ -126,6 +135,7 @@ function NewSchoolPage(props) {
 
 const mapStateToProps = (state) => {
   return {
+    userReducer: state.userReducer,
     app: state.app,
   };
 };
