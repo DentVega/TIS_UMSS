@@ -20,19 +20,19 @@ function UserslogViewPage(props) {
    }
 
   const acceptUserlog = () => {
-    /*BackendConnection.updateUserslog(id, log[0].transaction_idtransaction, log[0].users_idusers, log[0].timechange, log[0].datechange, log[0].state, 1)
+    BackendConnection.updateUserslog(id, log[0].transaction_idtransaction, log[0].users_idusers, log[0].timechange, log[0].datechange, log[0].state, 1)
     .then((res)=>{
       console.log("Accepted");
       props.history.goBack();
-    }).catch((err)=>console.warn(err));*/
+    }).catch((err)=>console.warn(err));
   }
 
   const rejectUserlog = () => {
-    /*BackendConnection.rejectUserlog(log[0].transaction_idtransaction, log[0].state);
-    /*.then((res)=>{
+    BackendConnection.rejectUserlog(log[0].transaction_idtransaction, log[0].state)
+    .then((res)=>{
       console.log("Rejected");
     }).catch((err)=>console.warn(err));
-    acceptUserlog();*/
+    acceptUserlog();
   }
 
   const getUser = (id) => {
@@ -102,7 +102,7 @@ const getTransaction = (id) => {
   if(id === 1){
     return "DELETE";
   }else{
-    if(id === 2){
+    if(id === 3){
       return "UPDATE";
     }else{
       return "INSERT";
