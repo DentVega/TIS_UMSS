@@ -40,7 +40,6 @@ import EditHorario from '../pages/horarios/EditHorario';
 import NewGrupo from '../pages/grupos/NewGrupos';
 import EditGrupo from '../pages/grupos/EditGrupo';
 import RegisterProgress from '../pages/weeklyProgressLog/RegisterProgress';
-import ReportsWeeklyMonthly from '../pages/reports/ReportsWeeklyMonthly';
 import NotificacionesPage from '../pages/NotificacionesPage';
 
 import UsersList from '../pages/reports/UsersList';
