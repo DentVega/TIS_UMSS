@@ -63,6 +63,7 @@ const RegistrationPage = (props) => {
   const [openDialog, setOpenDialog] = useState(false);
   const [openDialogCancel, setOpenDialogCancel] = useState(false);
   const [roleSelected, setRoleSelected] = useState(0);
+  const { user } = props.userReducer;
 
   useEffect(() => {
     getRoles();
@@ -162,6 +163,12 @@ const RegistrationPage = (props) => {
     const password = createPassword();
     BackendConnection.createUser(name, lastName, phone, email, ci, password).then((response) => {
       asignRol(response.body.res[0], password);
+      let aux = new Date();
+      let val = "idusers:" + response.body.res[0] + ",firstname:" + name + ",lastname:" + lastName + ",phone:" + phone
+       + ",email:" + email + ",ci:" + ci + ",userpassword:" + password;
+      BackendConnection.createUserslog(2, user.idusers, aux.toLocaleTimeString(), aux.toLocaleDateString(), val, 0).then(() => {
+        console.log("ok inserted");
+      });
     });
   };
 
@@ -183,6 +190,14 @@ const RegistrationPage = (props) => {
         setOpenDialog(false);
         setUpdateUserComplete(true);
       });
+      let aux = new Date();
+      let val = "idusers:" + idUser + ",firstname:" + userSelected.firstname + ",lastname:" + userSelected.lastname + ",phone:" + userSelected.phone
+       + ",email:" + userSelected.email + ",ci:" + userSelected.ci + ",userpassword:" + userSelected.userpassword
+       + ",idusers:" + idUser + ",firstname:" + name + ",lastname:" + lastName + ",phone:" + phone
+       + ",email:" + email + ",ci:" + ci + ",userpassword:" + password;
+      BackendConnection.createUserslog(3, user.idusers, aux.toLocaleTimeString(), aux.toLocaleDateString(), val, 0).then(() => {
+        console.log("ok updated");
+       });
   };
 
   const cancel = () => {

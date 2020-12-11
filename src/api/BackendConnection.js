@@ -1,3 +1,4 @@
+import { StarRateSharp } from '@material-ui/icons';
 import axios from 'axios';
 import { baseUrl } from './Keys';
 
@@ -354,6 +355,184 @@ class BackendConnection {
         });
     });
   }
+
+  createUserslog(transaction_idtransaction, users_idusers, timechange, datechange, state, check) {
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'POST',
+        url: `${baseUrl}/userslog`,
+        data: {
+          transaction_idtransaction: transaction_idtransaction,
+          users_idusers: users_idusers,
+          timechange: timechange, 
+          datechange: datechange,
+          state: state,
+          check: check,
+        },
+      })
+        .then((response) => resolve(response.data))
+        .catch((e) => reject(e));
+    });
+  }
+
+  updateUserslog(id, transaction_idtransaction, users_idusers, timechange, datechange, state, check) {
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'PUT',
+        url: `${baseUrl}/userslog/${id}`,
+        headers: {
+          'content-type': 'application/json',
+          'cache-control': 'no-cache',
+        },
+        data: {
+          transaction_idtransaction: transaction_idtransaction,
+          users_idusers: users_idusers,
+          timechange: timechange, 
+          datechange: datechange,
+          state: state,
+          check: check,
+        },
+      })
+        .then((response) => {
+          console.warn(response);
+          resolve(response);
+        })
+        .catch((e) => {
+          console.warn(e.message);
+          reject(e);
+        });
+    });
+  }
+
+  rejectUserlog(transaction_idtransaction, actual){
+    let aux = actual.charAt(2);
+    let i = 3;
+    while(actual.charAt(i) != ':'){
+      aux += actual.charAt(i);
+      i++;
+    }
+    if(transaction_idtransaction == 1){
+      return this.deleteReverse(aux, actual);
+    }
+    else{
+      if(transaction_idtransaction == 2){
+        return this.insertReverse(aux, actual, i);
+      }else{
+        return this.updateReverse(aux, actual);
+      }
+    }
+  }
+
+  getData(actual){
+    let list = [];
+    let band = 0;
+    var aux = "";
+    for(let i = 0; i < actual.length; i++){
+      if(band > 0){
+        if(actual.charAt(i) == ','){
+          band = 0;
+          list.push(aux);
+          aux = "";
+        }else{
+          aux += actual.charAt(i);
+        }
+      }else{
+        if(actual.charAt(i) == ':'){
+          band ++;
+        }
+      }
+    }
+    list.push(aux);
+    return list;
+  }
+
+  deleteReverse(aux, actual){
+    let list = [];
+    list = this.getData(actual);
+    switch(aux){
+      case "facultad":
+        return this.createSchools(list[1]);
+      case "carrera":
+        return this.createCareer(list[1], list[2]);
+      case "grupo":
+        return this.createGrupo(list[1]);
+      case "grupohorario":
+        return this.createGrupoHorario(list[1], list[2], list[3], list[4]);
+      case "horario":
+        return this.createHorario(list[1], list[2], list[3]);
+      case "materia":
+        return this.createMateria(list[1], list[2]);
+      case "role":
+        return this.createRole(list[1]);
+      case "rolefunc":
+        return null;
+      case "userrol":
+        return this.createUserRol(list[1], list[2]);
+      case "users":
+        return this.createUser(list[1], list[2], list[3], list[4], list[5], list[6]);
+      default:
+        return null;
+    }
+  }
+  
+  updateReverse(aux, actual){
+    let list = [];
+    list = this.getData(actual);
+    switch(aux){
+      case "facultad":
+        return this.updateSchools(list[0], list[1]);
+      case "carrera":
+        return this.updateCareer(list[0], list[1], list[2]);
+      case "grupo":
+        return this.updateGrupo(list[0], list[1]);
+      case "grupohorario":
+        return this.updateGrupoHorario(list[0], list[1], list[2], list[3], list[4]);
+      case "horario":
+        return this.updateHorario(list[0], list[1], list[2], list[3]);
+      case "materia":
+        return this.updateMateria(list[0], list[1], list[2]);
+      case "role":
+        return this.updateRole(list[0], list[1]);
+      case "rolefunc":
+        return null;
+      case "userrol":
+        return null;
+      case "users":
+        return this.updateUser(list[0], list[1], list[2], list[3], list[4], list[5], list[6]);
+      default:
+        return null;
+    }
+  }
+
+  insertReverse(aux, actual, i){
+    let list = this.getData(actual);
+    let id = list[0];
+    switch(aux){
+      case "facultad":
+        return this.deleteSchools(id);
+      case "carrera":
+        return this.deleteCareer(id);
+      case "grupo":
+        return this.deleteGrupo(id);
+      case "grupohorario":
+        return this.deleteGrupoHorario(id);
+      case "horario":
+        return this.deleteHorario(id);
+      case "materia":
+        return this.deleteMateria(id);
+      case "role":
+        return this.deleteRole(id);
+      case "rolefunc":
+        return this.deleteRoleFunc(id);
+      case "userrol":
+        return this.deleteUserRol(id);
+      case "users":
+        return this.deleteUsers(id);
+      default:
+        return null;
+    }
+  }
+
 
   deleteSchools(idFacultad) {
     return new Promise((resolve, reject) => {

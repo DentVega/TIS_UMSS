@@ -42,6 +42,7 @@ function UniversityCareers(props) {
   const [careersSelected, setCareersSelected] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
   const classes = useStyles();
+  const { user } = props.userReducer;
 
   if (facultadSeleccionada !== facultadAux) {
     if (facultadSeleccionada === 0) {
@@ -75,6 +76,11 @@ function UniversityCareers(props) {
     BackendConnection.deleteCareer(careersSelected.idcarrera).then(() => {
       props.getCareers();
       setOpenDialog(false);
+    });
+    let aux = new Date();
+    let val = "idcarrera:" + careersSelected.idcarrera + ",facultad_idfacultad:" + careersSelected.facultad_idfacultad + ",namecarrera:" + careersSelected.namecarrera;
+    BackendConnection.createUserslog(1, user.idusers, aux.toLocaleTimeString(), aux.toLocaleDateString(), val, 0).then(() => {
+      console.log("ok deleted");
     });
   };
 
@@ -139,6 +145,7 @@ function UniversityCareers(props) {
 }
 
 const mapStateToProps = (state) => ({
+  userReducer: state.userReducer,
   careersReducer: state.careersReducer,
   filtersReducer: state.filtersReducer,
 });

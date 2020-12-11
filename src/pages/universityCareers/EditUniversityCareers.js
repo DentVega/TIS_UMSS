@@ -41,6 +41,7 @@ function EditUniversityCareers(props) {
   const [schoolSelected, setSchoolSelected] = useState(0);
 
   const { career } = props.careersReducer;
+  const { user } = props.userReducer;
 
 
   const classes = useStyles();
@@ -90,6 +91,12 @@ function EditUniversityCareers(props) {
       setOpenDialog(false);
       setUpdateCareersComplete(true);
     });
+    let aux = new Date();
+    let val = "idcarrera:" + career.idcarrera + ",facultad_idfacultad:" + career.facultad_idfacultad + ",namecarrera:" + career.namecarrera 
+           + ",idcarrera:" + career.idcarrera + ",facultad_idfacultad:" + schoolSelected + ",namecarrera:" + name;
+    BackendConnection.createUserslog(3, user.idusers, aux.toLocaleTimeString(), aux.toLocaleDateString(), val, 0).then(() => {
+      console.log("ok updated");
+    })
   };
 
   const handleChange = (event) => {
@@ -184,6 +191,7 @@ function EditUniversityCareers(props) {
 
 const mapStateToProps = (state) => {
   return {
+    userReducer: state.userReducer,
     careersReducer: state.careersReducer,
     schoolReducer: state.schoolReducer,
   };

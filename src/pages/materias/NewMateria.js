@@ -42,6 +42,7 @@ function NewMateria(props) {
   const [careerSelected, setCareersSelected] = useState(0);
 
   const classes = useStyles();
+  const { user } = props.userReducer;
 
   useEffect(() => {
     BackendConnection.getCarreras().then((carerras) => {
@@ -85,6 +86,12 @@ function NewMateria(props) {
     BackendConnection.createMateria(careerSelected, name).then((response) => {
       setOpenDialog(false);
       setCreateMateriaComplete(true);
+      let id = response.body.res[0].idmateria;
+      let aux = new Date();
+      let val = "idmateria:" + id + ",carrera_idcarrera:" + careerSelected + ",namemateria:" + name;
+      BackendConnection.createUserslog(2, user.idusers, aux.toLocaleTimeString(), aux.toLocaleDateString(), val, 0).then(() => {
+        console.log("ok");
+      });
     });
   };
 
@@ -180,6 +187,7 @@ function NewMateria(props) {
 
 const mapStateToProps = (state) => {
   return {
+    userReducer: state.userReducer,
     materiasReducer: state.materiasReducer,
     careersReducer: state.careersReducer,
   };

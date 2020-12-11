@@ -42,6 +42,7 @@ function EditarMateria(props) {
   const [careerSelected, setCareersSelected] = useState(0);
 
   const { materia } = props.materiasReducer;
+  const { user } = props.userReducer;
 
   const classes = useStyles();
 
@@ -89,6 +90,12 @@ function EditarMateria(props) {
     BackendConnection.updateMateria(materia.idmateria, careerSelected, name).then((response) => {
       setOpenDialog(false);
       setUpdateMateriaComplete(true);
+    });
+    let val = "idmateria:" + materia.idmateria + ",carrera_idcarrera:" + materia.carrera_idcarrera + ",namemateria:" + materia.namemateria
+           + ",idmateria:" + materia.idmateria + ",carrera_idcarrera:" + careerSelected + ",namemateria:" + name;
+    let aux = new Date();
+    BackendConnection.createUserslog(3, user.idusers, aux.toLocaleTimeString(), aux.toLocaleDateString(), val, 0).then(() => {
+        console.log("ok updated");
     });
   };
 
@@ -184,6 +191,7 @@ function EditarMateria(props) {
 
 const mapStateToProps = (state) => {
   return {
+    userReducer: state.userReducer,
     materiasReducer: state.materiasReducer,
     careersReducer: state.careersReducer,
   };

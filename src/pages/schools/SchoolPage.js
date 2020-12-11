@@ -39,6 +39,7 @@ function SchoolPage(props) {
   const [schoolSelected, setSchoolSelected] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
   const classes = useStyles();
+  const { user } = props.userReducer;
 
   useEffect(() => {
     if (loading) {
@@ -72,6 +73,11 @@ function SchoolPage(props) {
       props.getSchools();
       setOpenDialog(false);
     });
+    let aux = new Date();
+    let val = "idfacultad:" + schoolSelected.idfacultad + ",namefacultad:" + schoolSelected.namefacultad;
+    BackendConnection.createUserslog(1, user.idusers, aux.toLocaleTimeString(), aux.toLocaleDateString(), val, 0).then(() => {
+      console.log("ok deleted");
+    })
   };
 
   const fab = {
