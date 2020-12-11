@@ -115,7 +115,7 @@ class BackendConnection {
     });
   }
 
-  getUserById(id){
+  getUserById(id) {
     return new Promise((resolve, reject) => {
       axios({
         method: 'GET',
@@ -227,6 +227,7 @@ class BackendConnection {
         });
     });
   }
+
   getAllUsersRol() {
     return new Promise((resolve, reject) => {
       axios({
@@ -245,6 +246,7 @@ class BackendConnection {
         });
     });
   }
+
   createUserRol(userId, rolId) {
     return new Promise((resolve, reject) => {
       axios({
@@ -494,6 +496,7 @@ class BackendConnection {
         .catch((e) => reject(e));
     });
   }
+
   //Crud RoleFunc
   roleFunction(idRole, idFuncion) {
     return new Promise((resolve, reject) => {
@@ -555,6 +558,7 @@ class BackendConnection {
         });
     });
   }
+
   //faltas CRUD
   createAbsence(userId, date, link) {
     return new Promise((resolve, reject) => {
@@ -617,6 +621,7 @@ class BackendConnection {
         });
     });
   }
+
   getAllAbsences() {
     return new Promise((resolve, reject) => {
       axios({
@@ -701,6 +706,7 @@ class BackendConnection {
         .catch((e) => reject(e));
     });
   }
+
   //Crud Grupos
   getGrupos() {
     return new Promise((resolve, reject) => {
@@ -762,8 +768,9 @@ class BackendConnection {
         .catch((e) => reject(e));
     });
   }
+
   //Crud GrupoHorarios
-  getGrupoHByUserId(userId){
+  getGrupoHByUserId(userId) {
     return new Promise((resolve, reject) => {
       axios({
         method: 'GET',
@@ -773,6 +780,7 @@ class BackendConnection {
         .catch((e) => reject(e));
     });
   }
+
   getGrupoHorarios() {
     return new Promise((resolve, reject) => {
       axios({
@@ -858,68 +866,123 @@ class BackendConnection {
         });
     });
   }
+
   //Crud RegistroAvance
-  registrarAvance(idgrupo,beginweek,endweek,platform,classcontain,observations,sign){
-    return new Promise((resolve,reject)=>{
+  registrarAvance(idgrupo, beginweek, endweek, platform, classcontain, observations, sign) {
+    return new Promise((resolve, reject) => {
       axios({
-        method:'POST',
-        url:`${baseUrl}/assistance`,
+        method: 'POST',
+        url: `${baseUrl}/assistance`,
         headers: {
           'content-type': 'application/json',
           'cache-control': 'no-cache',
         },
         data: {
-          grupohorarios_idgrupohorarios:idgrupo,
-          beginweek:beginweek,
-          endweek:endweek,
-          platform:platform,
-          classcontain:classcontain,
-          observations:observations,
-          sign:sign,
+          grupohorarios_idgrupohorarios: idgrupo,
+          beginweek: beginweek,
+          endweek: endweek,
+          platform: platform,
+          classcontain: classcontain,
+          observations: observations,
+          sign: sign,
         },
       })
-      .then((response) => resolve(response.data))
-      .catch((e) => reject(e));
-    })
+        .then((response) => resolve(response.data))
+        .catch((e) => reject(e));
+    });
   }
-  getAllReports(){
-    return new Promise((resolve,reject)=>{
+
+  getAllReports() {
+    return new Promise((resolve, reject) => {
       axios({
         method: 'GET',
         url: `${baseUrl}/assistance`,
-        })
+      })
         .then((response) => resolve(response.data))
         .catch((e) => reject(e));
-      })
+    });
   }
-  getReportsByWeek(date){
-    return new Promise((resolve,reject)=>{
+
+  getReportsByWeek(date) {
+    return new Promise((resolve, reject) => {
       axios({
         method: 'GET',
         url: `${baseUrl}/assistance/week/${date}`,
-        })
+      })
         .then((response) => resolve(response.data))
         .catch((e) => reject(e));
-      })
+    });
   }
-    //Crud ReporteAdicional
-  registroReporteAdicional(idAsistencia,archivo){
-    return new Promise((resolve,reject)=>{
+
+  //Crud ReporteAdicional
+  registroReporteAdicional(idAsistencia, archivo) {
+    return new Promise((resolve, reject) => {
       axios({
-        method:"POST",
-        url:`${baseUrl}/addicional`,
+        method: 'POST',
+        url: `${baseUrl}/addicional`,
         headers: {
           'content-type': 'application/json',
           'cache-control': 'no-cache',
         },
-        data:{
-          assistance_idassistance:idAsistencia,
-          archivo:archivo,
+        data: {
+          assistance_idassistance: idAsistencia,
+          archivo: archivo,
         }
       })
-      .then((response) => resolve(response.data))
-      .catch((e) => reject(e));
-    })
+        .then((response) => resolve(response.data))
+        .catch((e) => reject(e));
+    });
+  }
+
+  getNotificactionByIdUser(idUser) {
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'GET',
+        url: `${baseUrl}/notificaciones/byuser/${idUser}`,
+        headers: {
+          'content-type': 'application/json',
+          'cache-control': 'no-cache',
+        },
+      })
+        .then((response) => resolve(response.data))
+        .catch((e) => reject(e));
+    });
+  }
+
+  createNotificactionByIdUser(idUser, mensaje) {
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'POST',
+        url: `${baseUrl}/notificaciones`,
+        headers: {
+          'content-type': 'application/json',
+          'cache-control': 'no-cache',
+        },
+        data: {
+          users_idusers: idUser,
+          revisado: false,
+          mensaje: mensaje,
+          dia: new Date(),
+        }
+      })
+        .then((response) => resolve(response.data))
+        .catch((e) => reject(e));
+    });
+  }
+
+    deleteNotificactionByIdUser(idUser) {
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'DELETE',
+        url: `${baseUrl}/notificaciones/byuser/${idUser}`,
+        headers: {
+          'content-type': 'application/json',
+          'cache-control': 'no-cache',
+        },
+      })
+        .then((response) => resolve(response.data))
+        .catch((e) => reject(e));
+    });
   }
 
 }

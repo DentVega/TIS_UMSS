@@ -41,6 +41,7 @@ import NewGrupo from '../pages/grupos/NewGrupos';
 import EditGrupo from '../pages/grupos/EditGrupo';
 import RegisterProgress from '../pages/weeklyProgressLog/RegisterProgress';
 import ReportsWeeklyMonthly from '../pages/reports/ReportsWeeklyMonthly';
+import NotificacionesPage from '../pages/NotificacionesPage';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -109,6 +110,8 @@ function RouterMain(props) {
           {/*userslog*/}
           <PrivateRoute isAuth={isAuth} exact={true} path={routes.userslog} component={UserslogPage} />
           <PrivateRoute isAuth={isAuth} exact={true} path={routes.userslogView} component={UserslogViewPage} />
+          {/*NotificacionesPage*/}
+          <PrivateRoute isAuth={isAuth} exact={true} path={routes.notificaciones} component={NotificacionesPage} />
           {/*Account*/}
           <PrivateRoute isAuth={isAuth} exact={true} path={routes.account} component={AccountPage} />
           <PrivateRoute isAuth={isAuth} exact={true} path={routes.userAbsences} component={Absences} />

@@ -111,10 +111,14 @@ function CustomAppBar(props) {
     </Menu>
   );
 
+  const goToNotificaciones = () => {
+    props.history.push(routes.notificaciones);
+  };
+
   const actions = (
     <div>
       <div className={classes.sectionDesktop}>
-        <IconButton aria-label="show 17 new notifications" color="inherit">
+        <IconButton aria-label="show 17 new notifications" color="inherit" onClick={goToNotificaciones}>
           <Badge badgeContent={numberNotification} color="secondary">
             <NotificationsIcon />
           </Badge>

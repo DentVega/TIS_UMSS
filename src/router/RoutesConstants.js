@@ -38,5 +38,5 @@ export const routes = {
   //Reports
   reports: '/reports',
   reportsWeekMonth:'/reports/weeklyMonthly',
-
+  notificaciones:'/notificaciones',
 };
