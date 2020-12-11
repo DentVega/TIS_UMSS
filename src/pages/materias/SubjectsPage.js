@@ -85,6 +85,7 @@ function SubjectPage(props) {
               <CardItem
                 text={materia.namemateria}
                 showEditIcon={true}
+                width={750}
                 showDeleteIcon={true}
                 editClick={() => updateMateria(materia)}
                 deleteClick={() => confirmDelete(materia)}

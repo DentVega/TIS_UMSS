@@ -82,7 +82,9 @@ function SchedulePage(props) {
           return (
             <div key={horario.idhorario}>
               <CardItem
-                text={`Inicio: ${horario.horaini}  -  Fin: ${horario.horafin}`}
+                text={`Inicio: ${horario.horaini}    `}
+                secondaryText={`Fin: ${horario.horafin}`}
+                width={"100vh"}
                 showEditIcon={true}
                 showDeleteIcon={true}
                 editClick={() => updateHorario(horario)}

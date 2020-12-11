@@ -105,10 +105,10 @@ function CampusPage(props) {
       <div>
         {search==="" ? users.map((user) => {
           return (
-            <div key={user.idusers}>
+            <div key={user.idusers} >
               <CardItem
                 text={`${user.firstname} ${user.lastname}`}
-                width={500}
+                width={"120vh"}
                 showEditIcon={true}
                 showDeleteIcon={true}
                 deleteClick={() => confirmDelete(user)}
@@ -123,7 +123,7 @@ function CampusPage(props) {
             <div key={user.idusers}>
               <CardItem
                 text={`${user.firstname} ${user.lastname}`}
-                width={500}
+                width={"120vh"}
                 showEditIcon={true}
                 showDeleteIcon={true}
                 deleteClick={() => confirmDelete(user)}

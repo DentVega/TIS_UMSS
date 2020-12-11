@@ -892,6 +892,18 @@ class BackendConnection {
     });
   }
 
+  //CRUD Reports/assistance
+  getReportByID(id) {
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'GET',
+        url: `${baseUrl}/assistance/${id}`,
+      })
+        .then((response) => resolve(response.data))
+        .catch((e) => reject(e));
+    });
+  }
+
   getAllReports() {
     return new Promise((resolve, reject) => {
       axios({
@@ -908,6 +920,18 @@ class BackendConnection {
       axios({
         method: 'GET',
         url: `${baseUrl}/assistance/week/${date}`,
+      })
+        .then((response) => resolve(response.data))
+        .catch((e) => reject(e));
+    });
+  }
+
+  //CRUD AdditionalClass
+  getAdditionalClassByGrpHorID(id) {
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'GET',
+        url: `${baseUrl}/additionalclass/grupohorario/${id}`,
       })
         .then((response) => resolve(response.data))
         .catch((e) => reject(e));
@@ -971,7 +995,7 @@ class BackendConnection {
     });
   }
 
-    deleteNotificactionByIdUser(idUser) {
+  deleteNotificactionByIdUser(idUser) {
     return new Promise((resolve, reject) => {
       axios({
         method: 'DELETE',

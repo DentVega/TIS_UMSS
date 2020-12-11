@@ -11,8 +11,20 @@ import { sBadCredentials, sForgotYourPassword, sIncorrectPassword, sInvalidEmail
 import { emailRegex } from '../constants/regexs';
 import { getRoleFuncs } from '../redux/actions/indexthunk.actions';
 import RecoveryPasswordDialog from '../components/dialogs/RecoveryPasswordDialog';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles((theme) => ({
+  login:{
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    marginRight: "-50%",
+    transform: "translate(-50%, -50%)",
+  },
+}))
 
 const LoginPage = (props) => {
+  const classes = useStyles();
   const e = sessionStorage.getItem('email');
   const p = sessionStorage.getItem('password');
   if (e !== null && p !== null) {
@@ -64,7 +76,7 @@ const LoginPage = (props) => {
   };
 
   return (
-    <div id={'content-login'} style={{ height: 700 }}>
+    <div id={'content-login'} style={{ height: 700 }} className={classes.login}>
       <RecoveryPasswordDialog
         open={showERecoveryPass}
         handleClose={() => setShowERecoveryPass(false)}

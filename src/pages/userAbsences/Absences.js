@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React,{ useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import Fab from '@material-ui/core/Fab';
 import makeStyles from '@material-ui/core/styles/makeStyles';
@@ -15,23 +15,23 @@ import SearchIcon from '@material-ui/icons/Search';
 import InputAdornment from '@material-ui/core/InputAdornment';
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    width: 400,
-    padding: 10,
-  },
-  fab: {
-    position: 'absolute',
-    bottom: theme.spacing(2),
-    right: theme.spacing(2),
-  },
-  fabGreen: {
-    color: theme.palette.common.white,
-    backgroundColor: green[500],
-    '&:hover': {
-      backgroundColor: green[600],
+    root: {
+      width: 1150,
+      padding:10,
     },
-  },
-}));
+    fab: {
+      position: 'absolute',
+      bottom: theme.spacing(2),
+      right: theme.spacing(2),
+    },
+    fabGreen: {
+      color: theme.palette.common.white,
+      backgroundColor: green[500],
+      '&:hover': {
+        backgroundColor: green[600],
+      },
+    },
+  }));
 
 const Absences = (props) => {
   sessionStorage.setItem('path', props.history.location.pathname);
@@ -78,18 +78,17 @@ const Absences = (props) => {
     return new Date(date).toLocaleDateString();
   };
 
-  const formatedText = (report) => {
-    if (props.history.location.pathname === '/reports/Absences') {
-      const u = search === ''
-        ? users.find((i) => i.idusers === report.users_idusers)
-        : userFilter.find((i) => i.idusers === report.users_idusers);
-      // eslint-disable-next-line no-useless-concat
-      return 'Fecha: ' + `${getDate(report.fecha)}` + ' ' + 'Usuario: ' + `${u.firstname}` + ' ' + `${u.lastname}`;
-    }
-    if (props.history.location.pathname === '/account/absences') {
-      // eslint-disable-next-line no-useless-concat
-      return 'Fecha: ' + `${getDate(report.fecha)}`;
-    }
+  const formatedText=(report)=>{
+      if(props.history.location.pathname==='/reports/Absences' && users.length>0){
+        const u = search===""
+                              ? users.find((i)=>i.idusers===report.users_idusers)
+                              : userFilter.find((i)=>i.idusers===report.users_idusers);
+        const texto=`${u.firstname} ${u.lastname}`;
+        return texto;
+      }
+      if(props.history.location.pathname==="/account/absences"){
+        return "Fecha: "+`${getDate(report.fecha)}`
+      }
   };
 
   const searchOnChange = (val) => {
@@ -108,32 +107,47 @@ const Absences = (props) => {
         u !== undefined && arr.push(i);
       });
     }
-    return search === '' ? userReports.map((item) => (
-        <div key={item.idfalta} className={classes.root}>
+      return props.history.location.pathname==="/account/absences" ? userReports.map((item)=>(
+        <div  key={item.idfalta} style={{width:600,padding:10}}>
           <CardActionArea>
             <CardItem
-              text={formatedText(item)}
+              text={"Fecha: "+getDate(item.fecha)}
               showEditIcon={false}
               showDeleteIcon={false}
-              onClick={() => seeDetails(item)}
+              showIconRow={true}
+              onClick={()=>seeDetails(item)}
             />
           </CardActionArea>
         </div>
-      ))
-      : arr.map((item) => (
-          <div key={item.idfalta} className={classes.root}>
-            <CardActionArea>
-              <CardItem
-                text={formatedText(item)}
-                showEditIcon={false}
-                showDeleteIcon={false}
-                onClick={() => seeDetails(item)}
-              />
-            </CardActionArea>
-          </div>
-        )
-      );
-  };
+        ))
+     :search>""?arr.map((item)=>(
+      <div  key={item.idfalta} className={classes.root }>
+        <CardActionArea>
+          <CardItem
+            text={formatedText(item)}
+            secondaryText={"Fecha: "+getDate(item.fecha)}
+            showEditIcon={false}
+            showDeleteIcon={false}
+            showIconRow={true}
+            onClick={()=>seeDetails(item)}
+          />
+        </CardActionArea>
+      </div>
+      )
+     ):userReports.map((item)=>(
+      <div  key={item.idfalta} className={classes.root }>
+        <CardActionArea>
+          <CardItem
+            text={formatedText(item)}
+            secondaryText={"Fecha: "+getDate(item.fecha)}
+            showEditIcon={false}
+            showDeleteIcon={false}
+            showIconRow={true}
+            onClick={()=>seeDetails(item)}
+          />
+        </CardActionArea>
+      </div>))
+  }
 
 
   return (

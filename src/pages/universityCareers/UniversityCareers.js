@@ -95,6 +95,7 @@ function UniversityCareers(props) {
           return (
             <div key={career.idcarrera}>
               <CardItem
+                width={"100vh"}
                 text={career.namecarrera}
                 showEditIcon={true}
                 showDeleteIcon={true}

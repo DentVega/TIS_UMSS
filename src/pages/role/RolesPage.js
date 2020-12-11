@@ -125,7 +125,7 @@ function RolesPage(props) {
 
               <CardItem
                 text={rol.rolename}
-                width={500}
+                width={750}
                 showEditIcon={true}
                 showDeleteIcon={true}
                 editClick={() => updateRole(rol)}
