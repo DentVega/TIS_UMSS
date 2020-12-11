@@ -13,7 +13,6 @@ class BackendConnection {
         },
       })
         .then((user) => {
-          console.warn(user.data);
           resolve(user.data);
         })
         .catch((e) => reject(e));
@@ -126,7 +125,7 @@ class BackendConnection {
         .catch((e) => reject(e));
     });
   }
-  
+
   createUser(firstname, lastname, phone, email, ci, userpassword) {
     return new Promise((resolve, reject) => {
       axios({
@@ -168,11 +167,9 @@ class BackendConnection {
         },
       })
         .then((response) => {
-          console.warn(response);
           resolve(response);
         })
         .catch((e) => {
-          console.warn(e.message);
           reject(e);
         });
     });
@@ -244,7 +241,6 @@ class BackendConnection {
           resolve(response.data);
         })
         .catch((e) => {
-          console.warn(e.message);
           reject(e);
         });
     });
@@ -264,7 +260,6 @@ class BackendConnection {
         },
       })
         .then((response) => {
-          console.warn('response save role', response);
           resolve(response.data);
         })
         .catch((e) => {
@@ -515,11 +510,9 @@ class BackendConnection {
         },
       })
         .then((response) => {
-          console.warn(response);
           resolve(response);
         })
         .catch((e) => {
-          console.warn(e.message);
           reject(e);
         });
     });
@@ -539,7 +532,6 @@ class BackendConnection {
           resolve(response.data);
         })
         .catch((e) => {
-          console.warn(e.message);
           reject(e);
         });
     });
@@ -559,7 +551,6 @@ class BackendConnection {
           resolve(response.data);
         })
         .catch((e) => {
-          console.warn(e.message);
           reject(e);
         });
     });
@@ -584,7 +575,6 @@ class BackendConnection {
           resolve(response.data);
         })
         .catch((e) => {
-          console.warn(e.message);
           reject(e);
         });
     });
@@ -604,7 +594,6 @@ class BackendConnection {
           resolve(response.data);
         })
         .catch((e) => {
-          console.warn(e.message);
           reject(e);
         });
     });
@@ -624,7 +613,6 @@ class BackendConnection {
           resolve(response.data);
         })
         .catch((e) => {
-          console.warn(e.message);
           reject(e);
         });
     });
@@ -643,7 +631,6 @@ class BackendConnection {
           resolve(response.data);
         })
         .catch((e) => {
-          console.warn(e.message);
           reject(e);
         });
     });
@@ -842,9 +829,18 @@ class BackendConnection {
     });
   }
 
+  getGrupoHorariosByIdGrupo(idGrupo) {
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'GET',
+        url: `${baseUrl}/grupoHorarios/bygrupo/${idGrupo}`,
+      })
+        .then((response) => resolve(response.data))
+        .catch((e) => reject(e));
+    });
+  }
+
   sendEmail(email, password) {
-    console.log('email', email);
-    console.log('password', password)
     return new Promise((resolve, reject) => {
       axios({
         method: 'POST',
@@ -855,11 +851,9 @@ class BackendConnection {
         },
       })
         .then((response) => {
-          console.log(' enviar email', response);
           resolve(response.data);
         })
         .catch((e) => {
-          console.log('error enviar email', e);
           reject(e);
         });
     });
@@ -922,12 +916,12 @@ class BackendConnection {
           assistance_idassistance:idAsistencia,
           archivo:archivo,
         }
-      }) 
+      })
       .then((response) => resolve(response.data))
       .catch((e) => reject(e));
     })
-  }  
-  
+  }
+
 }
 
 export default new BackendConnection();

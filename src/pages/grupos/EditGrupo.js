@@ -6,7 +6,7 @@ import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
-import { Button, Grid } from '@material-ui/core';
+import { Button, Grid, IconButton } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   sAreYouSureYourWantCancel,
@@ -18,6 +18,8 @@ import {
 import CustomAlertDialog from '../../components/dialogs/CustomAlertDialog';
 import { changeGrupoHorario } from '../../redux/actions/index.actions';
 import { getGrupoHorariosBackend, getGruposBackend } from '../../redux/actions/indexthunk.actions';
+import ItemGrupoHorario from './ItemGrupoHorario';
+import AddIcon from '@material-ui/icons/Add';
 
 const diasConst = [
   {
@@ -69,11 +71,12 @@ function EditGrupo(props) {
   const [createGrupoComplete, setCreateGrupoComplete] = useState(false);
 
   const [grupoIdSelected, setGrupoIdSelected] = useState(null);
-  const { grupoHorario } = props.grupoReducer;
+  const { grupo } = props.grupoReducer;
 
   const [loadingAllItems, setLoadingAllItems] = useState(false);
 
-  console.log('grupoHorario sELECTES', grupoHorario);
+  const [showFormHorario, setShowHorario] = useState(false);
+  const [horariosActivados, setHorariosActivados] = useState([]);
 
   const classes = useStyles();
 
@@ -90,27 +93,24 @@ function EditGrupo(props) {
     const users = await BackendConnection.getUsers();
     const horarios = await BackendConnection.getHorarios();
     const materias = await BackendConnection.getMaterias();
+    await loadGruposHorarios();
 
-    console.log('materias', materias);
-
-    const { dia, grupo_idgrupo, horario_idhorario, idgrupohorarios, users_idusers } = grupoHorario;
-
-    const grupo = await BackendConnection.getGruposbyId(grupo_idgrupo);
-
-    console.log('grupo Obtenido', grupo[0]);
-
-    const { idgrupo, materia_idmateria } = grupo[0];
-
+    const { idgrupo, materia_idmateria } = grupo;
     setMateriaSelected(materia_idmateria);
-    setHorarioSelected(horario_idhorario);
-    setUserSelected(users_idusers);
-    setDiaSelected(dia);
     setGrupoIdSelected(idgrupo);
 
     setUsers(users);
     setMaterias(materias);
     setHorarios(horarios);
     setLoadingAllItems(true);
+  };
+
+  const loadGruposHorarios = async () => {
+    const { idgrupo } = grupo;
+    const grupoHorarios = await BackendConnection.getGrupoHorariosByIdGrupo(idgrupo);
+    if (grupoHorarios && grupoHorarios.length > 0) {
+      setHorariosActivados(grupoHorarios);
+    }
   };
 
   const cancel = () => {
@@ -130,19 +130,7 @@ function EditGrupo(props) {
   };
 
   const registerGrupo = async () => {
-    const { idgrupohorarios } = grupoHorario;
-
-    const grupoCreado = await BackendConnection.updateGrupo(grupoIdSelected, materiaSelected);
-
-    const grupoMateria = await BackendConnection.updateGrupoHorario(
-      idgrupohorarios,
-      horarioSelected,
-      grupoIdSelected,
-      userSelected,
-      diaSelected,
-    );
-
-    console.log('grupoMateria', grupoMateria);
+    await BackendConnection.updateGrupo(grupoIdSelected, materiaSelected);
     setOpenDialog(false);
     setCreateGrupoComplete(true);
   };
@@ -239,6 +227,79 @@ function EditGrupo(props) {
     );
   };
 
+  const renderGeneralData = () => {
+    return (
+      <Grid item style={{ width: '80vh', borderRadius: '40px' }}>
+        <div className={{ height: 20 }}/>
+        {loadingAllItems && renderMateria()}
+        <div className={{ height: 50 }}/>
+      </Grid>
+    );
+  };
+
+  const deleteGrupoHoario = async (idGrupoHorario) => {
+    await BackendConnection.deleteGrupoHorario(idGrupoHorario);
+    loadGruposHorarios();
+  };
+
+  const renderListHorarios = () => {
+    return (
+      <Grid item>
+        <Grid container alignItems={'center'}>
+          <h4>Horarios</h4>
+          {!showFormHorario && (
+            <IconButton onClick={() => setShowHorario(true)}>
+              <AddIcon/>
+            </IconButton>
+          )}
+        </Grid>
+        {showFormHorario ? renderFormHorarios() : horariosActivados.map((horarioActivado) => {
+          return <ItemGrupoHorario key={horarioActivado.idgrupohorarios} grupoHorario={horarioActivado}
+                                   materias={materias} horarios={horarios}
+                                   deleteClick={(idGrupoHorario) => deleteGrupoHoario(idGrupoHorario)}/>;
+        })}
+      </Grid>
+    );
+  };
+
+
+  const crearHorario = async () => {
+    const { idgrupo } = grupo;
+    BackendConnection.createGrupoHorario(
+      horarioSelected,
+      idgrupo,
+      userSelected,
+      diaSelected,
+    );
+    loadGruposHorarios();
+    setShowHorario(false);
+  };
+
+  const renderFormHorarios = () => {
+    return (
+      <Grid item>
+        {loadingAllItems && renderDia()}
+        <div className={{ height: 20 }}/>
+        {loadingAllItems && renderHoraios()}
+        <div className={{ height: 20 }}/>
+        {loadingAllItems && renderUsers()}
+        <Grid container direction={'row'} spacing={2}>
+          <Grid item>
+            <Button variant="contained" color="primary" type="submit" onClick={() => setShowHorario(true)}>
+              Cancelar
+            </Button>
+          </Grid>
+
+          <Grid item>
+            <Button variant="contained" color="primary" type="submit" onClick={() => crearHorario()}>
+              Crear Horario
+            </Button>
+          </Grid>
+        </Grid>
+      </Grid>
+    );
+  };
+
   return (
     <div>
       <CustomAlertDialog
@@ -258,25 +319,27 @@ function EditGrupo(props) {
 
       <h3>Editar Grupo</h3>
       {!loadingAllItems && <h3>Cargando...</h3>}
-      {loadingAllItems && renderHoraios()}
-      <div className={{ height: 20 }} />
-      {loadingAllItems && renderUsers()}
-      <div className={{ height: 20 }} />
-      {loadingAllItems && renderDia()}
-      <div className={{ height: 20 }} />
-      {loadingAllItems && renderMateria()}
-      <div className={{ height: 50 }} />
-      <Grid container direction={'row'} spacing={2}>
-        <Grid item>
-          <Button variant="contained" color="primary" type="submit" onClick={() => setOpenDialogCancel(true)}>
-            {sCancel}
-          </Button>
+
+      <Grid container direction={'column'} spacing={2}>
+        <Grid item container direction={'row'}>
+          {renderGeneralData()}
+          {renderListHorarios()}
         </Grid>
 
-        <Grid item>
-          <Button variant="contained" color="primary" type="submit" onClick={confirmCreation}>
-            {sUpdateGrupo}
-          </Button>
+        <Grid item style={{ textAlign: 'center' }}>
+          <Grid container direction={'row'} spacing={2}>
+            <Grid item>
+              <Button variant="contained" color="primary" type="submit" onClick={() => setOpenDialogCancel(true)}>
+                {sCancel}
+              </Button>
+            </Grid>
+
+            <Grid item>
+              <Button variant="contained" color="primary" type="submit" onClick={confirmCreation}>
+                {sUpdateGrupo}
+              </Button>
+            </Grid>
+          </Grid>
         </Grid>
       </Grid>
     </div>

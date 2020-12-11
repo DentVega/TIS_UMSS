@@ -87,7 +87,6 @@ function EditarMateria(props) {
 
   const updateMateria = () => {
     BackendConnection.updateMateria(materia.idmateria, careerSelected, name).then((response) => {
-      console.log(`update Materia complete ${response}`);
       setOpenDialog(false);
       setUpdateMateriaComplete(true);
     });

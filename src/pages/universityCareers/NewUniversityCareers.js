@@ -83,7 +83,6 @@ function NewUniversityCareers(props) {
 
   const registerCareers = () => {
     BackendConnection.createCareer(schoolSelected, name).then((response) => {
-      console.log(`create career complete ${response}`);
       setOpenDialog(false);
       setCreateCareersComplete(true);
     });
