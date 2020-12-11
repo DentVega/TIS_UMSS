@@ -949,7 +949,7 @@ class BackendConnection {
     });
   }
 
-  createNotificactionByIdUser(idUser, mensaje) {
+  createNotificactionByIdUser(idUser, mensaje, email) {
     return new Promise((resolve, reject) => {
       axios({
         method: 'POST',
@@ -963,6 +963,7 @@ class BackendConnection {
           revisado: false,
           mensaje: mensaje,
           dia: new Date(),
+          email: email,
         }
       })
         .then((response) => resolve(response.data))

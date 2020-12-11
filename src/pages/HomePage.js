@@ -11,7 +11,7 @@ function HomePage(props) {
   const { user } = props.userReducer;
 
   useEffect(() => {
-    // BackendConnection.createNotificactionByIdUser(user.idusers, 'mensaje de prueba creado');
+    // BackendConnection.createNotificactionByIdUser(user.idusers, 'mensaje de prueba creado', user.email);
   }, [user]);
 
   return (
