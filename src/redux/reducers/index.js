@@ -12,6 +12,7 @@ import filtersReducer from './filters.reducer';
 import materiasReducer from './materias.reducer';
 import horarioReducer from './horario.reducer';
 import grupoReducer from './grupo.reducer';
+import notificationsReducer from './notifications.reducer';
 
 export default combineReducers({
   configReducer: configReducer,
@@ -27,4 +28,5 @@ export default combineReducers({
   materiasReducer: materiasReducer,
   horarioReducer: horarioReducer,
   grupoReducer: grupoReducer,
+  notificationsReducer: notificationsReducer,
 });

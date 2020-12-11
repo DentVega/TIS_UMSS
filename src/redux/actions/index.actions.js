@@ -110,3 +110,11 @@ export const changeGrupo = (grupo) => {
 export const changeGrupoHorario = (grupoHorario) => {
   return { type: actions.CHANGE_GRUPO_HORARIO, grupoHorario };
 };
+
+export const updateNotifications = () => {
+  return { type: actions.UPDATE_NOTIFICATIONS };
+};
+
+export const changeNumberNotifications = (numberNotifications) => {
+  return { type: actions.CHANGE_NUMBER_NOTIFICATIONS, numberNotifications }
+};

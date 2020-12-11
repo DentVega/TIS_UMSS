@@ -18,9 +18,10 @@ import { sCloseSesion, sLogin, sNameUmss, sNotifications, sProfile } from '../..
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { connect } from 'react-redux';
 import { routes } from '../../router/RoutesConstants';
-import { changeUser, openDrawer } from '../../redux/actions/index.actions';
+import { changeUser, openDrawer, updateNotifications } from '../../redux/actions/index.actions';
 import { withRouter } from 'react-router-dom';
 import BackendConnection from '../../api/BackendConnection';
+import { getNumberNotificationsByUser } from '../../redux/actions/indexthunk.actions';
 
 const useStyles = makeStyles((theme) => ({
   logo: {
@@ -50,19 +51,14 @@ const useStyles = makeStyles((theme) => ({
 function CustomAppBar(props) {
   const { user } = props.userReducer;
   const classes = useStyles();
+  const { updateNotification, numberNotifications } = props.notificationsReducer;
   // eslint-disable-next-line no-unused-vars
-  const [numberNotification, setNumberNotification] = React.useState(0);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
   useEffect(() => {
     if (user) {
-      BackendConnection.getNotificactionByIdUser(user.idusers)
-        .then(notificaciones => {
-          if (notificaciones && notificaciones.length > 0) {
-            setNumberNotification(notificaciones.length);
-          }
-        });
+      props.getNumberNotificationsByUser(user.idusers);
     }
   }, [user]);
 
@@ -95,7 +91,7 @@ function CustomAppBar(props) {
       onClose={handleMobileMenuClose}>
       <MenuItem>
         <IconButton aria-label="show 11 new notifications" color="inherit">
-          <Badge badgeContent={numberNotification} color="secondary">
+          <Badge badgeContent={numberNotifications} color="secondary">
             <NotificationsIcon/>
           </Badge>
         </IconButton>
@@ -132,7 +128,7 @@ function CustomAppBar(props) {
     <div>
       <div className={classes.sectionDesktop}>
         <IconButton aria-label="show 17 new notifications" color="inherit" onClick={goToNotificaciones}>
-          <Badge badgeContent={numberNotification} color="secondary">
+          <Badge badgeContent={numberNotifications} color="secondary">
             <NotificationsIcon/>
           </Badge>
         </IconButton>
@@ -199,12 +195,15 @@ const mapStateToProps = (state) => {
   return {
     app: state.app,
     userReducer: state.userReducer,
+    notificationsReducer: state.notificationsReducer,
   };
 };
 
 const mapDispatchToProps = (dispatch) => ({
   openDrawer: () => dispatch(openDrawer()),
   changeUser: (user) => dispatch(changeUser(user)),
+  updateNotifications: () => dispatch(updateNotifications()),
+  getNumberNotificationsByUser: (idUser) => dispatch(getNumberNotificationsByUser(idUser)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(CustomAppBar));

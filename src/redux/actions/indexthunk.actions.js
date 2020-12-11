@@ -8,7 +8,7 @@ import {
   changeHorarios,
   changeUserslogs,
   changeGrupoHorarios,
-  changeGrupos,
+  changeGrupos, changeNumberNotifications,
 } from './index.actions';
 
 import BackendConnection from '../../api/BackendConnection';
@@ -117,5 +117,18 @@ export const getGruposBackend = () => {
     BackendConnection.getGrupos().then((grupos) => {
       dispatch(changeGrupos(grupos));
     });
+  };
+};
+
+export const getNumberNotificationsByUser = (idUser) => {
+  return (dispatch) => {
+    BackendConnection.getNotificactionByIdUser(idUser)
+      .then(notificaciones => {
+        if (notificaciones && notificaciones.length > 0) {
+          dispatch(changeNumberNotifications(notificaciones.length));
+        } else {
+          dispatch(changeNumberNotifications(0));
+        }
+      });
   };
 };

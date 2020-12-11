@@ -4,14 +4,14 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { changeUser, openDrawer } from '../redux/actions/index.actions';
 
-// import BackendConnection from '../api/BackendConnection';
+import BackendConnection from '../api/BackendConnection';
 
 function HomePage(props) {
   sessionStorage.setItem('path', props.history.location.pathname);
   const { user } = props.userReducer;
 
   useEffect(() => {
-    // BackendConnection.createNotificactionByIdUser(user.idusers, 'mensaje de prueba creado', user.email);
+    BackendConnection.createNotificactionByIdUser(user.idusers, 'mensaje de prueba creado', user.email);
   }, [user]);
 
   return (
