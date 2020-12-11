@@ -83,7 +83,6 @@ function NewMateria(props) {
 
   const registerMateria = () => {
     BackendConnection.createMateria(careerSelected, name).then((response) => {
-      console.log(`create materia complete ${response}`);
       setOpenDialog(false);
       setCreateMateriaComplete(true);
     });

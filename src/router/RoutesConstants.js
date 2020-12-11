@@ -37,7 +37,9 @@ export const routes = {
   registerProgress:'/account/registerProgress',
   //Reports
   reports:'/reports',
-  usersList:'/reports/userList',  
+  usersList:'/reports/userList',
   reportsByUser:'/reports/userList/user/:id',
   userReport:'/reports/userList/user/:id/report/:id',
+  reportsWeekMonth:'/reports/weeklyMonthly',
+  notificaciones:'/notificaciones',
 };

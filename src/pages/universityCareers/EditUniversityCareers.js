@@ -48,7 +48,6 @@ function EditUniversityCareers(props) {
   useEffect(() => {
     BackendConnection.getSchools().then((schools) => {
       if (schools && schools.length > 0) {
-        console.log(career);
         setSchools(schools);
         setSchoolSelected(career.facultad_idfacultad);
         handleNameChange(career.namecarrera);
@@ -88,7 +87,6 @@ function EditUniversityCareers(props) {
 
   const updateCareers = () => {
     BackendConnection.updateCareer(career.idcarrera, schoolSelected, name).then((response) => {
-      console.log(`update career complete ${response}`);
       setOpenDialog(false);
       setUpdateCareersComplete(true);
     });

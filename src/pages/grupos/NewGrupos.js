@@ -87,8 +87,6 @@ function NewGrupo(props) {
     const horarios = await BackendConnection.getHorarios();
     const materias = await BackendConnection.getMaterias();
 
-    console.log('materias', materias);
-
     setMateriaSelected(materias[0].idmateria);
     setHorarioSelected(horarios[0].idhorario);
     setUserSelected(users[0].idusers);
@@ -119,7 +117,6 @@ function NewGrupo(props) {
   const registerGrupo = async () => {
     const grupoCreado = await BackendConnection.createGrupo(materiaSelected);
     const { idgrupo } = grupoCreado.body.res[0];
-    console.log('idgrupo', idgrupo);
 
     const grupoMateria = await BackendConnection.createGrupoHorario(
       horarioSelected,
@@ -128,7 +125,6 @@ function NewGrupo(props) {
       diaSelected,
     );
 
-    console.log('grupoMateria', grupoMateria);
     setOpenDialog(false);
     setCreateGrupoComplete(true);
   };

@@ -13,7 +13,6 @@ class BackendConnection {
         },
       })
         .then((user) => {
-          console.warn(user.data);
           resolve(user.data);
         })
         .catch((e) => reject(e));
@@ -116,7 +115,7 @@ class BackendConnection {
     });
   }
 
-  getUserById(id){
+  getUserById(id) {
     return new Promise((resolve, reject) => {
       axios({
         method: 'GET',
@@ -126,7 +125,7 @@ class BackendConnection {
         .catch((e) => reject(e));
     });
   }
-  
+
   createUser(firstname, lastname, phone, email, ci, userpassword) {
     return new Promise((resolve, reject) => {
       axios({
@@ -168,11 +167,9 @@ class BackendConnection {
         },
       })
         .then((response) => {
-          console.warn(response);
           resolve(response);
         })
         .catch((e) => {
-          console.warn(e.message);
           reject(e);
         });
     });
@@ -230,6 +227,7 @@ class BackendConnection {
         });
     });
   }
+
   getAllUsersRol() {
     return new Promise((resolve, reject) => {
       axios({
@@ -244,11 +242,11 @@ class BackendConnection {
           resolve(response.data);
         })
         .catch((e) => {
-          console.warn(e.message);
           reject(e);
         });
     });
   }
+
   createUserRol(userId, rolId) {
     return new Promise((resolve, reject) => {
       axios({
@@ -264,7 +262,6 @@ class BackendConnection {
         },
       })
         .then((response) => {
-          console.warn('response save role', response);
           resolve(response.data);
         })
         .catch((e) => {
@@ -499,6 +496,7 @@ class BackendConnection {
         .catch((e) => reject(e));
     });
   }
+
   //Crud RoleFunc
   roleFunction(idRole, idFuncion) {
     return new Promise((resolve, reject) => {
@@ -515,11 +513,9 @@ class BackendConnection {
         },
       })
         .then((response) => {
-          console.warn(response);
           resolve(response);
         })
         .catch((e) => {
-          console.warn(e.message);
           reject(e);
         });
     });
@@ -539,7 +535,6 @@ class BackendConnection {
           resolve(response.data);
         })
         .catch((e) => {
-          console.warn(e.message);
           reject(e);
         });
     });
@@ -559,11 +554,11 @@ class BackendConnection {
           resolve(response.data);
         })
         .catch((e) => {
-          console.warn(e.message);
           reject(e);
         });
     });
   }
+
   //faltas CRUD
   createAbsence(userId, date, link) {
     return new Promise((resolve, reject) => {
@@ -584,7 +579,6 @@ class BackendConnection {
           resolve(response.data);
         })
         .catch((e) => {
-          console.warn(e.message);
           reject(e);
         });
     });
@@ -604,7 +598,6 @@ class BackendConnection {
           resolve(response.data);
         })
         .catch((e) => {
-          console.warn(e.message);
           reject(e);
         });
     });
@@ -624,11 +617,11 @@ class BackendConnection {
           resolve(response.data);
         })
         .catch((e) => {
-          console.warn(e.message);
           reject(e);
         });
     });
   }
+
   getAllAbsences() {
     return new Promise((resolve, reject) => {
       axios({
@@ -643,7 +636,6 @@ class BackendConnection {
           resolve(response.data);
         })
         .catch((e) => {
-          console.warn(e.message);
           reject(e);
         });
     });
@@ -714,6 +706,7 @@ class BackendConnection {
         .catch((e) => reject(e));
     });
   }
+
   //Crud Grupos
   getGrupos() {
     return new Promise((resolve, reject) => {
@@ -775,8 +768,9 @@ class BackendConnection {
         .catch((e) => reject(e));
     });
   }
+
   //Crud GrupoHorarios
-  getGrupoHByUserId(userId){
+  getGrupoHByUserId(userId) {
     return new Promise((resolve, reject) => {
       axios({
         method: 'GET',
@@ -786,6 +780,7 @@ class BackendConnection {
         .catch((e) => reject(e));
     });
   }
+
   getGrupoHorarios() {
     return new Promise((resolve, reject) => {
       axios({
@@ -842,9 +837,18 @@ class BackendConnection {
     });
   }
 
+  getGrupoHorariosByIdGrupo(idGrupo) {
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'GET',
+        url: `${baseUrl}/grupoHorarios/bygrupo/${idGrupo}`,
+      })
+        .then((response) => resolve(response.data))
+        .catch((e) => reject(e));
+    });
+  }
+
   sendEmail(email, password) {
-    console.log('email', email);
-    console.log('password', password)
     return new Promise((resolve, reject) => {
       axios({
         method: 'POST',
@@ -855,101 +859,157 @@ class BackendConnection {
         },
       })
         .then((response) => {
-          console.log(' enviar email', response);
           resolve(response.data);
         })
         .catch((e) => {
-          console.log('error enviar email', e);
           reject(e);
         });
     });
   }
+
   //Crud RegistroAvance
-  registrarAvance(idgrupo,beginweek,endweek,platform,classcontain,observations,sign){
-    return new Promise((resolve,reject)=>{
+  registrarAvance(idgrupo, beginweek, endweek, platform, classcontain, observations, sign) {
+    return new Promise((resolve, reject) => {
       axios({
-        method:'POST',
-        url:`${baseUrl}/assistance`,
+        method: 'POST',
+        url: `${baseUrl}/assistance`,
         headers: {
           'content-type': 'application/json',
           'cache-control': 'no-cache',
         },
         data: {
-          grupohorarios_idgrupohorarios:idgrupo,
-          beginweek:beginweek,
-          endweek:endweek,
-          platform:platform,
-          classcontain:classcontain,
-          observations:observations,
-          sign:sign,
+          grupohorarios_idgrupohorarios: idgrupo,
+          beginweek: beginweek,
+          endweek: endweek,
+          platform: platform,
+          classcontain: classcontain,
+          observations: observations,
+          sign: sign,
         },
       })
-      .then((response) => resolve(response.data))
-      .catch((e) => reject(e));
-    })
+        .then((response) => resolve(response.data))
+        .catch((e) => reject(e));
+    });
   }
+
   //CRUD Reports/assistance
-  getReportByID(id){
-    return new Promise((resolve,reject)=>{
+  getReportByID(id) {
+    return new Promise((resolve, reject) => {
       axios({
         method: 'GET',
         url: `${baseUrl}/assistance/${id}`,
-        })
+      })
         .then((response) => resolve(response.data))
         .catch((e) => reject(e));
-      })
+    });
   }
-  getAllReports(){
-    return new Promise((resolve,reject)=>{
+
+  getAllReports() {
+    return new Promise((resolve, reject) => {
       axios({
         method: 'GET',
         url: `${baseUrl}/assistance`,
-        })
+      })
         .then((response) => resolve(response.data))
         .catch((e) => reject(e));
-      })
+    });
   }
-  getReportsByWeek(date){
-    return new Promise((resolve,reject)=>{
+
+  getReportsByWeek(date) {
+    return new Promise((resolve, reject) => {
       axios({
         method: 'GET',
         url: `${baseUrl}/assistance/week/${date}`,
-        })
+      })
         .then((response) => resolve(response.data))
         .catch((e) => reject(e));
-      })
+    });
   }
+
   //CRUD AdditionalClass
-  getAdditionalClassByGrpHorID(id){
-    return new Promise((resolve,reject)=>{
+  getAdditionalClassByGrpHorID(id) {
+    return new Promise((resolve, reject) => {
       axios({
         method: 'GET',
         url: `${baseUrl}/additionalclass/grupohorario/${id}`,
-        })
+      })
         .then((response) => resolve(response.data))
         .catch((e) => reject(e));
-      })
+    });
   }
-    //Crud ReporteAdicional
-  registroReporteAdicional(idAsistencia,archivo){
-    return new Promise((resolve,reject)=>{
+
+  //Crud ReporteAdicional
+  registroReporteAdicional(idAsistencia, archivo) {
+    return new Promise((resolve, reject) => {
       axios({
-        method:"POST",
-        url:`${baseUrl}/addicional`,
+        method: 'POST',
+        url: `${baseUrl}/addicional`,
         headers: {
           'content-type': 'application/json',
           'cache-control': 'no-cache',
         },
-        data:{
-          assistance_idassistance:idAsistencia,
-          archivo:archivo,
+        data: {
+          assistance_idassistance: idAsistencia,
+          archivo: archivo,
         }
-      }) 
-      .then((response) => resolve(response.data))
-      .catch((e) => reject(e));
-    })
-  }  
-  
+      })
+        .then((response) => resolve(response.data))
+        .catch((e) => reject(e));
+    });
+  }
+
+  getNotificactionByIdUser(idUser) {
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'GET',
+        url: `${baseUrl}/notificaciones/byuser/${idUser}`,
+        headers: {
+          'content-type': 'application/json',
+          'cache-control': 'no-cache',
+        },
+      })
+        .then((response) => resolve(response.data))
+        .catch((e) => reject(e));
+    });
+  }
+
+  createNotificactionByIdUser(idUser, mensaje, email) {
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'POST',
+        url: `${baseUrl}/notificaciones`,
+        headers: {
+          'content-type': 'application/json',
+          'cache-control': 'no-cache',
+        },
+        data: {
+          users_idusers: idUser,
+          revisado: false,
+          mensaje: mensaje,
+          dia: new Date(),
+          email: email,
+        }
+      })
+        .then((response) => resolve(response.data))
+        .catch((e) => reject(e));
+    });
+  }
+
+  deleteNotificactionByIdUser(idUser) {
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'DELETE',
+        url: `${baseUrl}/notificaciones/byuser/${idUser}`,
+        headers: {
+          'content-type': 'application/json',
+          'cache-control': 'no-cache',
+        },
+      })
+        .then((response) => resolve(response.data))
+        .catch((e) => reject(e));
+    });
+  }
+
 }
 
 export default new BackendConnection();

@@ -7,7 +7,7 @@ import Fab from '@material-ui/core/Fab';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import green from '@material-ui/core/colors/green';
 import CardItem from '../../components/CardItem';
-import { changeGrupoHorario } from '../../redux/actions/index.actions';
+import { changeGrupo, changeGrupoHorario } from '../../redux/actions/index.actions';
 import { routes } from '../../router/RoutesConstants';
 import CustomAlertDialog from '../../components/dialogs/CustomAlertDialog';
 import { sConfirm } from '../../constants/strings';
@@ -38,13 +38,13 @@ const useStyles = makeStyles((theme) => ({
 function GroupsPage(props) {
   sessionStorage.setItem('path', props.history.location.pathname);
   const classes = useStyles();
-  const { grupos, grupoHorarios, loadingGrupoHorarios } = props.grupoReducer;
+  const { grupos, grupoHorarios, loadingGrupoHorarios, loadingGrupos } = props.grupoReducer;
 
   const [openDialog, setOpenDialog] = useState(false);
   const [grupoSelected, setGrupoSelected] = useState(null);
 
   useEffect(() => {
-    props.getGrupoHorariosBackend();
+    props.getGruposBackend();
   }, []);
 
   const newGrupo = () => {
@@ -57,18 +57,16 @@ function GroupsPage(props) {
     setGrupoSelected(null);
   };
 
-  const updateGrupo = (grupoHorario) => {
-    props.changeGrupoHorario(grupoHorario);
-    props.history.push(`${routes.groups}/${grupoHorario.idgrupohorarios}`);
+  const updateGrupo = (grupo) => {
+    props.changeGrupo(grupo);
+    // props.changeGrupoHorario(grupoHorario);
+    props.history.push(`${routes.groups}/${grupo.idgrupo}`);
   };
 
   const deleteGrupo = async () => {
     const { grupo_idgrupo, idgrupohorarios } = grupoSelected;
-    console.log('eliminar grupo horario', grupoSelected);
-    const deleteGrupoHorarioMessage = await BackendConnection.deleteGrupoHorario(idgrupohorarios);
-    console.log('deleteGrupoHorarioMessage', deleteGrupoHorarioMessage);
-    const deleteGrupoMessage = await BackendConnection.deleteGrupo(grupo_idgrupo);
-    console.log('deleteGrupoMessage', deleteGrupoMessage);
+    await BackendConnection.deleteGrupoHorario(idgrupohorarios);
+    await BackendConnection.deleteGrupo(grupo_idgrupo);
 
     props.getGrupoHorariosBackend();
     setOpenDialog(false);
@@ -89,12 +87,13 @@ function GroupsPage(props) {
   const renderGrupos = () => {
     return (
       <div>
-        {grupoHorarios.map((grupoHorario) => {
+        {grupos.map((grupo) => {
           return (
-            <div key={grupoHorario.idgrupohorarios}>
+            <div key={grupo.idgrupo}>
               <GrupoItem
-                grupoHorario={grupoHorario}
-                updateGrupo={updateGrupo}
+                grupoHorario={grupo}
+                grupo={grupo}
+                updateGrupo={() => updateGrupo(grupo)}
                 confirmDelete={confirmDelete}
               />
             </div>
@@ -115,8 +114,8 @@ function GroupsPage(props) {
       />
 
       <h1>Grupos</h1>
-      {loadingGrupoHorarios && <h3>Cargando...</h3>}
-      {grupoHorarios.length > 0 ? renderGrupos() : <div />}
+      {loadingGrupos && <h3>Cargando...</h3>}
+      {grupos.length > 0 ? renderGrupos() : <div />}
 
       <Fab aria-label={fab.label} className={fab.className} color={fab.color} onClick={newGrupo}>
         {fab.icon}
@@ -134,6 +133,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
+  changeGrupo: (grupo) => dispatch(changeGrupo(grupo)),
   changeGrupoHorario: (grupoHorario) => dispatch(changeGrupoHorario(grupoHorario)),
   getGruposBackend: () => dispatch(getGruposBackend()),
   getGrupoHorariosBackend: () => dispatch(getGrupoHorariosBackend()),

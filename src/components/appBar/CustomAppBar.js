@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -20,6 +20,7 @@ import { connect } from 'react-redux';
 import { routes } from '../../router/RoutesConstants';
 import { changeUser, openDrawer } from '../../redux/actions/index.actions';
 import { withRouter } from 'react-router-dom';
+import BackendConnection from '../../api/BackendConnection';
 
 const useStyles = makeStyles((theme) => ({
   logo: {
@@ -54,7 +55,19 @@ function CustomAppBar(props) {
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
-  const handleProfileMenuOpen = () => {};
+  useEffect(() => {
+    if (user) {
+      BackendConnection.getNotificactionByIdUser(user.idusers)
+        .then(notificaciones => {
+          if (notificaciones && notificaciones.length > 0) {
+            setNumberNotification(notificaciones.length);
+          }
+        });
+    }
+  }, [user]);
+
+  const handleProfileMenuOpen = () => {
+  };
 
   const handleMobileMenuClose = () => {
     setMobileMoreAnchorEl(null);
@@ -83,7 +96,7 @@ function CustomAppBar(props) {
       <MenuItem>
         <IconButton aria-label="show 11 new notifications" color="inherit">
           <Badge badgeContent={numberNotification} color="secondary">
-            <NotificationsIcon />
+            <NotificationsIcon/>
           </Badge>
         </IconButton>
         <p>{sNotifications}</p>
@@ -94,7 +107,7 @@ function CustomAppBar(props) {
           aria-controls="primary-search-account-menu"
           aria-haspopup="true"
           color="inherit">
-          <AccountCircle />
+          <AccountCircle/>
         </IconButton>
         <p>{sProfile}</p>
       </MenuItem>
@@ -104,19 +117,23 @@ function CustomAppBar(props) {
           aria-controls="primary-search-account-menu"
           aria-haspopup="true"
           color="inherit">
-          <ExitToAppIcon />
+          <ExitToAppIcon/>
         </IconButton>
-         <p>{sCloseSesion}</p>
+        <p>{sCloseSesion}</p>
       </MenuItem>
     </Menu>
   );
 
+  const goToNotificaciones = () => {
+    props.history.push(routes.notificaciones);
+  };
+
   const actions = (
     <div>
       <div className={classes.sectionDesktop}>
-        <IconButton aria-label="show 17 new notifications" color="inherit">
+        <IconButton aria-label="show 17 new notifications" color="inherit" onClick={goToNotificaciones}>
           <Badge badgeContent={numberNotification} color="secondary">
-            <NotificationsIcon />
+            <NotificationsIcon/>
           </Badge>
         </IconButton>
         <IconButton
@@ -125,7 +142,7 @@ function CustomAppBar(props) {
           aria-haspopup="true"
           onClick={handleProfileMenuOpen}
           color="inherit">
-          <AccountCircle />
+          <AccountCircle/>
         </IconButton>
         <IconButton
           edge="end"
@@ -133,7 +150,7 @@ function CustomAppBar(props) {
           aria-haspopup="true"
           onClick={handleLogout}
           color="inherit">
-          <ExitToAppIcon />
+          <ExitToAppIcon/>
         </IconButton>
       </div>
       <div className={classes.sectionMobile}>
@@ -143,7 +160,7 @@ function CustomAppBar(props) {
           aria-haspopup="true"
           onClick={handleMobileMenuOpen}
           color="inherit">
-          <MoreIcon />
+          <MoreIcon/>
         </IconButton>
       </div>
     </div>
@@ -157,15 +174,15 @@ function CustomAppBar(props) {
 
   return (
     <div className={classes.grow}>
-      <CssBaseline />
+      <CssBaseline/>
       <AppBar position="fixed" className={classes.appBar}>
         <Toolbar>
-          <img src={logoUmss} className={classes.logo} alt={'logo-umss'} />
+          <img src={logoUmss} className={classes.logo} alt={'logo-umss'}/>
           <Typography variant="h6" noWrap>
             {sNameUmss}
           </Typography>
 
-          <div className={classes.grow} />
+          <div className={classes.grow}/>
           {user ? actions : actionsLogin}
         </Toolbar>
       </AppBar>
