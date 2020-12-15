@@ -13,6 +13,7 @@ const initState = {
   grupo: null,
   grupoHorario: null,
   loading: true,
+  loadingGrupos: true,
   loadingGrupoHorarios: true,
 };
 
@@ -30,6 +31,7 @@ function grupoReducer(state = initState, action) {
       return {
         ...state,
         grupos: action.grupos,
+        loadingGrupos: false,
       };
     }
     case CHANGE_GRUPO_HORARIOS: {

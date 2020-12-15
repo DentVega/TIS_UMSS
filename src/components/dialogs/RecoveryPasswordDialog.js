@@ -23,7 +23,6 @@ function RecoveryPasswordDialog(props) {
   const recoveryPassword = () => {
     if (email.length > 5 && emailRegex.test(email)) {
       BackendConnection.verifyEmail(email).then((user) => {
-        console.log('user', user);
         if (user.length >= 1) {
           const { email, userpassword } = user[0];
           BackendConnection.sendEmail(email, userpassword)

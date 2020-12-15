@@ -39,11 +39,14 @@ export const routes = {
   additionalClassList: '/account/additionalClassList',
   //Reports
   reports:'/reports',
-  usersList:'/reports/userList',  
+  usersList:'/reports/userList',
   reportsByUser:'/reports/userList/user/:id',
   userReport:'/reports/userList/user/:id/report/:id',
 
   userAddClasses:'/reports/userAddClassList',
   userClasses:'/reports/userAddClassList/user/:id',
-  userClass:'/reports/userAddClassList/user/:id/class/:id'
+  userClass:'/reports/userAddClassList/user/:id/class/:id',
+
+  reportsWeekMonth:'/reports/weeklyMonthly',
+  notificaciones:'/notificaciones',
 };
