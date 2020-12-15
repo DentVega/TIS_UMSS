@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
   },
   formControl: {
     margin: theme.spacing(1),
-    minWidth: 180,
+    minWidth: 150,
   },
 }));
 const UserReports = (props) => {
@@ -45,8 +45,12 @@ const UserReports = (props) => {
   const [searchCarr,setSearchCarr] = useState("");
   const [searchMat,setSearchMat] = useState("");
   const [aux,setAux] = useState([]);
+  const [aux2,setAux2] = useState([]);
   const [typeReport,setTypeReport] = useState("");
-
+  const [hrsTra,setHrsTra] = useState({
+    hrs:0,
+    min:0
+  })
   const handleDateChange=(value)=>{
     setDate(value);    
   };
@@ -63,27 +67,12 @@ const UserReports = (props) => {
     datas();
   }, []);
 
-  // useEffect(()=>{    
-  //   if(typeReport==="mensual"){
-  //     const fecha = new Date(date).getMonth() ;
-  //     const ax= arrToMap.filter((item)=>{
-  //       fecha1=item.beginweek 
-  //     })
-  //     let arr = [];
-  //     reports.map((report)=>{
-  //       if(report.platform!=="falta"&&report.classcontain!=="falta"&&report.observation!=="falta"){
-  //         arr.push(45);
-  //         arr.push(45);
-  //       }
-  //     })
-  //   }
-  // },[typeReport]);
-
   useEffect(()=>{
     if(grupos.length>0 && users.length>0 && materias.length>0 && carreras.length>0 && grupoHorarios.length>0){
       const a=armarArr(grupoHorarios,reports);
       setArrToMap(a) 
       setAux(a)
+      setAux2(a)
     }
   },[reports,grupos,users,materias,carreras,grupoHorarios]);
 
@@ -98,13 +87,62 @@ const UserReports = (props) => {
   };
 
   useEffect(() => {
-    const r=arrToMap.filter((resp)=>{
+    setSearchCarr("");
+    setSearchMat("")
+    if(typeReport==="semanal"){
+      const fecha = new Date(date);      
+      const r=arrToMap.filter((resp)=>{
+        const beginFecha=new Date(resp.beginweek);
+        const endFecha=new Date(resp.endweek);
+        return ((beginFecha<=fecha && fecha<=endFecha));
+      })
+      let countAssistences = 0;
+      r.map((item)=>{
+        const rep=reports.filter((report)=>item.idassistance==report.idassistance);
+        if(rep[0].platform!=="falta"&&rep[0].classcontain!=="falta"&&rep[0].observations!=="falta"){
+          countAssistences++;
+        }
+      })
+      const totalMins=countAssistences*2*45;
+      const hrs=Math.floor(totalMins / 60);
+      const min=totalMins%60;      
+      setHrsTra({hrs:hrs,min:min})
+      setAux(r);
+      setAux2(r);
+      date===" "&& setAux(arrToMap)
+    }
+    else{
+      const fecha = new Date(date);
+      fecha.setDate(fecha.getDate()+1);      
+      const ax=arrToMap.filter((item)=>{
+        const fecha1 = new Date(item.beginweek).getMonth();
+        const fecha2 = new Date(item.endweek).getMonth(); 
+        return fecha.getMonth()===fecha1&&fecha.getMonth()===fecha2;
+      })
+      let countAssistences = 0;
+      ax.map((item)=>{
+        const rep=reports.filter((report)=>item.idassistance==report.idassistance);
+        if(rep[0].platform!=="falta"&&rep[0].classcontain!=="falta"&&rep[0].observations!=="falta"){
+          countAssistences++;
+        }
+      })
+      const totalMins=countAssistences*2*45;
+      const hrs=Math.floor(totalMins / 60);
+      const min=totalMins%60;      
+      setHrsTra({hrs:hrs,min:min})
+      setAux(ax);
+      setAux2(ax);
+      date==="" && setAux(arrToMap);
+    }    
+  }, [date]);
+
+  useEffect(() => {
+    const r=aux.filter((resp)=>{
       return (resp.carrera.toLowerCase().includes(searchCarr.toLowerCase())) 
-      &&(resp.materia.toLowerCase().includes(searchMat.toLowerCase())
-      &&(date ==="" ? true:resp.beginweek<date && date<resp.endweek));
+      &&(resp.materia.toLowerCase().includes(searchMat.toLowerCase()))
     })
-    setAux(r);
-  }, [date,searchCarr,searchMat]);
+    setAux2(r);
+  }, [searchCarr,searchMat]);
 
   const userName=()=>{
     const user= users.find((user)=>id==user.idusers)
@@ -114,21 +152,27 @@ const UserReports = (props) => {
   const armarArr=(grpH,rep)=>{
       let arr=[];
       rep.map((re)=>{
-        arr.push({idassistance:re.idassistance,beginweek:re.beginweek,endweek:re.endweek,dia:obtDia(re,grpH),materia:obtMateria(re,grpH),carrera:obtCarrera(re,grpH)})
+        arr.push({
+          idassistance:re.idassistance,
+          beginweek:re.beginweek,
+          endweek:re.endweek,dia:obtDia(re,grpH),
+          materia:obtMateria(re,grpH),
+          carrera:obtCarrera(re,grpH)
+        })
       });
       return (arr);    
   };
 
   const obtCarrera=(rep,grpH)=>{    
     const g=grpH.find((g)=>rep.grupohorarios_idgrupohorarios==g.idgrupohorarios);
-    const grp=grupos.find((grp)=>g.grupo_idgrupo===grp.idgrupo)
+    const grp=grupos.find((grp)=>g.grupo_idgrupo==grp.idgrupo)
     const mat= materias.find((m)=>grp.materia_idmateria==m.idmateria);
     const carr= carreras.find((ca)=>mat.carrera_idcarrera==ca.idcarrera)
     return carr.namecarrera;
   };
   const obtMateria=(rep,grpH)=>{
     const g=grpH.find((g)=>rep.grupohorarios_idgrupohorarios==g.idgrupohorarios);
-    const grp=grupos.find((grp)=>g.grupo_idgrupo===grp.idgrupo)
+    const grp=grupos.find((grp)=>g.grupo_idgrupo==grp.idgrupo)
     const mat= materias.find((m)=>grp.materia_idmateria==m.idmateria);
     return mat.namemateria;
   };
@@ -141,6 +185,9 @@ const UserReports = (props) => {
     props.history.push(`${routes.usersList}/user/${id}/report/${report.idassistance}`)
   };
   const handleSelectChange=({target})=>{
+    setDate("");
+    setSearchCarr("");
+    setSearchMat("");
     setTypeReport(target.value)
   };
   
@@ -159,7 +206,7 @@ const UserReports = (props) => {
         />
       </CardActionArea>
     </div>)
-    :aux.map((report)=><div key={report.idassistance} className={classes.root}>
+    : searchCarr==="" &&searchMat===""?aux.map((report)=><div key={report.idassistance} className={classes.root}>
       <CardActionArea>
         <CardItem      
           text={"Carrera: "+report.carrera} 
@@ -172,13 +219,26 @@ const UserReports = (props) => {
         />
       </CardActionArea>
     </div>)
+      :aux2.map((report)=><div key={report.idassistance} className={classes.root}>
+        <CardActionArea>
+          <CardItem      
+            text={"Carrera: "+report.carrera} 
+            secondaryText={"Materia: "+report.materia}
+            tercerText={"Dia: "+report.dia.toLowerCase()}
+            showEditIcon={false}
+            showIconRow={true}
+            showDeleteIcon={false}
+            onClick={()=>seeDetails(report)}
+          />
+        </CardActionArea>
+      </div>)
   }
 
   return (
     <div>
       <h1>Reportes del Usuario: {userName()}</h1>
       <Grid container>
-        <Grid item xs={3}>
+        <Grid item xs={2}>
           <FormControl className={classes.formControl}>
               <InputLabel id="demo-controlled-open-select-label">Tipo de Reporte:</InputLabel>
                 <Select
@@ -192,13 +252,14 @@ const UserReports = (props) => {
               </Select>
           </FormControl>
         </Grid>
-        <Grid item xs={3}>
+        <Grid item xs={2}>
         <TextField
           id="date"
           label="Seleccione una fecha"
           value={date}
           onChange={({target})=>handleDateChange(target.value)}
           type="date"    
+          style={{width:"160px",marginTop:"8px"}}
           InputLabelProps={{
             shrink: true,
           }}
@@ -210,6 +271,7 @@ const UserReports = (props) => {
             type="text"
             value={searchCarr}
             helperText={"Filtrar por Carrera"}
+            style={{width:"200px",marginTop:"8px"}}
             onChange={({target})=>searchCarrChange(target.value)}
             InputProps={{
               startAdornment: (
@@ -226,6 +288,7 @@ const UserReports = (props) => {
             type="text"
             value={searchMat}
             helperText={"Filtrar por Materia"}
+            style={{width:"200px",marginTop:"8px"}}           
             onChange={({target})=>searchMatChange(target.value)}
             InputProps={{
               startAdornment: (
@@ -235,6 +298,9 @@ const UserReports = (props) => {
               ),
             }}
           />
+        </Grid>
+        <Grid item xs={2}>
+          <h2>Horas Trabajadas: {hrsTra.hrs}</h2>
         </Grid>
         
       </Grid>

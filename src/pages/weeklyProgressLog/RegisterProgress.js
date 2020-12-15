@@ -181,8 +181,8 @@ const RegisterProgress = (props) => {
               onChange={(e)=>handleInputChange(e,index)}
             >        
             { unduplicated && renderAbsences() }
-            </Select>
-            </FormControl>
+          </Select>
+          </FormControl>
         </Grid>
     </Grid>
 

@@ -43,6 +43,9 @@ import RegisterProgress from '../pages/weeklyProgressLog/RegisterProgress';
 import UsersList from '../pages/reports/UsersList';
 import UserReports from '../pages/reports/UserReports';
 import Report from '../pages/reports/Report';
+import AdditionalClassList from '../pages/weeklyProgressLog/AdditionalClassList';
+import RegisterAdditionalClass from '../pages/weeklyProgressLog/RegisterAdditionalClass';
+import UserAddClasses from '../pages/additionalClass/UserAddClasses'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -95,6 +98,8 @@ function RouterMain(props) {
           <PrivateRoute isAuth={isAuth} exact={true} path={routes.reportsByUser} component={UserReports} />
           <PrivateRoute isAuth={isAuth} exact={true} path={routes.absencesReports} component={Absences} />
           <PrivateRoute isAuth={isAuth} exact={true} path={routes.usersList} component={UsersList} />
+          <PrivateRoute isAuth={isAuth} exact={true} path={routes.userAddClasses} component={UsersList} />
+          <PrivateRoute isAuth={isAuth} exact={true} path={routes.userClasses} component={UserAddClasses} />
           {/*Horarios*/}
           <PrivateRoute isAuth={isAuth} exact={true} path={routes.schedule} component={SchedulePage} />
           <PrivateRoute isAuth={isAuth} exact={true} path={routes.registerHorario} component={NewHorario} />
@@ -119,7 +124,10 @@ function RouterMain(props) {
           <PrivateRoute isAuth={isAuth} exact={true} path={routes.newAbsence} component={NewAbsence} />
           <PrivateRoute isAuth={isAuth} exact={true} path={routes.testUi} component={TestUi} />
           <PrivateRoute isAuth={isAuth} exact={true} path={routes.registerProgress} component={RegisterProgress} />
+          <PrivateRoute isAuth={isAuth} exact={true} path={routes.additionalClassList} component={AdditionalClassList} />
+          <PrivateRoute isAuth={isAuth} exact={true} path={routes.registerAdditionalClass} component={RegisterAdditionalClass} />
           <PrivateRoute isAuth={isAuth} exact={true} path={routes.route404} component={NotFoundPage} />
+          
         </main>
       </div>
       {user === null && (

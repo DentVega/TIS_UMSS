@@ -920,11 +920,62 @@ class BackendConnection {
       })
   }
   //CRUD AdditionalClass
+  crearClaseAdicional(idGrupoHorario,timeclass,dateclass,idfalta){
+    return new Promise((resolve,reject)=>{
+      axios({
+        method:'POST',
+        url:`${baseUrl}/additionalclass`,
+        headers: {
+          'content-type': 'application/json',
+          'cache-control': 'no-cache',
+        },
+        data: {
+          grupohorarios_idgrupohorarios:idGrupoHorario,
+          falta_idfalta:idfalta,
+          accepted:"no",
+          timeclass:timeclass,
+          dateclass:dateclass,
+        },
+      })
+      .then((response) => resolve(response.data))
+      .catch((e) => reject(e));
+    })
+  };
+
+  aceptarClaseAdicional(id,idgrupohorarios,idfalta,hora,fecha){
+    console.log(id,idgrupohorarios,idfalta,hora)
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'PUT',
+        url: `${baseUrl}/additionalclass/${id}`,
+        data: {
+          grupohorarios_idgrupohorarios:idgrupohorarios,
+          falta_idfalta:idfalta,          
+          timeclass:hora,
+          dateclass:fecha,
+          accepted:"si",
+        },
+      })
+        .then((response) => resolve(response.data))
+        .catch((e) => reject(e));
+    });
+  };
+
   getAdditionalClassByGrpHorID(id){
     return new Promise((resolve,reject)=>{
       axios({
         method: 'GET',
-        url: `${baseUrl}/additionalclass/grupohorario/${id}`,
+        url: `${baseUrl}/additionalclass/assistance/${id}`,
+        })
+        .then((response) => resolve(response.data))
+        .catch((e) => reject(e));
+      })
+  }
+  getAllAdditionalClass(){
+    return new Promise((resolve,reject)=>{
+      axios({
+        method: 'GET',
+        url: `${baseUrl}/additionalclass`,
         })
         .then((response) => resolve(response.data))
         .catch((e) => reject(e));
@@ -948,7 +999,17 @@ class BackendConnection {
       .then((response) => resolve(response.data))
       .catch((e) => reject(e));
     })
-  }  
+  } 
+  getAllAdditionalReport(){
+    return new Promise((resolve,reject)=>{
+      axios({
+        method: 'GET',
+        url: `${baseUrl}/addicional`,
+        })
+        .then((response) => resolve(response.data))
+        .catch((e) => reject(e));
+      })
+  } 
   
 }
 
