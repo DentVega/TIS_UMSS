@@ -943,7 +943,6 @@ class BackendConnection {
   };
 
   aceptarClaseAdicional(id,idgrupohorarios,idfalta,hora,fecha){
-    console.log(id,idgrupohorarios,idfalta,hora)
     return new Promise((resolve, reject) => {
       axios({
         method: 'PUT',
