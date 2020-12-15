@@ -17,7 +17,8 @@ const Reports = (props) => {
   sessionStorage.setItem("path",props.history.location.pathname);
   const classes = useStyles();
   const redirect=()=>props.history.push(routes.absencesReports);
-  const redirectLogs=()=>props.history.push(routes.usersList)
+  const redirectLogs=()=>props.history.push(routes.usersList);
+  const redirectAddClasses=()=>props.history.push(routes.userAddClasses)
   return(
     <div>
       <h1>Registros Varios</h1>
@@ -37,6 +38,17 @@ const Reports = (props) => {
             <CardItem    
               onClick={redirectLogs}
               text={"Registro de Avance Semanal/Mensual"}
+              showIconRow={true}
+              showEditIcon={false}
+              showDeleteIcon={false}
+            />
+          </CardActionArea>
+        </Card>
+        <Card className={classes.root}>                                                       
+          <CardActionArea>
+            <CardItem    
+              onClick={redirectAddClasses}
+              text={"Registro de Clases Adicionales"}
               showIconRow={true}
               showEditIcon={false}
               showDeleteIcon={false}

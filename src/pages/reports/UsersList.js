@@ -48,13 +48,15 @@ const UsersList = (props) => {
       ));  
   }
 
-  const seeReport=(user)=>{   
-    props.history.push(`${routes.usersList}/user/${user.idusers}`);
+  const seeReport=(user)=>{  
+    props.history.location.pathname===(routes.userAddClasses)
+    ? props.history.push(`${routes.userAddClasses}/user/${user.idusers}`)
+    : props.history.push(`${routes.usersList}/user/${user.idusers}`);
   };
 
   return (
     <div>
-      <h1>Reportes Semanales/Mensuales</h1>
+      {props.history.location.pathname===routes.userAddClasses? <h1>Clases Adicionales</h1> :<h1>Reportes Semanales/Mensuales</h1>}
       <TextField 
         label={"Search..."}
         type="text"
@@ -115,7 +117,6 @@ const mapDispatchToProps = (dispatch) => ({
   getUsers: () => dispatch(getUsers()),
   getGrpHorarios:()=>dispatch(getGrupoHorariosBackend()),
   getMaterias:()=>dispatch(getMateriasBackend()),
-  getCarreras:()=>dispatch(getCarreras()),
 });
 
 export default connect(mapStateToProps,mapDispatchToProps)(withRouter(UsersList));

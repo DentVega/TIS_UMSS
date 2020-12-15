@@ -28,18 +28,25 @@ export const routes = {
   editUser: '/users/:id',
   userslog: '/userslog',
   userslogView: '/userslog/:id',
-  //AbcencesRoutes
+  //AbcencesRoutes 
   absencesReports:'/reports/Absences',
   userAbsences:'/account/absences',
   newAbsence:'/account/newAbsence',
   userAbsence:'/account/absences/:id',
   //RegisterProgressRoutes
   registerProgress:'/account/registerProgress',
+  registerAdditionalClass:'/account/registerAdditionalClass',
+  additionalClassList: '/account/additionalClassList',
   //Reports
   reports:'/reports',
   usersList:'/reports/userList',
   reportsByUser:'/reports/userList/user/:id',
   userReport:'/reports/userList/user/:id/report/:id',
+
+  userAddClasses:'/reports/userAddClassList',
+  userClasses:'/reports/userAddClassList/user/:id',
+  userClass:'/reports/userAddClassList/user/:id/class/:id',
+
   reportsWeekMonth:'/reports/weeklyMonthly',
   notificaciones:'/notificaciones',
 };
