@@ -161,7 +161,7 @@ const mapStateToProps = (state) => {
     app: state.app,
     usersReducer: state.usersReducer,
     rolesReducer: state.rolesReducer,
-    roleFun:state.roleFuncsReducer,
+    roleFun: state.roleFuncsReducer,
   };
 };
 
