@@ -39,6 +39,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 function CustomDrawer(props) {
+  const { openDrawer } = props.appReducer;
   const classes = useStyles();
   const [state, setState] = React.useState({
     top: false,
@@ -164,7 +165,8 @@ function CustomDrawer(props) {
   return (
     <Drawer
       className={classes.drawer}
-      variant="permanent"
+      variant="persistent"
+      open={openDrawer}
       classes={{
         paper: classes.drawerPaper,
       }}>
@@ -176,7 +178,7 @@ function CustomDrawer(props) {
 
 const mapStateToProps = (state) => {
   return {
-    app: state.app,
+    appReducer: state.app,
     userReducer: state.userReducer,
     roleFun:state.roleFuncsReducer,
     rolesReducer:state.rolesReducer,

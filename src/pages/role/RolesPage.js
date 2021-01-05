@@ -2,46 +2,21 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { getRoles } from '../../redux/actions/indexthunk.actions';
 import CardItem from '../../components/CardItem';
-import Fab from '@material-ui/core/Fab';
-import makeStyles from '@material-ui/core/styles/makeStyles';
-import AddIcon from '@material-ui/icons/Add';
 import { withRouter } from 'react-router-dom';
-import green from '@material-ui/core/colors/green';
 import { routes } from '../../router/RoutesConstants';
 import BackendConnection from '../../api/BackendConnection';
 import { changeRole } from '../../redux/actions/index.actions';
 import CustomAlertDialog from '../../components/dialogs/CustomAlertDialog';
 import { sConfirm } from '../../constants/strings';
 import { getUsers } from '../../redux/actions/indexthunk.actions';
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    backgroundColor: theme.palette.background.paper,
-    width: 500,
-    position: 'relative',
-    minHeight: 200,
-  },
-  fab: {
-    position: 'absolute',
-    bottom: theme.spacing(2),
-    right: theme.spacing(2),
-  },
-  fabGreen: {
-    color: theme.palette.common.white,
-    backgroundColor: green[500],
-    '&:hover': {
-      backgroundColor: green[600],
-    },
-  },
-}));
+import FloatingButton from '../../components/FloatingButton';
 
 function RolesPage(props) {
-  sessionStorage.setItem("path",props.history.location.pathname);
+  sessionStorage.setItem('path', props.history.location.pathname);
   const { roles, loading } = props.rolesReducer;
   const { getRoles } = props;
-  const {getUsers}=props;
-  const classes = useStyles();
-  const {roleFuncs}=props.roleFun;
+  const { getUsers } = props;
+  const { roleFuncs } = props.roleFun;
   const [roleSelected, setRoleSelected] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
   useEffect(() => {
@@ -49,54 +24,48 @@ function RolesPage(props) {
       getRoles();
       getUsers();
     }
-  },[]);
-
-  const fab = {
-    color: 'primary',
-    className: classes.fab,
-    icon: <AddIcon />,
-    label: 'Add',
-  };
+  }, []);
 
   const newRole = () => {
     props.history.push(routes.newRole);
   };
-  const deleteRolDependencies=()=>{
-    let cont=0;
-    let roleFunction=[];
-    BackendConnection.getAllUsersRol().then((res)=>{
-      if(roleFuncs!==null){
-        roleFuncs.forEach(element=>{
-          if(element.roles_idroles===roleSelected.idroles){
+  const deleteRolDependencies = () => {
+    let cont = 0;
+    let roleFunction = [];
+    BackendConnection.getAllUsersRol().then((res) => {
+      if (roleFuncs !== null) {
+        roleFuncs.forEach(element => {
+          if (element.roles_idroles === roleSelected.idroles) {
             roleFunction.push(element);
-          };
-        })
+          }
+
+        });
       }
-      roleFunction.forEach((element)=>{
-        setTimeout(()=>{
-          BackendConnection.deleteRoleFunc(roleSelected.idroles,element.funcion_idfuncion);
-        },cont*400)
+      roleFunction.forEach((element) => {
+        setTimeout(() => {
+          BackendConnection.deleteRoleFunc(roleSelected.idroles, element.funcion_idfuncion);
+        }, cont * 400);
         cont++;
-      })
-      res.forEach(element=>{
-        if(element.roles_idroles===roleSelected.idroles){
-          setTimeout(()=>{
-          BackendConnection.deleteUserRol(element.users_idusers,roleSelected.idroles);
-        },cont*400)
+      });
+      res.forEach(element => {
+        if (element.roles_idroles === roleSelected.idroles) {
+          setTimeout(() => {
+            BackendConnection.deleteUserRol(element.users_idusers, roleSelected.idroles);
+          }, cont * 400);
         }
         cont++;
-      })
-    })
+      });
+    });
 
-  }
+  };
   const deleteRole = async () => {
     deleteRolDependencies();
-    setTimeout(()=>{
-      BackendConnection.deleteRole(roleSelected.idroles).then(()=>{
+    setTimeout(() => {
+      BackendConnection.deleteRole(roleSelected.idroles).then(() => {
         props.getRoles();
         setOpenDialog(false);
-      })
-    },5000)
+      });
+    }, 5000);
   };
 
   const updateRole = (rol) => {
@@ -131,7 +100,7 @@ function RolesPage(props) {
                 editClick={() => updateRole(rol)}
                 deleteClick={() => confirmDelete(rol)}
               />
-              <div style={{ height: 20 }} />
+              <div style={{ height: 20 }}/>
             </div>
           );
         })}
@@ -148,10 +117,8 @@ function RolesPage(props) {
         handleAccept={deleteRole}
       />
       <h1>Roles</h1>
-      {roles.length > 0 ? renderRoles() : <div />}
-      <Fab aria-label={fab.label} className={fab.className} color={fab.color} onClick={newRole}>
-        {fab.icon}
-      </Fab>
+      {roles.length > 0 ? renderRoles() : <div/>}
+      <FloatingButton onClick={newRole}/>
     </div>
   );
 }
@@ -161,7 +128,7 @@ const mapStateToProps = (state) => {
     app: state.app,
     usersReducer: state.usersReducer,
     rolesReducer: state.rolesReducer,
-    roleFun:state.roleFuncsReducer,
+    roleFun: state.roleFuncsReducer,
   };
 };
 

@@ -4,36 +4,12 @@ import { withRouter } from 'react-router-dom';
 import { getCarreras } from '../../redux/actions/indexthunk.actions';
 import CardItem from '../../components/CardItem';
 // import ContainerFilter from '../../components/filters/ContainerFilter';
-import Fab from '@material-ui/core/Fab';
-import AddIcon from '@material-ui/icons/Add';
-import makeStyles from '@material-ui/core/styles/makeStyles';
-import green from '@material-ui/core/colors/green';
 import { changeCarrera, filterCareer } from '../../redux/actions/index.actions';
 import { routes } from '../../router/RoutesConstants';
 import CustomAlertDialog from '../../components/dialogs/CustomAlertDialog';
 import { sConfirm } from '../../constants/strings';
 import BackendConnection from '../../api/BackendConnection';
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    backgroundColor: theme.palette.background.paper,
-    width: 500,
-    position: 'relative',
-    minHeight: 200,
-  },
-  fab: {
-    position: 'absolute',
-    bottom: theme.spacing(2),
-    right: theme.spacing(2),
-  },
-  fabGreen: {
-    color: theme.palette.common.white,
-    backgroundColor: green[500],
-    '&:hover': {
-      backgroundColor: green[600],
-    },
-  },
-}));
+import FloatingButton from '../../components/FloatingButton';
 
 function UniversityCareers(props) {
   const { careers, careersAux, loading } = props.careersReducer;
@@ -41,7 +17,6 @@ function UniversityCareers(props) {
   const [facultadAux, setFacultadAux] = useState(0);
   const [careersSelected, setCareersSelected] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
-  const classes = useStyles();
   const { user } = props.userReducer;
 
   if (facultadSeleccionada !== facultadAux) {
@@ -116,13 +91,6 @@ function UniversityCareers(props) {
     );
   };
 
-  const fab = {
-    color: 'primary',
-    className: classes.fab,
-    icon: <AddIcon />,
-    label: 'Add',
-  };
-
   return (
     <div>
       <CustomAlertDialog
@@ -137,9 +105,7 @@ function UniversityCareers(props) {
       {/*<ContainerFilter showFFacultad={true} />*/}
       {careers.length > 0 ? renderCareers() : <div />}
       {loading && <h3>Cargando...</h3>}
-      <Fab aria-label={fab.label} className={fab.className} color={fab.color} onClick={newCarrera}>
-        {fab.icon}
-      </Fab>
+      <FloatingButton onClick={newCarrera}/>
     </div>
   );
 }
