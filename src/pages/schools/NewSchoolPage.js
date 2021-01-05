@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useFullName } from '../../constants/formCustomHook/useForm';
 import { Button, Grid, TextField } from '@material-ui/core';
 import {
@@ -9,6 +9,7 @@ import {
   sCreateSchool,
   sName,
   sTheNameCannotBeEmpty,
+  sSchoolAlreadySaved,
 } from '../../constants/strings';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
@@ -23,6 +24,13 @@ function NewSchoolPage(props) {
   const [openDialogCancel, setOpenDialogCancel] = useState(false);
   const [createSchoolComplete, setCreateSchoolComplete] = useState(false);
   const { user } = props.userReducer;
+  const { schools } = props.schoolReducer;
+
+  const getSelected = () => {
+    if(schools.length > 0){
+      return schools.filter((it) => it.namefacultad == name).length;
+    }
+   }
 
   if (createSchoolComplete) {
     props.getSchools();
@@ -49,7 +57,13 @@ function NewSchoolPage(props) {
     }
 
     if (nameValidIsNoEmpty) {
-      confirmCreation();
+      let val = getSelected(0);
+      if(val > 0){
+        setNameErrorMessage(sSchoolAlreadySaved);
+        setNameError(true);
+      }else{
+        confirmCreation();
+      } 
     }
   };
 
@@ -137,6 +151,7 @@ const mapStateToProps = (state) => {
   return {
     userReducer: state.userReducer,
     app: state.app,
+    schoolReducer: state.schoolReducer,
   };
 };
 

@@ -14,6 +14,8 @@ import {
   sCreateMateria,
   sName,
   sTheNameCannotBeEmpty,
+  sSubjectAlreadySaved,
+  sSubjectCannotNameAsCareer,
 } from '../../constants/strings';
 import { Button, Grid, TextField } from '@material-ui/core';
 import FormControl from '@material-ui/core/FormControl';
@@ -43,6 +45,7 @@ function NewMateria(props) {
 
   const classes = useStyles();
   const { user } = props.userReducer;
+  const { materias } = props.materiasReducer;
 
   useEffect(() => {
     BackendConnection.getCarreras().then((carerras) => {
@@ -57,6 +60,24 @@ function NewMateria(props) {
     props.getMateriasBackend();
     props.history.goBack();
   }
+
+  /*const getSelectedSchool = () => {
+    if(schools.length > 0){
+      return schools.filter((it) => it.namefacultad == name).length;
+    }
+   }*/
+
+   const getSelectedCareer = () => {
+    if(careers.length > 0){
+      return careers.filter((it) => it.namecarrera == name).length;
+    }
+   }
+
+   const getSelectedSubject = () => {
+    if(materias.length > 0){
+      return materias.filter((it) => it.namemateria == name).length;
+    }
+   }
 
   const cancel = () => {
     props.history.goBack();
@@ -78,8 +99,20 @@ function NewMateria(props) {
     }
 
     if (nameValidIsNoEmpty) {
-      confirmCreation();
+      let val = getSelectedSubject();
+      if(val > 0){
+        setNameErrorMessage(sSubjectAlreadySaved);
+        setNameError(true);
+      }else{
+        let val2 = getSelectedCareer();
+        if(val2 > 0){
+          setNameErrorMessage(sSubjectCannotNameAsCareer);
+          setNameError(true);
+        }else{
+          confirmCreation();
+        }
     }
+   } 
   };
 
   const registerMateria = () => {
@@ -121,7 +154,7 @@ function NewMateria(props) {
           {careers.length > 0 && (
             <Grid item>
               <FormControl className={classes.formControl}>
-                <InputLabel id="carerra-selecionada">Facultad</InputLabel>
+                <InputLabel id="carerra-selecionada">Carrera</InputLabel>
                 <Select
                   labelId="carerra-selecionada"
                   id="carerra-selecionada-select"
