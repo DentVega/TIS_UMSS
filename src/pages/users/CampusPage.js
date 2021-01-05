@@ -12,6 +12,7 @@ import { TextField } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import FloatingButton from '../../components/FloatingButton';
+import CardUser from './CardUser';
 
 function CampusPage(props) {
   sessionStorage.setItem('path', props.history.location.pathname);
@@ -42,7 +43,10 @@ function CampusPage(props) {
 
   const deleteUser = async () => {
     const userRol = await BackendConnection.getUserRolByIdUser(userSelected.idusers);
-    await BackendConnection.deleteUserRol(userSelected.idusers, userRol[0].idroles);
+
+    if (userRol) {
+      await BackendConnection.deleteUserRol(userSelected.idusers, userRol[0].idroles);
+    }
 
     BackendConnection.deleteUsers(userSelected.idusers)
       .then(() => {
@@ -80,32 +84,22 @@ function CampusPage(props) {
       <div>
         {search === '' ? users.map((user) => {
             return (
-              <div key={user.idusers}>
-                <CardItem
-                  text={`${user.firstname} ${user.lastname}`}
-                  width={'120vh'}
-                  showEditIcon={true}
-                  showDeleteIcon={true}
-                  deleteClick={() => confirmDelete(user)}
-                  editClick={() => updateUser(user)}
-                />
-                <div style={{ height: 20 }}/>
-              </div>
+              <CardUser
+                key={user.idusers}
+                user={user}
+                confirmDelete={() => confirmDelete(user)}
+                updateUser={() => updateUser(user)}
+              />
             );
           })
           : usersFiltered.map((user) => {
             return (
-              <div key={user.idusers}>
-                <CardItem
-                  text={`${user.firstname} ${user.lastname}`}
-                  width={'120vh'}
-                  showEditIcon={true}
-                  showDeleteIcon={true}
-                  deleteClick={() => confirmDelete(user)}
-                  editClick={() => updateUser(user)}
-                />
-                <div style={{ height: 20 }}/>
-              </div>
+              <CardUser
+                key={user.idusers}
+                user={user}
+                confirmDelete={() => confirmDelete(user)}
+                updateUser={() => updateUser(user)}
+              />
             );
           })
         }

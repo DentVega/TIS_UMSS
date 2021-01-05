@@ -25,6 +25,7 @@ import BackendConnection from '../../api/BackendConnection';
 import { getNumberNotificationsByUser } from '../../redux/actions/indexthunk.actions';
 import { MenuIcon } from '@material-ui/data-grid';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import Tooltip from '@material-ui/core/Tooltip';
 
 const useStyles = makeStyles((theme) => ({
   logo: {
@@ -137,27 +138,33 @@ function CustomAppBar(props) {
   const actions = (
     <div>
       <div className={classes.sectionDesktop}>
-        <IconButton aria-label="show 17 new notifications" color="inherit" onClick={goToNotificaciones}>
-          <Badge badgeContent={numberNotifications} color="secondary">
-            <NotificationsIcon/>
-          </Badge>
-        </IconButton>
-        <IconButton
-          edge="end"
-          aria-label="account of current user"
-          aria-haspopup="true"
-          onClick={handleProfileMenuOpen}
-          color="inherit">
-          <AccountCircle/>
-        </IconButton>
-        <IconButton
-          edge="end"
-          aria-label="account of current user"
-          aria-haspopup="true"
-          onClick={handleLogout}
-          color="inherit">
-          <ExitToAppIcon/>
-        </IconButton>
+        <Tooltip title={sNotifications}>
+          <IconButton aria-label="show 17 new notifications" color="inherit" onClick={goToNotificaciones}>
+            <Badge badgeContent={numberNotifications} color="secondary">
+              <NotificationsIcon/>
+            </Badge>
+          </IconButton>
+        </Tooltip>
+        <Tooltip title={sProfile}>
+          <IconButton
+            edge="end"
+            aria-label="account of current user"
+            aria-haspopup="true"
+            onClick={handleProfileMenuOpen}
+            color="inherit">
+            <AccountCircle/>
+          </IconButton>
+        </Tooltip>
+        <Tooltip title={sCloseSesion}>
+          <IconButton
+            edge="end"
+            aria-label="account of current user"
+            aria-haspopup="true"
+            onClick={handleLogout}
+            color="inherit">
+            <ExitToAppIcon/>
+          </IconButton>
+        </Tooltip>
       </div>
       <div className={classes.sectionMobile}>
         <IconButton
@@ -187,17 +194,19 @@ function CustomAppBar(props) {
       <CssBaseline/>
       <AppBar position="fixed" className={classes.appBar}>
         <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            className={clsx(classes.menuButton, openDrawer && classes.hide)}
-          >
-            <MenuIcon/>
-          </IconButton>
+          {user && (
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              onClick={handleDrawerOpen}
+              edge="start"
+              className={clsx(classes.menuButton, openDrawer && classes.hide)}
+            >
+              <MenuIcon/>
+            </IconButton>
+          )}
 
-          {openDrawer && (
+          {openDrawer && user && (
             <IconButton
               color="inherit"
               aria-label="open drawer"

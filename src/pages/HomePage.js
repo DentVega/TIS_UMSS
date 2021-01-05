@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { sHome } from '../constants/strings';
+import { sHome, sWelcomeMessage } from '../constants/strings';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { changeUser, openDrawer } from '../redux/actions/index.actions';
@@ -17,6 +17,7 @@ function HomePage(props) {
   return (
     <div>
       <h1>{sHome}</h1>
+      <h1>{sWelcomeMessage}</h1>
     </div>
   );
 }

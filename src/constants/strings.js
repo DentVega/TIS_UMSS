@@ -4,6 +4,7 @@ export const sLogin = 'Iniciar Sesion';
 export const sProfile = 'Perfil';
 export const sNotifications = 'Notificaciones';
 export const sHome = 'Inicio';
+export const sWelcomeMessage = 'Bienvenido';
 export const sCampus = 'Plantel';
 export const sSubjects = 'Materias';
 export const sCloseSesion = 'Cerrar Sesion';
