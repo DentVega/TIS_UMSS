@@ -8,7 +8,8 @@ import {
   sConfirm,
   sConfirmTheCreation,
   sName,
-  sTheNameCannotBeEmpty, sUpdateSchool
+  sTheNameCannotBeEmpty, sUpdateSchool,
+  sSchoolAlreadySaved,
 } from '../../constants/strings';
 import { Button, Grid, TextField } from '@material-ui/core';
 import CustomAlertDialog from '../../components/dialogs/CustomAlertDialog';
@@ -23,7 +24,7 @@ function EditSchoolPage(props) {
   const [schoolSelected, setSchoolSelected] = useState(null);
   const [loadCurrentSchool, setLoadCurrentSchool] = useState(false);
   const { user } = props.userReducer;
-  const { school } = props.schoolReducer;
+  const { school, schools } = props.schoolReducer;
 
   if (school!= null && !loadCurrentSchool) {
     setSchoolSelected(school);
@@ -48,6 +49,12 @@ function EditSchoolPage(props) {
     setOpenDialog(false);
   };
 
+  const getSelected = () => {
+    if(schools.length > 0){
+      return schools.filter((it) => it.namefacultad == name).length;
+    }
+   }
+
   const validName = () => {
     const nameValidIsNoEmpty = !nameError && name.length > 0;
     if (!nameValidIsNoEmpty) {
@@ -56,7 +63,13 @@ function EditSchoolPage(props) {
     }
 
     if (nameValidIsNoEmpty) {
-      confirmUpdate();
+      let val = getSelected();
+      if(val > 0){
+        setNameErrorMessage(sSchoolAlreadySaved);
+        setNameError(true);
+      }else{
+        confirmUpdate();
+      } 
     }
   };
 

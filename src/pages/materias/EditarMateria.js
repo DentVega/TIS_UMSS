@@ -14,6 +14,8 @@ import {
   sName,
   sTheNameCannotBeEmpty,
   sUpdateMateria,
+  sSubjectAlreadySaved,
+  sSubjectCannotNameAsCareer,
 } from '../../constants/strings';
 import { Button, Grid, TextField } from '@material-ui/core';
 import FormControl from '@material-ui/core/FormControl';
@@ -43,6 +45,7 @@ function EditarMateria(props) {
 
   const { materia } = props.materiasReducer;
   const { user } = props.userReducer;
+  const { materias } = props.materiasReducer;
 
   const classes = useStyles();
 
@@ -61,6 +64,18 @@ function EditarMateria(props) {
     props.getMateriasBackend();
     props.history.goBack();
   }
+
+  const getSelectedCareer = () => {
+    if(careers.length > 0){
+      return careers.filter((it) => it.namecarrera == name).length;
+    }
+   }
+
+   const getSelectedSubject = () => {
+    if(materias.length > 0){
+      return materias.filter((it) => it.namemateria == name).length;
+    }
+   }
 
   const cancel = () => {
     props.history.goBack();
@@ -82,7 +97,19 @@ function EditarMateria(props) {
     }
 
     if (nameValidIsNoEmpty) {
-      confirmCreation();
+      let val = getSelectedSubject();
+      if(val > 0){
+        setNameErrorMessage(sSubjectAlreadySaved);
+        setNameError(true);
+      }else{
+        let val2 = getSelectedCareer();
+        if(val2 > 0){
+          setNameErrorMessage(sSubjectCannotNameAsCareer);
+          setNameError(true);
+        }else{
+          confirmCreation();
+        }
+      } 
     }
   };
 
