@@ -219,7 +219,7 @@ function CustomAppBar(props) {
           )}
 
           <img src={logoUmss} className={classes.logo} alt={'logo-umss'} onClick={() => props.history.push(routes.homedefault)}/>
-          <Typography variant="h6" noWrap>
+          <Typography variant="h6" noWrap onClick={() => props.history.push(routes.homedefault)}>
             {sNameUmss}
           </Typography>
 
