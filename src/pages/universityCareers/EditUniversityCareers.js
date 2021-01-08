@@ -2,14 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { getCarreras, getSchools } from '../../redux/actions/indexthunk.actions';
-import { useFullName } from '../../constants/formCustomHook/useForm';
+import { useDescription, useFullName } from '../../constants/formCustomHook/useForm';
 import BackendConnection from '../../api/BackendConnection';
 import {
   sAreYouSureYourWantCancel,
   sCancel,
   sConfirm,
-  sConfirmTheUpdate,
-  sName,
+  sConfirmTheUpdate, sDescription,
+  sName, sTheDescriptionCannotBeEmpty,
   sTheNameCannotBeEmpty,
   sUpdateCareer,
 } from '../../constants/strings';
@@ -33,6 +33,7 @@ const useStyles = makeStyles((theme) => ({
 
 function EditUniversityCareers(props) {
   const [name, handleNameChange, nameError, setNameError, nameMesasge, setNameErrorMessage] = useFullName();
+  const [description, handleDescriptionChange, descriptionError, setDescriptionError, descriptionMesasge, setDescriptionErrorMessage] = useDescription();
   const [openDialog, setOpenDialog] = useState(false);
   const [openDialogCancel, setOpenDialogCancel] = useState(false);
   const [updateCareersComplete, setUpdateCareersComplete] = useState(false);
@@ -52,6 +53,7 @@ function EditUniversityCareers(props) {
         setSchools(schools);
         setSchoolSelected(career.facultad_idfacultad);
         handleNameChange(career.namecarrera);
+        handleDescriptionChange(career.descripcion);
       }
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -81,22 +83,28 @@ function EditUniversityCareers(props) {
       setNameError(true);
     }
 
-    if (nameValidIsNoEmpty) {
+    const descriptionIsNoEmpty = !descriptionError && description.length > 0;
+    if (!descriptionIsNoEmpty) {
+      setDescriptionErrorMessage(sTheDescriptionCannotBeEmpty);
+      setDescriptionError(true);
+    }
+
+    if (nameValidIsNoEmpty && descriptionIsNoEmpty) {
       confirmCreation();
     }
   };
 
   const updateCareers = () => {
-    BackendConnection.updateCareer(career.idcarrera, schoolSelected, name).then((response) => {
+    BackendConnection.updateCareer(career.idcarrera, schoolSelected, name, description).then((response) => {
       setOpenDialog(false);
       setUpdateCareersComplete(true);
     });
     let aux = new Date();
-    let val = "idcarrera:" + career.idcarrera + ",facultad_idfacultad:" + career.facultad_idfacultad + ",namecarrera:" + career.namecarrera 
-           + ",idcarrera:" + career.idcarrera + ",facultad_idfacultad:" + schoolSelected + ",namecarrera:" + name;
+    let val = 'idcarrera:' + career.idcarrera + ',facultad_idfacultad:' + career.facultad_idfacultad + ',namecarrera:' + career.namecarrera
+      + ',idcarrera:' + career.idcarrera + ',facultad_idfacultad:' + schoolSelected + ',namecarrera:' + name;
     BackendConnection.createUserslog(3, user.idusers, aux.toLocaleTimeString(), aux.toLocaleDateString(), val, 0).then(() => {
-      console.log("ok updated");
-    })
+      console.log('ok updated');
+    });
   };
 
   const handleChange = (event) => {
@@ -118,6 +126,18 @@ function EditUniversityCareers(props) {
               onChange={({ target }) => handleNameChange(target.value)}
               error={nameError}
               helperText={nameMesasge}
+              autoFocus
+            />
+          </Grid>
+
+          <Grid item>
+            <TextField
+              label={sDescription}
+              type="text"
+              value={description}
+              onChange={({ target }) => handleDescriptionChange(target.value)}
+              error={descriptionError}
+              helperText={descriptionMesasge}
               autoFocus
             />
           </Grid>

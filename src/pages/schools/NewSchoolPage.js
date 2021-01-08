@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useFullName } from '../../constants/formCustomHook/useForm';
+import { useDescription, useFullName } from '../../constants/formCustomHook/useForm';
 import { Button, Grid, TextField } from '@material-ui/core';
 import {
   sAreYouSureYourWantCancel,
@@ -9,7 +9,7 @@ import {
   sCreateSchool,
   sName,
   sTheNameCannotBeEmpty,
-  sSchoolAlreadySaved,
+  sSchoolAlreadySaved, sDescription, sTheDescriptionCannotBeEmpty,
 } from '../../constants/strings';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
@@ -20,6 +20,7 @@ import BackendConnection from '../../api/BackendConnection';
 
 function NewSchoolPage(props) {
   const [name, handleNameChange, nameError, setNameError, nameMesasge, setNameErrorMessage] = useFullName();
+  const [description, handleDescriptionChange, descriptionError, setDescriptionError, descriptionMesasge, setDescriptionErrorMessage] = useDescription();
   const [openDialog, setOpenDialog] = useState(false);
   const [openDialogCancel, setOpenDialogCancel] = useState(false);
   const [createSchoolComplete, setCreateSchoolComplete] = useState(false);
@@ -27,10 +28,10 @@ function NewSchoolPage(props) {
   const { schools } = props.schoolReducer;
 
   const getSelected = () => {
-    if(schools.length > 0){
+    if (schools.length > 0) {
       return schools.filter((it) => it.namefacultad == name).length;
     }
-   }
+  };
 
   if (createSchoolComplete) {
     props.getSchools();
@@ -56,30 +57,36 @@ function NewSchoolPage(props) {
       setNameError(true);
     }
 
-    if (nameValidIsNoEmpty) {
+    const descriptionIsNoEmpty = !descriptionError && description.length > 0;
+    if (!descriptionIsNoEmpty) {
+      setDescriptionErrorMessage(sTheDescriptionCannotBeEmpty);
+      setDescriptionError(true);
+    }
+
+    if (nameValidIsNoEmpty && descriptionIsNoEmpty) {
       let val = getSelected(0);
-      if(val > 0){
+      if (val > 0) {
         setNameErrorMessage(sSchoolAlreadySaved);
         setNameError(true);
-      }else{
+      } else {
         confirmCreation();
-      } 
+      }
     }
   };
 
   const registerSchool = () => {
     let id = 0;
-    BackendConnection.createSchools(name).then((response) => {
+    BackendConnection.createSchools(name, description).then((response) => {
       setOpenDialog(false);
       setCreateSchoolComplete(true);
       id = response.body.res[0].idfacultad;
       let aux = new Date();
-      let val = "idfacultad:" + id + ",namefacultad:" + name;
+      let val = 'idfacultad:' + id + ',namefacultad:' + name;
       BackendConnection.createUserslog(2, user.idusers, aux.toLocaleTimeString(), aux.toLocaleDateString(), val, 0).then(() => {
-        console.log("ok");
+        console.log('ok');
       });
     });
-    
+
   };
 
   const renderForm = () => {
@@ -97,6 +104,18 @@ function NewSchoolPage(props) {
               onChange={({ target }) => handleNameChange(target.value)}
               error={nameError}
               helperText={nameMesasge}
+              autoFocus
+            />
+          </Grid>
+
+          <Grid item>
+            <TextField
+              label={sDescription}
+              type="text"
+              value={description}
+              onChange={({ target }) => handleDescriptionChange(target.value)}
+              error={descriptionError}
+              helperText={descriptionMesasge}
               autoFocus
             />
           </Grid>

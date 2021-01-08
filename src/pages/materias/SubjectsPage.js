@@ -58,13 +58,15 @@ function SubjectPage(props) {
   };
 
   const renderMaterias = () => {
+    console.log('materias', materias)
     return (
       <div>
         {materias.map((materia) => {
           return (
             <div key={materia.idmateria}>
               <CardItem
-                text={materia.namemateria}
+                text={`Nombre: ${materia.namemateria}`}
+                secondaryText={`Descripcion: ${materia.descripcion}`}
                 showEditIcon={true}
                 width={750}
                 showDeleteIcon={true}

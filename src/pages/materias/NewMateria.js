@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { getCarreras, getMateriasBackend } from '../../redux/actions/indexthunk.actions';
-import { useFullNameMateria } from '../../constants/formCustomHook/useForm';
+import { useDescription, useFullNameMateria } from '../../constants/formCustomHook/useForm';
 import BackendConnection from '../../api/BackendConnection';
 import {
   sAreYouSureYourWantCancel,
@@ -15,7 +15,7 @@ import {
   sName,
   sTheNameCannotBeEmpty,
   sSubjectAlreadySaved,
-  sSubjectCannotNameAsCareer,
+  sSubjectCannotNameAsCareer, sTheDescriptionCannotBeEmpty, sDescription,
 } from '../../constants/strings';
 import { Button, Grid, TextField } from '@material-ui/core';
 import FormControl from '@material-ui/core/FormControl';
@@ -36,6 +36,7 @@ const useStyles = makeStyles((theme) => ({
 
 function NewMateria(props) {
   const [name, handleNameChange, nameError, setNameError, nameMesasge, setNameErrorMessage] = useFullNameMateria();
+  const [description, handleDescriptionChange, descriptionError, setDescriptionError, descriptionMesasge, setDescriptionErrorMessage] = useDescription();
   const [openDialog, setOpenDialog] = useState(false);
   const [openDialogCancel, setOpenDialogCancel] = useState(false);
   const [createMateriaComplete, setCreateMateriaComplete] = useState(false);
@@ -67,17 +68,17 @@ function NewMateria(props) {
     }
    }*/
 
-   const getSelectedCareer = () => {
-    if(careers.length > 0){
+  const getSelectedCareer = () => {
+    if (careers.length > 0) {
       return careers.filter((it) => it.namecarrera == name).length;
     }
-   }
+  };
 
-   const getSelectedSubject = () => {
-    if(materias.length > 0){
+  const getSelectedSubject = () => {
+    if (materias.length > 0) {
       return materias.filter((it) => it.namemateria == name).length;
     }
-   }
+  };
 
   const cancel = () => {
     props.history.goBack();
@@ -98,32 +99,38 @@ function NewMateria(props) {
       setNameError(true);
     }
 
-    if (nameValidIsNoEmpty) {
+    const descriptionIsNoEmpty = !descriptionError && description.length > 0;
+    if (!descriptionIsNoEmpty) {
+      setDescriptionErrorMessage(sTheDescriptionCannotBeEmpty);
+      setDescriptionError(true);
+    }
+
+    if (nameValidIsNoEmpty && descriptionIsNoEmpty) {
       let val = getSelectedSubject();
-      if(val > 0){
+      if (val > 0) {
         setNameErrorMessage(sSubjectAlreadySaved);
         setNameError(true);
-      }else{
+      } else {
         let val2 = getSelectedCareer();
-        if(val2 > 0){
+        if (val2 > 0) {
           setNameErrorMessage(sSubjectCannotNameAsCareer);
           setNameError(true);
-        }else{
+        } else {
           confirmCreation();
         }
+      }
     }
-   } 
   };
 
   const registerMateria = () => {
-    BackendConnection.createMateria(careerSelected, name).then((response) => {
+    BackendConnection.createMateria(careerSelected, name, description).then((response) => {
       setOpenDialog(false);
       setCreateMateriaComplete(true);
       let id = response.body.res[0].idmateria;
       let aux = new Date();
-      let val = "idmateria:" + id + ",carrera_idcarrera:" + careerSelected + ",namemateria:" + name;
+      let val = 'idmateria:' + id + ',carrera_idcarrera:' + careerSelected + ',namemateria:' + name;
       BackendConnection.createUserslog(2, user.idusers, aux.toLocaleTimeString(), aux.toLocaleDateString(), val, 0).then(() => {
-        console.log("ok");
+        console.log('ok');
       });
     });
   };
@@ -147,6 +154,18 @@ function NewMateria(props) {
               onChange={({ target }) => handleNameChange(target.value)}
               error={nameError}
               helperText={nameMesasge}
+              autoFocus
+            />
+          </Grid>
+
+          <Grid item>
+            <TextField
+              label={sDescription}
+              type="text"
+              value={description}
+              onChange={({ target }) => handleDescriptionChange(target.value)}
+              error={descriptionError}
+              helperText={descriptionMesasge}
               autoFocus
             />
           </Grid>

@@ -76,6 +76,32 @@ export const useFullName = () => {
   return [values, handleFullNameChange, fullNameError, setFullNameError, fullNameMesasge, setFullNameErrorMessage];
 };
 
+export const useDescription = () => {
+  const [values, setValues] = useState('');
+  const [fullNameError, setFullNameError] = useState(false);
+  const [fullNameMesasge, setFullNameErrorMessage] = useState(null);
+  const handleDescriptionChange = (value) => {
+    if (value.length === 0) {
+      setFullNameErrorMessage(sTheNameCannotBeEmpty);
+      setFullNameError(true);
+    } else if (!nameMateriaRegex.test(value)) {
+      setFullNameErrorMessage(sOnlyLettersAreAccepted);
+      setFullNameError(true);
+    } else if (value.length > 0 && value.length <= 2) {
+      setFullNameErrorMessage(sNameMustHaveMoreThan2Characters);
+      setFullNameError(true);
+    } else if (value.length > 50) {
+      setFullNameErrorMessage(sCharacterLimit25);
+      setFullNameError(true);
+    } else {
+      setFullNameErrorMessage(null);
+      setFullNameError(false);
+    }
+    setValues(value);
+  };
+  return [values, handleDescriptionChange, fullNameError, setFullNameError, fullNameMesasge, setFullNameErrorMessage];
+};
+
 export const useFullNameMateria = () => {
   const [values, setValues] = useState('');
   const [fullNameError, setFullNameError] = useState(false);
@@ -216,9 +242,9 @@ export const useFiles=()=>{
     reader.onloadend=()=>{
       setPreviewSource(reader.result);
     }
-  }  
+  }
   const handleFileChange = (value) => {
-    
+
     if(value===false || types.includes(value.type)===false ){
       setFileMessage("Introduzca Formato PDF");
       setFileError(true);
