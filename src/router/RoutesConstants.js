@@ -29,7 +29,8 @@ export const routes = {
   userslog: '/userslog',
   userslogView: '/userslog/:id',
   //AbcencesRoutes 
-  absencesReports:'/reports/Absences',
+  absencesReports:'/reports/absencesUsersList',
+  userSelectedAbsences:'/reports/absencesUsersList/user/:id',
   userAbsences:'/account/absences',
   newAbsence:'/account/newAbsence',
   userAbsence:'/account/absences/:id',

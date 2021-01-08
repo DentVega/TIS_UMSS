@@ -1,6 +1,6 @@
 import {
   CHANGE_CARRERA_SELECCIONADA_FILTRO,
-  CHANGE_FACULTAD_SELECCIONADA_FILTRO, CHANGE_MATERIA_SELECCIONADA_FILTRO,
+  CHANGE_FACULTAD_SELECCIONADA_FILTRO, CHANGE_MATERIA_SELECCIONADA_FILTRO, CHANGE_USUARIO_SELECCIONADO_FILTRO,
   CLEAN_ALL_REDUCERS
 } from '../actions/actions';
 
@@ -8,6 +8,7 @@ const initState = {
   facultadSeleccionada: 0,
   carreraSeleccionada: 0,
   materiaSeleccionada: 0,
+  usuarioSeleccionado:"",
 };
 
 function filtersReducer(state = initState, action) {
@@ -28,6 +29,12 @@ function filtersReducer(state = initState, action) {
       return {
         ...state,
         materiaSeleccionada: action.materiaSeleccionada
+      }
+    }
+    case CHANGE_USUARIO_SELECCIONADO_FILTRO: {
+      return {
+        ...state,
+        usuarioSeleccionado: action.usuarioSeleccionado
       }
     }
     case CLEAN_ALL_REDUCERS: {

@@ -1,14 +1,15 @@
 import * as React from 'react';
 import { withRouter } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
-import { Button, FormControl, Grid, InputLabel, MenuItem, Select, TextField } from '@material-ui/core';
+import { FormControl, Grid, InputLabel, MenuItem, Select, TextField } from '@material-ui/core';
 import { connect } from 'react-redux';
-import {  getUsers,getGrupoHorariosBackend,getGruposBackend,getCarreras,getMateriasBackend } from '../../redux/actions/indexthunk.actions';
+import {  getUsers,getGrupoHorariosBackend,getMateriasBackend } from '../../redux/actions/indexthunk.actions';
 import CardItem from '../../components/CardItem';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import { routes } from '../../router/RoutesConstants';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import SearchIcon from '@material-ui/icons/Search';
+import { changeFacultadFiltro, changeCarreraFiltro, changeUsuarioFiltro } from '../../redux/actions/index.actions';
 
 const {useState,useEffect} = React;
 
@@ -33,31 +34,62 @@ const UsersList = (props) => {
   const {careers} = props.carrerasReducer;
   const {grupos,loadingGrupos:lgrp, grupoHorarios,loadingGrupoHorarios:lGrpHor} = props.grupoReducer;  
   const {schools} = props.schoolsreducer;
+  const {facultadSeleccionada,carreraSeleccionada,usuarioSeleccionado} = props.filtersReducer;
   const classes = useStyles();
   const [search,setSearch] = useState("");
   const [usersFiltered,setUsersFiltered]=useState([]);
   const [careerSelected, setCareerSelected] = useState('');  
-  const [userFiltering,setUserFiltering] = useState([]);
   const [schoSelected, setSchoSelected] = useState('');
+  const [arrToMap, setArrToMap] = useState([]);
+  const [loadedSelects,setLoadedSelects] = useState(false);
 
   useEffect(() => {
       lUSers && props.getUsers();
       lgrp && props.getGrpHorarios();
       lMat && props.getMaterias();
       lGrpHor && props.getGrpHorarios();
+    // eslint-disable-next-line
   },[]);
+
+  useEffect(() => {
+    if(users&&materias&&careers&&grupos&&grupoHorarios&&schools){
+      setArrToMap(users);
+      setUsersFiltered(users);     
+    };    
+    // eslint-disable-next-line
+  }, [users,materias,careers,grupos,grupoHorarios,schools])
+  
+  useEffect(() => {
+    if(loadedSelects===false){
+      if(facultadSeleccionada!=0){
+        handleChange(facultadSeleccionada);        
+        if(carreraSeleccionada!=0){
+          handleCareerChange(carreraSeleccionada);
+          if(usuarioSeleccionado!=="") searchOnChange(usuarioSeleccionado);          
+        }else if(usuarioSeleccionado!==""){
+        searchOnChange(usuarioSeleccionado);
+      }
+      }else if(usuarioSeleccionado!==""){
+        searchOnChange(usuarioSeleccionado);
+      }    
+    }
+    return ()=>usersFiltered.length>0 && setLoadedSelects(true);  
+    // eslint-disable-next-line
+  }, [usersFiltered])
+  
 
   const searchOnChange=(val)=>{
     setSearch(val);
-    setUsersFiltered(userFiltering.filter(item=>
+    props.changeUsuarioSeleccionado(val);
+    setArrToMap(usersFiltered.filter(item=>
       `${item.firstname.toLowerCase()} ${item.lastname.toLowerCase()}`.includes(val.toLowerCase())
-      ));  
+    ));  
   }
 
   const seeReport=(user)=>{  
-    props.history.location.pathname===(routes.userAddClasses)
-    ? props.history.push(`${routes.userAddClasses}/user/${user.idusers}`)
-    : props.history.push(`${routes.usersList}/user/${user.idusers}`);
+    props.history.location.pathname===(routes.userAddClasses) && props.history.push(`${routes.userAddClasses}/user/${user.idusers}`)
+    props.history.location.pathname===(routes.usersList) && props.history.push(`${routes.usersList}/user/${user.idusers}`);
+    props.history.location.pathname===(routes.absencesReports) && props.history.push(`${routes.absencesReports}/user/${user.idusers}`);
   };
   
   const filterBySchool=(idSchool)=>{
@@ -85,13 +117,8 @@ const UsersList = (props) => {
     const a=schUsers.flat()   
     let hash = {};
     let res = a.filter(o => hash[o.idusers] ? false : hash[o.idusers] = true);
-    const usersFil=[];
-    a.map((fab)=>{
-      const usrs=users.filter((usr)=>fab.users_idusers==usr.idusers)
-      return usersFil.push(usrs);
-    });
-    setUsersFiltered(res.flat());
-    setUserFiltering(res.flat());    
+    setUsersFiltered(res)
+    setArrToMap(res);
   };
 
   const filterByCareer=(idCareer)=>{
@@ -117,24 +144,27 @@ const UsersList = (props) => {
     const a=careerUsers.flat()   
     let hash = {};
     let res = a.filter(o => hash[o.idusers] ? false : hash[o.idusers] = true);
-    const usersFil=[];
-    a.map((fab)=>{
-      const usrs=users.filter((usr)=>fab.users_idusers==usr.idusers)
-      return usersFil.push(usrs);
-    });
-    setUsersFiltered(res.flat());
-    setUserFiltering(res.flat());    
+    setUsersFiltered(res)
+    setArrToMap(res);
+    
   };
 
   const handleChange=(idSchool)=>{
-    filterBySchool(idSchool)
-    setSchoSelected(idSchool)
-    setCareerSelected('');
+    filterBySchool(idSchool);
+    setSchoSelected(idSchool);
+    setCareerSelected("");
+    setSearch("");
+    props.changeFacultadSeleccionada(idSchool);
+    props.changeCarreraSeleccionada(0);
+    props.changeUsuarioSeleccionado("");
   };
 
   const handleCareerChange=(idCareer)=>{ 
     filterByCareer(idCareer)
     setCareerSelected(idCareer);
+    setSearch("");
+    props.changeCarreraSeleccionada(idCareer);
+    props.changeUsuarioSeleccionado("");
   };
 
   const renderSchools=()=>{
@@ -151,7 +181,9 @@ const UsersList = (props) => {
 
   return (
     <div>
-      {props.history.location.pathname===routes.userAddClasses? <h1>Clases Adicionales</h1> :<h1>Reportes Semanales/Mensuales</h1>}
+      {props.history.location.pathname===routes.userAddClasses && <h1>Clases Adicionales</h1>}
+      {props.history.location.pathname===routes.usersList && <h1>Reportes Semanales/Mensuales</h1>}
+      {props.history.location.pathname===routes.absencesReports && <h1>Faltas</h1>}
       <Grid container>
         <Grid item xs={4}>
           <FormControl className={classes.formControl}>
@@ -200,44 +232,19 @@ const UsersList = (props) => {
       </Grid>
       <div>
         {
-          schoSelected===""? users.map((user) => {
-          return (
-            <div key={user.idusers} className={classes.root}>
-            <CardActionArea>            
-              <CardItem
-                text={`${user.firstname} ${user.lastname}`}
-                showIconRow={true}
-                onClick={()=>seeReport(user)}
-              />
-             </CardActionArea>
-            </div>
-          )}):
-          search==="" ? userFiltering.map((user) => {
-          return (
-            <div key={user.idusers} className={classes.root}>
-            <CardActionArea>            
-              <CardItem
-                text={`${user.firstname} ${user.lastname}`}
-                showIconRow={true}
-                onClick={()=>seeReport(user)}
-              />
-             </CardActionArea>
-            </div>
-          );
-        })
-        :usersFiltered.map((user) => {
-          return (
-            <div key={user.idusers} className={classes.root}>
-            <CardActionArea>
-              <CardItem
-                text={`${user.firstname} ${user.lastname}`}
-                showIconRow={true}
-                onClick={()=>seeReport(user)}
-              />
-             </CardActionArea>
-            </div>
-          );
-        })
+          arrToMap && arrToMap.map((user) => {
+            return (
+              <div key={user.idusers} className={classes.root}>
+              <CardActionArea>            
+                <CardItem
+                  text={`${user.firstname} ${user.lastname}`}
+                  showIconRow={true}
+                  onClick={()=>seeReport(user)}
+                />
+              </CardActionArea>
+              </div>
+            )
+          })        
         }
       </div>
     </div>
@@ -252,7 +259,7 @@ const mapStateToProps = (state)=>{
     materiasReducer:state.materiasReducer,
     carrerasReducer: state.careersReducer,
     schoolsreducer:state.schoolReducer,
-
+    filtersReducer:state.filtersReducer,
   };
 };
 
@@ -260,6 +267,9 @@ const mapDispatchToProps = (dispatch) => ({
   getUsers: () => dispatch(getUsers()),
   getGrpHorarios:()=>dispatch(getGrupoHorariosBackend()),
   getMaterias:()=>dispatch(getMateriasBackend()),
+  changeFacultadSeleccionada:(facultadSeleccionada)=>dispatch(changeFacultadFiltro(facultadSeleccionada)),
+  changeCarreraSeleccionada:(carreraSeleccionada)=>dispatch(changeCarreraFiltro(carreraSeleccionada)),
+  changeUsuarioSeleccionado:(usuarioSeleccionado)=>dispatch(changeUsuarioFiltro(usuarioSeleccionado)),
 });
 
 export default connect(mapStateToProps,mapDispatchToProps)(withRouter(UsersList));

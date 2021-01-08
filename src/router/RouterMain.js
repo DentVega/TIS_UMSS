@@ -105,7 +105,8 @@ function RouterMain(props) {
           <PrivateRoute isAuth={isAuth} exact={true} path={routes.reports} component={Reports}/>
           <PrivateRoute isAuth={isAuth} exact={true} path={routes.userReport} component={Report}/>
           <PrivateRoute isAuth={isAuth} exact={true} path={routes.reportsByUser} component={UserReports}/>
-          <PrivateRoute isAuth={isAuth} exact={true} path={routes.absencesReports} component={Absences}/>
+          <PrivateRoute isAuth={isAuth} exact={true} path={routes.userSelectedAbsences} component={Absences}/>
+          <PrivateRoute isAuth={isAuth} exact={true} path={routes.absencesReports} component={UsersList}/>
           <PrivateRoute isAuth={isAuth} exact={true} path={routes.usersList} component={UsersList}/>
           <PrivateRoute isAuth={isAuth} exact={true} path={routes.userAddClasses} component={UsersList}/>
           <PrivateRoute isAuth={isAuth} exact={true} path={routes.userClasses} component={UserAddClasses}/>
