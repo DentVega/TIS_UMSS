@@ -48,6 +48,7 @@ import Report from '../pages/reports/Report';
 import AdditionalClassList from '../pages/weeklyProgressLog/AdditionalClassList';
 import RegisterAdditionalClass from '../pages/weeklyProgressLog/RegisterAdditionalClass';
 import UserAddClasses from '../pages/additionalClass/UserAddClasses';
+import HomeDefault from '../pages/homeDefault/HomeDefault';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -82,8 +83,9 @@ function RouterMain(props) {
         {user && <CustomDrawer/>}
         <main className={openDrawer ? classes.content : classes.contentFull}>
           <Toolbar/>
-          <Route exact={true} path={'/'} component={LoginPage}/>
+          <Route exact={true} path={'/'} component={HomeDefault}/>
           <Route exact={true} path={routes.login} component={LoginPage}/>
+          <Route exact={true} path={routes.homedefault} component={HomeDefault}/>
           <PrivateRoute isAuth={isAuth} exact={true} path={routes.home} component={HomePage}/>
           {/*Users*/}
           <PrivateRoute isAuth={isAuth} exact={true} path={routes.campus} component={CampusPage}/>

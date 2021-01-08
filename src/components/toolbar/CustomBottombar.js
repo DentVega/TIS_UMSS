@@ -19,6 +19,8 @@ const useStyles = makeStyles((theme) => ({
   },
   item: {
     margin: 5,
+    alignItems: 'center',
+    alignContent: 'center',
     backgroundColor: colorMain,
   },
   text: {
@@ -34,7 +36,7 @@ function CustomBottombar() {
         <h3 className={classes.text}>{sCopyright}</h3>
       </Grid>
       <Grid item className={classes.item}>
-        <h3 className={classes.text}>Contactanos</h3>
+        <a href={"mailto: dentvega6@gmail.com?subject = Feeback"} className={classes.text}>Contactanos</a>
       </Grid>
     </Grid>
   );

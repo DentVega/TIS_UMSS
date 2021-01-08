@@ -70,6 +70,7 @@ function UniversityCareers(props) {
   };
 
   const renderCareers = () => {
+    console.log('carreras', careersAux)
     return (
       <div>
         {careersAux.map((career) => {
@@ -77,7 +78,8 @@ function UniversityCareers(props) {
             <div key={career.idcarrera}>
               <CardItem
                 width={"100vh"}
-                text={career.namecarrera}
+                text={`Nombre: ${career.namecarrera}`}
+                secondaryText={`Descripcion: ${career.descripcion}`}
                 showEditIcon={true}
                 showDeleteIcon={true}
                 editClick={() => updateCarrera(career)}

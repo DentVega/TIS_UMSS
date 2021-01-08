@@ -4,14 +4,14 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { getCarreras, getMateriasBackend } from '../../redux/actions/indexthunk.actions';
-import { useFullNameMateria } from '../../constants/formCustomHook/useForm';
+import { useDescription, useFullNameMateria } from '../../constants/formCustomHook/useForm';
 import BackendConnection from '../../api/BackendConnection';
 import {
   sAreYouSureYourWantCancel,
   sCancel,
   sConfirm,
-  sConfirmTheUpdate,
-  sName,
+  sConfirmTheUpdate, sDescription,
+  sName, sTheDescriptionCannotBeEmpty,
   sTheNameCannotBeEmpty,
   sUpdateMateria,
 } from '../../constants/strings';
@@ -34,6 +34,7 @@ const useStyles = makeStyles((theme) => ({
 
 function EditarMateria(props) {
   const [name, handleNameChange, nameError, setNameError, nameMesasge, setNameErrorMessage] = useFullNameMateria();
+  const [description, handleDescriptionChange, descriptionError, setDescriptionError, descriptionMesasge, setDescriptionErrorMessage] = useDescription();
   const [openDialog, setOpenDialog] = useState(false);
   const [openDialogCancel, setOpenDialogCancel] = useState(false);
   const [updateMateriaComplete, setUpdateMateriaComplete] = useState(false);
@@ -52,6 +53,7 @@ function EditarMateria(props) {
         setCareers(carerras);
         setCareersSelected(materia.carrera_idcarrera);
         handleNameChange(materia.namemateria);
+        handleDescriptionChange(materia.descripcion);
       }
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -81,21 +83,27 @@ function EditarMateria(props) {
       setNameError(true);
     }
 
-    if (nameValidIsNoEmpty) {
+    const descriptionIsNoEmpty = !descriptionError && description.length > 0;
+    if (!descriptionIsNoEmpty) {
+      setDescriptionErrorMessage(sTheDescriptionCannotBeEmpty);
+      setDescriptionError(true);
+    }
+
+    if (nameValidIsNoEmpty && descriptionIsNoEmpty) {
       confirmCreation();
     }
   };
 
   const updateMateria = () => {
-    BackendConnection.updateMateria(materia.idmateria, careerSelected, name).then((response) => {
+    BackendConnection.updateMateria(materia.idmateria, careerSelected, name, description).then((response) => {
       setOpenDialog(false);
       setUpdateMateriaComplete(true);
     });
-    let val = "idmateria:" + materia.idmateria + ",carrera_idcarrera:" + materia.carrera_idcarrera + ",namemateria:" + materia.namemateria
-           + ",idmateria:" + materia.idmateria + ",carrera_idcarrera:" + careerSelected + ",namemateria:" + name;
+    let val = 'idmateria:' + materia.idmateria + ',carrera_idcarrera:' + materia.carrera_idcarrera + ',namemateria:' + materia.namemateria
+      + ',idmateria:' + materia.idmateria + ',carrera_idcarrera:' + careerSelected + ',namemateria:' + name;
     let aux = new Date();
     BackendConnection.createUserslog(3, user.idusers, aux.toLocaleTimeString(), aux.toLocaleDateString(), val, 0).then(() => {
-        console.log("ok updated");
+      console.log('ok updated');
     });
   };
 
@@ -118,6 +126,18 @@ function EditarMateria(props) {
               onChange={({ target }) => handleNameChange(target.value)}
               error={nameError}
               helperText={nameMesasge}
+              autoFocus
+            />
+          </Grid>
+
+          <Grid item>
+            <TextField
+              label={sDescription}
+              type="text"
+              value={description}
+              onChange={({ target }) => handleDescriptionChange(target.value)}
+              error={descriptionError}
+              helperText={descriptionMesasge}
               autoFocus
             />
           </Grid>
