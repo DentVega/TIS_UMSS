@@ -15,6 +15,7 @@ import {
   sUpdateMateria,
   sSubjectAlreadySaved,
   sSubjectCannotNameAsCareer,
+  sSubjectCannotNameAsSchool,
 } from '../../constants/strings';
 import { Button, Grid, TextField } from '@material-ui/core';
 import FormControl from '@material-ui/core/FormControl';
@@ -43,9 +44,9 @@ function EditarMateria(props) {
   const [careers, setCareers] = useState([]);
   const [careerSelected, setCareersSelected] = useState(0);
 
-  const { materia } = props.materiasReducer;
+  const { materia, materias } = props.materiasReducer;
   const { user } = props.userReducer;
-  const { materias } = props.materiasReducer;
+  const { schools } = props.schoolReducer;
 
   const classes = useStyles();
 
@@ -65,6 +66,12 @@ function EditarMateria(props) {
     props.getMateriasBackend();
     props.history.goBack();
   }
+
+  const getSelectedSchool = () => {
+    if(schools.length > 0){
+      return schools.filter((it) => it.namefacultad == name).length;
+    }
+   }
 
   const getSelectedCareer = () => {
     if(careers.length > 0){
@@ -115,7 +122,13 @@ function EditarMateria(props) {
           setNameErrorMessage(sSubjectCannotNameAsCareer);
           setNameError(true);
         }else{
+          let val3 = getSelectedSchool();
+          if(val3 > 0){
+            setNameErrorMessage(sSubjectCannotNameAsSchool);
+            setNameError(true);
+          }else{
             confirmCreation();
+          }
         }
       }
     } 
@@ -172,7 +185,7 @@ function EditarMateria(props) {
           {careers.length > 0 && (
             <Grid item>
               <FormControl className={classes.formControl}>
-                <InputLabel id="carerra-selecionada">Facultad</InputLabel>
+                <InputLabel id="carerra-selecionada">Carrera</InputLabel>
                 <Select
                   labelId="carerra-selecionada"
                   id="carerra-selecionada-select"
@@ -241,6 +254,7 @@ const mapStateToProps = (state) => {
     userReducer: state.userReducer,
     materiasReducer: state.materiasReducer,
     careersReducer: state.careersReducer,
+    schoolReducer: state.schoolReducer,
   };
 };
 
