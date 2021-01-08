@@ -3,42 +3,17 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { getSchools } from '../../redux/actions/indexthunk.actions';
 import { changeSchool } from '../../redux/actions/index.actions';
-import makeStyles from '@material-ui/core/styles/makeStyles';
-import green from '@material-ui/core/colors/green';
-import AddIcon from '@material-ui/icons/Add';
 import CardItem from '../../components/CardItem';
 import { sConfirm, sSchools } from '../../constants/strings';
-import Fab from '@material-ui/core/Fab';
 import { routes } from '../../router/RoutesConstants';
 import BackendConnection from '../../api/BackendConnection';
 import CustomAlertDialog from '../../components/dialogs/CustomAlertDialog';
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    backgroundColor: theme.palette.background.paper,
-    width: 500,
-    position: 'relative',
-    minHeight: 200,
-  },
-  fab: {
-    position: 'absolute',
-    bottom: theme.spacing(2),
-    right: theme.spacing(2),
-  },
-  fabGreen: {
-    color: theme.palette.common.white,
-    backgroundColor: green[500],
-    '&:hover': {
-      backgroundColor: green[600],
-    },
-  },
-}));
+import FloatingButton from '../../components/FloatingButton';
 
 function SchoolPage(props) {
   const { loading, schools } = props.schoolReducer;
   const [schoolSelected, setSchoolSelected] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
-  const classes = useStyles();
   const { user } = props.userReducer;
 
   useEffect(() => {
@@ -80,21 +55,16 @@ function SchoolPage(props) {
     })
   };
 
-  const fab = {
-    color: 'primary',
-    className: classes.fab,
-    icon: <AddIcon />,
-    label: 'Add',
-  };
-
   const renderSchool = () => {
+    console.log('facultades', schools)
     return (
       <div>
         {schools.map((school) => {
           return (
             <div key={school.idfacultad} >
               <CardItem
-                text={school.namefacultad}
+                text={`Nombre: ${school.namefacultad}`}
+                secondaryText={`Descripcion: ${school.descripcion}`}
                 width={"120vh"}
                 showEditIcon={true}
                 showDeleteIcon={true}
@@ -121,9 +91,7 @@ function SchoolPage(props) {
       <h1>{sSchools}</h1>
       {schools.length > 0 ? renderSchool() : <div />}
       {loading && <h3>Cargando...</h3>}
-      <Fab aria-label={fab.label} className={fab.className} color={fab.color} onClick={newSchool}>
-        {fab.icon}
-      </Fab>
+      <FloatingButton onClick={newSchool}/>
     </div>
   );
 }

@@ -2,42 +2,16 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { getGrupoHorariosBackend, getGruposBackend } from '../../redux/actions/indexthunk.actions';
-import AddIcon from '@material-ui/icons/Add';
-import Fab from '@material-ui/core/Fab';
-import makeStyles from '@material-ui/core/styles/makeStyles';
-import green from '@material-ui/core/colors/green';
-import CardItem from '../../components/CardItem';
 import { changeGrupo, changeGrupoHorario } from '../../redux/actions/index.actions';
 import { routes } from '../../router/RoutesConstants';
 import CustomAlertDialog from '../../components/dialogs/CustomAlertDialog';
 import { sConfirm } from '../../constants/strings';
 import BackendConnection from '../../api/BackendConnection';
 import GrupoItem from '../../components/GrupoItem';
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    backgroundColor: theme.palette.background.paper,
-    width: 500,
-    position: 'relative',
-    minHeight: 200,
-  },
-  fab: {
-    position: 'absolute',
-    bottom: theme.spacing(2),
-    right: theme.spacing(2),
-  },
-  fabGreen: {
-    color: theme.palette.common.white,
-    backgroundColor: green[500],
-    '&:hover': {
-      backgroundColor: green[600],
-    },
-  },
-}));
+import FloatingButton from '../../components/FloatingButton';
 
 function GroupsPage(props) {
   sessionStorage.setItem('path', props.history.location.pathname);
-  const classes = useStyles();
   const { grupos, grupoHorarios, loadingGrupoHorarios, loadingGrupos } = props.grupoReducer;
 
   const [openDialog, setOpenDialog] = useState(false);
@@ -77,13 +51,6 @@ function GroupsPage(props) {
     setGrupoSelected(grupo);
   };
 
-  const fab = {
-    color: 'primary',
-    className: classes.fab,
-    icon: <AddIcon />,
-    label: 'Add',
-  };
-
   const renderGrupos = () => {
     return (
       <div>
@@ -117,9 +84,7 @@ function GroupsPage(props) {
       {loadingGrupos && <h3>Cargando...</h3>}
       {grupos.length > 0 ? renderGrupos() : <div />}
 
-      <Fab aria-label={fab.label} className={fab.className} color={fab.color} onClick={newGrupo}>
-        {fab.icon}
-      </Fab>
+      <FloatingButton onClick={newGrupo}/>
     </div>
   );
 }

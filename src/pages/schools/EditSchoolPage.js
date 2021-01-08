@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useFullName } from '../../constants/formCustomHook/useForm';
+import { useDescription, useFullName } from '../../constants/formCustomHook/useForm';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { getSchools } from '../../redux/actions/indexthunk.actions';
@@ -9,7 +9,8 @@ import {
   sConfirmTheCreation,
   sName,
   sTheNameCannotBeEmpty, sUpdateSchool,
-  sSchoolAlreadySaved,
+  sSchoolAlreadySaved, sDescription,
+  sTheDescriptionCannotBeEmpty,
 } from '../../constants/strings';
 import { Button, Grid, TextField } from '@material-ui/core';
 import CustomAlertDialog from '../../components/dialogs/CustomAlertDialog';
@@ -17,6 +18,7 @@ import BackendConnection from '../../api/BackendConnection';
 
 function EditSchoolPage(props) {
   const [name, handleNameChange, nameError, setNameError, nameMesasge, setNameErrorMessage] = useFullName();
+  const [description, handleDescriptionChange, descriptionError, setDescriptionError, descriptionMesasge, setDescriptionErrorMessage] = useDescription();
   const [openDialog, setOpenDialog] = useState(false);
   const [openDialogCancel, setOpenDialogCancel] = useState(false);
   const [updateSchoolComplete, setUpdateSchoolComplete] = useState(false);
@@ -26,9 +28,10 @@ function EditSchoolPage(props) {
   const { user } = props.userReducer;
   const { school, schools } = props.schoolReducer;
 
-  if (school!= null && !loadCurrentSchool) {
+  if (school != null && !loadCurrentSchool) {
     setSchoolSelected(school);
     handleNameChange(school.namefacultad);
+    handleDescriptionChange(school.descripcion);
     setLoadCurrentSchool(true);
   }
 
@@ -62,7 +65,13 @@ function EditSchoolPage(props) {
       setNameError(true);
     }
 
-    if (nameValidIsNoEmpty) {
+    const descriptionIsNoEmpty = !descriptionError && description.length > 0;
+    if (!descriptionIsNoEmpty) {
+      setDescriptionErrorMessage(sTheDescriptionCannotBeEmpty);
+      setDescriptionError(true);
+    }
+
+    if (nameValidIsNoEmpty && descriptionIsNoEmpty) {
       let val = getSelected();
       if(val > 0){
         setNameErrorMessage(sSchoolAlreadySaved);
@@ -75,16 +84,16 @@ function EditSchoolPage(props) {
 
   const updateSchool = () => {
     if (!updateSchoolComplete) {
-      BackendConnection.updateSchools(schoolSelected.idfacultad, name)
-      .then(() => {
-        let val = "idfacultad:" + schoolSelected.idfacultad + ",namefacultad:" + schoolSelected.namefacultad + ",idfacultad:" + schoolSelected.idfacultad + ",namefacultad:" + name;
-        let aux = new Date();
-        BackendConnection.createUserslog(3, user.idusers, aux.toLocaleTimeString(), aux.toLocaleDateString(), val, 0).then(() => {
-          console.log("ok updated");
-          setOpenDialog(false);
-          setUpdateSchoolComplete(true);
+      BackendConnection.updateSchools(schoolSelected.idfacultad, name, description)
+        .then(() => {
+          let val = 'idfacultad:' + schoolSelected.idfacultad + ',namefacultad:' + schoolSelected.namefacultad + ',idfacultad:' + schoolSelected.idfacultad + ',namefacultad:' + name;
+          let aux = new Date();
+          BackendConnection.createUserslog(3, user.idusers, aux.toLocaleTimeString(), aux.toLocaleDateString(), val, 0).then(() => {
+            console.log('ok updated');
+            setOpenDialog(false);
+            setUpdateSchoolComplete(true);
+          });
         });
-      });
     }
   };
 
@@ -103,6 +112,18 @@ function EditSchoolPage(props) {
               onChange={({ target }) => handleNameChange(target.value)}
               error={nameError}
               helperText={nameMesasge}
+              autoFocus
+            />
+          </Grid>
+
+          <Grid item>
+            <TextField
+              label={sDescription}
+              type="text"
+              value={description}
+              onChange={({ target }) => handleDescriptionChange(target.value)}
+              error={descriptionError}
+              helperText={descriptionMesasge}
               autoFocus
             />
           </Grid>

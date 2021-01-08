@@ -22,22 +22,26 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const RegisterProgress = (props) => {
-  sessionStorage.setItem("path",props.history.location.pathname);
   const classes = useStyles();
   const {user} = props.userReducer;
   const [idGr, setIdGr] = useState('');
+  const [grpError,setGrpError] = useState(false);
+  const [grpErrorMsg,setGrpErrorMsg] = useState("");
   const [allGroups,setAllGroups] = useState([]);
   const [unduplicated,setUnduplicated] = useState([]);
   const [uniqueGr,setUniqueGr] = useState([]);
   const [inputFields,setInputFields] = useState([]);
   const [openDialog,setOpenDialog] = useState(false);
   const [openDialogCancel, setOpenDialogCancel] = useState(false);
-  const [beginWeek,setBeginWeek] = useState("");
-  const [endWeek,setEndWeek] = useState("");
   const [materiaName,setMateriaName] = useState("");
   const [error,setError] = useState(false);
   const [userReports,setUserReports] = useState([]);
+  const [beginWeek,setBeginWeek] = useState("");
+  const [dateErrorMsg,setDateErrorMsg] = useState('');
+  const [dateError,setDateError] = useState('');
+  const [endWeek,setEndWeek] = useState("");
 
+  
   useEffect(()=>{
     BackendConnection.getGrupoHByUserId(user.idusers)
       .then((res)=>{
@@ -67,6 +71,7 @@ const RegisterProgress = (props) => {
     setEndWeek("");
     setBeginWeek("");
     setIdGr(val);
+    setGrpError(false);
     BackendConnection.getGruposbyId(val).then((res)=>{
       BackendConnection.getMateriasById(res[0].materia_idmateria).then((resp)=>{
         setMateriaName(resp[0].namemateria);
@@ -112,9 +117,18 @@ const RegisterProgress = (props) => {
   };
 
   const openConfirm=()=>{
-    inputFields.map((i)=>{    
-      beginWeek.length===0|endWeek===0? setError(true):setOpenDialog(true);
-    })
+    if(idGr!==""){
+      if(beginWeek<endWeek){
+        inputFields.map((i)=>{    
+          beginWeek.length===0|endWeek===0? setError(true):setOpenDialog(true);
+        })
+      }else{
+        setError(true);
+      }
+    }else{
+      setGrpErrorMsg("Seleccione un Grupo")
+      setGrpError(true);
+    }
   };
 
   const cancel = () => {
@@ -127,69 +141,87 @@ const RegisterProgress = (props) => {
     }))
   };
 
+  const handleDateChange=(date)=>{
+    const fechaHoy=new Date();
+    const fechaMenor=new Date(fechaHoy);
+    fechaMenor.setDate(fechaMenor.getDate()-7)
+
+    if(fechaMenor<=new Date(date) && new Date(date)<=fechaHoy){
+      const fecha=new Date(date);
+      fecha.setDate(fecha.getDate()+6);
+      
+      setDateError(false);
+      setDateErrorMsg("");
+      setBeginWeek(date);
+      setEndWeek(fecha.toLocaleDateString());
+    }else{
+      setDateError(true);
+      setDateErrorMsg("introduzca una fecha valida");
+    }
+  };
  
+
   const renderTables=()=>{
     if(inputFields.length>0){
-    return uniqueGr.map((item,index)=>{
-      return <Grid key={item.idgrupohorarios} container item spacing={2} >          
-        <Grid item xs={true} align="middle">      
-          <h3>{item.dia}</h3>
-        </Grid>
-        <Grid item xs={true} align="middle" >
-          <TextField 
-            value={inputFields[index].plataforma} 
-            name="plataforma" variant="filled" 
-            label="Plataforma" 
-            onChange={(e)=>handleInputChange(e,index)}              
-          />
-        </Grid>
-        <Grid item xs={true} align="middle">
-          <TextField 
-          value={inputFields[index].avance} 
-          variant="filled" 
-          label="Avance" 
-          name="avance" 
-          onChange={(e)=>handleInputChange(e,index)}            
-        />
-        </Grid>
-        <Grid item xs={true} align="middle">
-          <TextField 
-            value={inputFields[index].observaciones} 
+      return uniqueGr.map((item,index)=>{
+        return <Grid key={item.idgrupohorarios} container item spacing={2} >          
+          <Grid item xs={true} align="middle">      
+            <h3>{item.dia}</h3>
+          </Grid>
+          <Grid item xs={true} align="middle" >
+            <TextField 
+              value={inputFields[index].plataforma} 
+              name="plataforma" variant="filled" 
+              label="Plataforma" 
+              onChange={(e)=>handleInputChange(e,index)}              
+            />
+          </Grid>
+          <Grid item xs={true} align="middle">
+            <TextField 
+            value={inputFields[index].avance} 
             variant="filled" 
-            label="Observaciones" 
-            name="observaciones" 
+            label="Avance" 
+            name="avance" 
             onChange={(e)=>handleInputChange(e,index)}            
           />
-        </Grid>
-        <Grid item xs={true} align="middle">
-          <TextField 
-            value={inputFields[index].firma} 
-            variant="filled" 
-            label="Firma" 
-            name="firma" 
-            onChange={(e)=>handleInputChange(e,index)}              
-          />
-        </Grid>
-        <Grid item xs={true} align="middle">
-        <FormControl className={classes.formControl}>
-        <InputLabel id="demo-controlled-open-select-label">Faltas Registradas</InputLabel>
-          <Select
+          </Grid>
+          <Grid item xs={true} align="middle">
+            <TextField 
+              value={inputFields[index].observaciones} 
+              variant="filled" 
+              label="Observaciones" 
+              name="observaciones" 
+              onChange={(e)=>handleInputChange(e,index)}            
+            />
+          </Grid>
+          <Grid item xs={true} align="middle">
+            <TextField 
+              value={inputFields[index].firma} 
+              variant="filled" 
+              label="Firma" 
+              name="firma" 
+              onChange={(e)=>handleInputChange(e,index)}              
+            />
+          </Grid>
+          <Grid item xs={true} align="middle">
+          <FormControl className={classes.formControl}>
+          <InputLabel id="demo-controlled-open-select-label">Faltas Registradas</InputLabel>
+            <Select
               labelId="demo-controlled-open-select-label"
               id="demo-controlled-open-select"
               value={inputFields[index].adjuntarFalta}
               name="adjuntarFalta"
               onChange={(e)=>handleInputChange(e,index)}
             >        
-            { unduplicated && renderAbsences() }
-          </Select>
-          </FormControl>
-        </Grid>
-    </Grid>
-
-    })
+              { unduplicated && renderAbsences() }
+            </Select>
+            </FormControl>
+          </Grid>
+      </Grid>
+      })
+    }
   }
-  }
-
+ 
   return (
     <div>
       <h1>Registra tu Avance Semanal</h1>
@@ -201,6 +233,9 @@ const RegisterProgress = (props) => {
               labelId="demo-controlled-open-select-label"
               id="demo-controlled-open-select"
               value={idGr}
+              error={grpError}
+              helperTextError={grpErrorMsg}
+
               onChange={({target})=>handleChange(target.value)}
             >        
             { unduplicated && renderGrp() }
@@ -217,22 +252,16 @@ const RegisterProgress = (props) => {
                 label="de fecha:"
                 type="date"    
                 value={beginWeek}     
-                onChange={({target})=>setBeginWeek(target.value)}
+                onChange={({target})=>handleDateChange(target.value)}
                 InputLabelProps={{
-                shrink: true,
+                  shrink: true,
                 }}
+                error={dateError}
+                helperText={dateErrorMsg}
               />
             </Grid>
             <Grid item xs={6} align="middle" justify="center">
-              <TextField 
-                id="date"
-                type="date" 
-                InputLabelProps={{
-                  shrink: true,}} 
-                label="a fecha:" 
-                value={endWeek}
-                onChange={({target})=>setEndWeek(target.value)}
-              />
+              <h2>a fecha: {endWeek}</h2>
             </Grid>
           </Grid>
         </Grid>     
@@ -261,8 +290,21 @@ const RegisterProgress = (props) => {
           {uniqueGr.length>0 && renderTables()} 
       </Grid>
       <Divider />
-      <Button variant="contained" color="primary" style={{margin:30,float:"right"}} type="submit" onClick={()=>openConfirm()}>Registrar Avance</Button>
-      <Button variant="contained" color="primary" style={{margin:30,float:"right"}} type="submit" onClick={()=>setOpenDialogCancel(true)}>Cancelar</Button>
+      <Button 
+        variant="contained" 
+        color="primary" 
+        style={{margin:30,float:"right"}} 
+        type="submit" 
+        onClick={()=>openConfirm()}
+      >Registrar Avance</Button>
+      <Button 
+        variant="contained" 
+        color="primary" 
+        style={{margin:30,float:"right"}} 
+        type="submit" 
+        onClick={()=>setOpenDialogCancel(true)}
+      >Cancelar</Button>
+
       <CustomAlertDialog
         title={"Confirmar"}
         messageText={"Desea realizar el registro"}

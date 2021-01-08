@@ -39,6 +39,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 function CustomDrawer(props) {
+  const { openDrawer } = props.appReducer;
   const classes = useStyles();
   const [state, setState] = React.useState({
     top: false,
@@ -50,7 +51,6 @@ function CustomDrawer(props) {
   const {roleFuncs}=props.roleFun;
   const {userRole}=props.rolesReducer;
   let userFunctions= [],menuAdmin=[];
-
   if(roleFuncs!==null && userRole!==null && roleFuncs !==undefined && userRole !== undefined){
     roleFuncs.map(r=>r.roles_idroles===userRole.idroles&&userFunctions.push(r.funcion_idfuncion));
   }
@@ -64,7 +64,8 @@ function CustomDrawer(props) {
     userFunctions.includes(enumMenuDrawer.reports.id) && menuAdmin.push(enumMenuDrawer.reports);
     userFunctions.includes(enumMenuDrawer.groups.id) && menuAdmin.push(enumMenuDrawer.groups);
     userFunctions.includes(enumMenuDrawer.administration.id) && menuAdmin.push(enumMenuDrawer.administration);
-    menuAdmin.push(enumMenuDrawer.account)
+    userFunctions.includes(enumMenuDrawer.account.id) && menuAdmin.push(enumMenuDrawer.account);
+
     userFunctions.includes(enumMenuDrawer.userslog.id) && menuAdmin.push(enumMenuDrawer.userslog)
   }
 
@@ -99,7 +100,7 @@ function CustomDrawer(props) {
         props.history.push(routes.groups);
         break;
       case 7:
-        props.history.push(routes.administration);
+        props.history.push(routes.roles);
         break;
       case 8:
         props.history.push(routes.account);
@@ -164,7 +165,8 @@ function CustomDrawer(props) {
   return (
     <Drawer
       className={classes.drawer}
-      variant="permanent"
+      variant="persistent"
+      open={openDrawer}
       classes={{
         paper: classes.drawerPaper,
       }}>
@@ -176,7 +178,7 @@ function CustomDrawer(props) {
 
 const mapStateToProps = (state) => {
   return {
-    app: state.app,
+    appReducer: state.app,
     userReducer: state.userReducer,
     roleFun:state.roleFuncsReducer,
     rolesReducer:state.rolesReducer,

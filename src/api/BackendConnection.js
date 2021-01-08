@@ -301,13 +301,14 @@ class BackendConnection {
     });
   }
 
-  createSchools(namefacultad) {
+  createSchools(namefacultad, descripcion) {
     return new Promise((resolve, reject) => {
       axios({
         method: 'POST',
         url: `${baseUrl}/facultad`,
         data: {
           namefacultad: namefacultad,
+          descripcion: descripcion,
         },
       })
         .then((response) => {
@@ -319,13 +320,14 @@ class BackendConnection {
     });
   }
 
-  updateSchools(idFacultad, namefacultad) {
+  updateSchools(idFacultad, namefacultad, descripcion) {
     return new Promise((resolve, reject) => {
       axios({
         method: 'PUT',
         url: `${baseUrl}/facultad/${idFacultad}`,
         data: {
           namefacultad: namefacultad,
+          descripcion: descripcion,
         },
       })
         .then((response) => {
@@ -364,7 +366,7 @@ class BackendConnection {
         data: {
           transaction_idtransaction: transaction_idtransaction,
           users_idusers: users_idusers,
-          timechange: timechange, 
+          timechange: timechange,
           datechange: datechange,
           state: state,
           check: check,
@@ -387,7 +389,7 @@ class BackendConnection {
         data: {
           transaction_idtransaction: transaction_idtransaction,
           users_idusers: users_idusers,
-          timechange: timechange, 
+          timechange: timechange,
           datechange: datechange,
           state: state,
           check: check,
@@ -404,41 +406,40 @@ class BackendConnection {
     });
   }
 
-  rejectUserlog(transaction_idtransaction, actual){
+  rejectUserlog(transaction_idtransaction, actual) {
     let aux = actual.charAt(2);
     let i = 3;
-    while(actual.charAt(i) != ':'){
+    while (actual.charAt(i) != ':') {
       aux += actual.charAt(i);
       i++;
     }
-    if(transaction_idtransaction == 1){
+    if (transaction_idtransaction == 1) {
       return this.deleteReverse(aux, actual);
-    }
-    else{
-      if(transaction_idtransaction == 2){
+    } else {
+      if (transaction_idtransaction == 2) {
         return this.insertReverse(aux, actual, i);
-      }else{
+      } else {
         return this.updateReverse(aux, actual);
       }
     }
   }
 
-  getData(actual){
+  getData(actual) {
     let list = [];
     let band = 0;
-    var aux = "";
-    for(let i = 0; i < actual.length; i++){
-      if(band > 0){
-        if(actual.charAt(i) == ','){
+    var aux = '';
+    for (let i = 0; i < actual.length; i++) {
+      if (band > 0) {
+        if (actual.charAt(i) == ',') {
           band = 0;
           list.push(aux);
-          aux = "";
-        }else{
+          aux = '';
+        } else {
           aux += actual.charAt(i);
         }
-      }else{
-        if(actual.charAt(i) == ':'){
-          band ++;
+      } else {
+        if (actual.charAt(i) == ':') {
+          band++;
         }
       }
     }
@@ -446,87 +447,87 @@ class BackendConnection {
     return list;
   }
 
-  deleteReverse(aux, actual){
+  deleteReverse(aux, actual) {
     let list = [];
     list = this.getData(actual);
-    switch(aux){
-      case "facultad":
+    switch (aux) {
+      case 'facultad':
         return this.createSchools(list[1]);
-      case "carrera":
+      case 'carrera':
         return this.createCareer(list[1], list[2]);
-      case "grupo":
+      case 'grupo':
         return this.createGrupo(list[1]);
-      case "grupohorario":
+      case 'grupohorario':
         return this.createGrupoHorario(list[1], list[2], list[3], list[4]);
-      case "horario":
+      case 'horario':
         return this.createHorario(list[1], list[2], list[3]);
-      case "materia":
+      case 'materia':
         return this.createMateria(list[1], list[2]);
-      case "role":
+      case 'role':
         return this.createRole(list[1]);
-      case "rolefunc":
+      case 'rolefunc':
         return null;
-      case "userrol":
+      case 'userrol':
         return this.createUserRol(list[1], list[2]);
-      case "users":
+      case 'users':
         return this.createUser(list[1], list[2], list[3], list[4], list[5], list[6]);
       default:
         return null;
     }
   }
-  
-  updateReverse(aux, actual){
+
+  updateReverse(aux, actual) {
     let list = [];
     list = this.getData(actual);
-    switch(aux){
-      case "facultad":
+    switch (aux) {
+      case 'facultad':
         return this.updateSchools(list[0], list[1]);
-      case "carrera":
+      case 'carrera':
         return this.updateCareer(list[0], list[1], list[2]);
-      case "grupo":
+      case 'grupo':
         return this.updateGrupo(list[0], list[1]);
-      case "grupohorario":
+      case 'grupohorario':
         return this.updateGrupoHorario(list[0], list[1], list[2], list[3], list[4]);
-      case "horario":
+      case 'horario':
         return this.updateHorario(list[0], list[1], list[2], list[3]);
-      case "materia":
+      case 'materia':
         return this.updateMateria(list[0], list[1], list[2]);
-      case "role":
+      case 'role':
         return this.updateRole(list[0], list[1]);
-      case "rolefunc":
+      case 'rolefunc':
         return null;
-      case "userrol":
+      case 'userrol':
         return null;
-      case "users":
+      case 'users':
         return this.updateUser(list[0], list[1], list[2], list[3], list[4], list[5], list[6]);
       default:
         return null;
     }
   }
 
-  insertReverse(aux, actual, i){
+  insertReverse(aux, actual, i) {
     let list = this.getData(actual);
     let id = list[0];
-    switch(aux){
-      case "facultad":
+    switch (aux) {
+      case 'facultad':
         return this.deleteSchools(id);
-      case "carrera":
+      case 'carrera':
         return this.deleteCareer(id);
-      case "grupo":
+      case 'grupo':
         return this.deleteGrupo(id);
-      case "grupohorario":
+      case 'grupohorario':
         return this.deleteGrupoHorario(id);
-      case "horario":
+      case 'horario':
         return this.deleteHorario(id);
-      case "materia":
+      case 'materia':
         return this.deleteMateria(id);
-      case "role":
+      case 'role':
         return this.deleteRole(id);
-      case "rolefunc":
+      case 'rolefunc':
         return this.deleteRoleFunc(id);
-      case "userrol":
+      case 'userrol':
         return this.deleteUserRol(id);
-      case "users":
+      case 'users':
         return this.deleteUsers(id);
       default:
         return null;
@@ -564,7 +565,7 @@ class BackendConnection {
     });
   }
 
-  createCareer(facultad_idfacultad, namecarrera) {
+  createCareer(facultad_idfacultad, namecarrera, descripcion) {
     return new Promise((resolve, reject) => {
       axios({
         method: 'POST',
@@ -572,6 +573,7 @@ class BackendConnection {
         data: {
           facultad_idfacultad: facultad_idfacultad,
           namecarrera: namecarrera,
+          descripcion: descripcion,
         },
       })
         .then((response) => resolve(response.data))
@@ -579,7 +581,7 @@ class BackendConnection {
     });
   }
 
-  updateCareer(idCarrera, facultad_idfacultad, namecarrera) {
+  updateCareer(idCarrera, facultad_idfacultad, namecarrera, description) {
     return new Promise((resolve, reject) => {
       axios({
         method: 'PUT',
@@ -587,6 +589,7 @@ class BackendConnection {
         data: {
           facultad_idfacultad: facultad_idfacultad,
           namecarrera: namecarrera,
+          descripcion: description,
         },
       })
         .then((response) => resolve(response.data))
@@ -635,7 +638,7 @@ class BackendConnection {
     });
   }
 
-  createMateria(carrera_idcarrera, namemateria) {
+  createMateria(carrera_idcarrera, namemateria, description) {
     return new Promise((resolve, reject) => {
       axios({
         method: 'POST',
@@ -643,6 +646,7 @@ class BackendConnection {
         data: {
           carrera_idcarrera: carrera_idcarrera,
           namemateria: namemateria,
+          descripcion: description,
         },
       })
         .then((response) => resolve(response.data))
@@ -650,7 +654,7 @@ class BackendConnection {
     });
   }
 
-  updateMateria(idmateria, carrera_idcarrera, namemateria) {
+  updateMateria(idmateria, carrera_idcarrera, namemateria, description) {
     return new Promise((resolve, reject) => {
       axios({
         method: 'PUT',
@@ -658,6 +662,7 @@ class BackendConnection {
         data: {
           carrera_idcarrera: carrera_idcarrera,
           namemateria: namemateria,
+          descripcion: description,
         },
       })
         .then((response) => resolve(response.data))
@@ -763,6 +768,41 @@ class BackendConnection {
     });
   }
 
+  deleteAbsence(idAbsence){
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'DELETE',
+        url: `${baseUrl}/falta/${idAbsence}`,
+      })
+        .then((response) => resolve(response.data))
+        .catch((e) => reject(e));
+    });
+  };
+
+  updateAbsence(idAbsence,idusr,date,link){
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'PUT',
+        url: `${baseUrl}/falta/${idAbsence}`,
+        headers: {
+          'content-type': 'application/json',
+          'cache-control': 'no-cache',
+        },
+        data: {
+          users_idusers:idusr,
+          fecha: date,
+          archivo: link,
+        },
+      })
+      .then((response) => {
+        resolve(response.data);
+      })
+      .catch((e) => {
+        reject(e);
+      });
+    });
+  };
+
   getAllUsersReport(userid) {
     return new Promise((resolve, reject) => {
       axios({
@@ -818,7 +858,9 @@ class BackendConnection {
           reject(e);
         });
     });
-  }
+  };
+
+  
 
   //Crud Horarios
   getHorarios() {
@@ -1106,39 +1148,21 @@ class BackendConnection {
   }
 
   //CRUD AdditionalClass
-  crearClaseAdicional(idGrupoHorario,timeclass,dateclass,idfalta){
-    return new Promise((resolve,reject)=>{
+  crearClaseAdicional(idGrupoHorario, timeclass, dateclass, idfalta) {
+    return new Promise((resolve, reject) => {
       axios({
-        method:'POST',
-        url:`${baseUrl}/additionalclass`,
+        method: 'POST',
+        url: `${baseUrl}/additionalclass`,
         headers: {
           'content-type': 'application/json',
           'cache-control': 'no-cache',
         },
         data: {
-          grupohorarios_idgrupohorarios:idGrupoHorario,
-          falta_idfalta:idfalta,
-          accepted:"no",
-          timeclass:timeclass,
-          dateclass:dateclass,
-        },
-      })
-      .then((response) => resolve(response.data))
-      .catch((e) => reject(e));
-    })
-  };
-
-  aceptarClaseAdicional(id,idgrupohorarios,idfalta,hora,fecha){
-    return new Promise((resolve, reject) => {
-      axios({
-        method: 'PUT',
-        url: `${baseUrl}/additionalclass/${id}`,
-        data: {
-          grupohorarios_idgrupohorarios:idgrupohorarios,
-          falta_idfalta:idfalta,          
-          timeclass:hora,
-          dateclass:fecha,
-          accepted:"si",
+          grupohorarios_idgrupohorarios: idGrupoHorario,
+          falta_idfalta: idfalta,
+          accepted: 'no',
+          timeclass: timeclass,
+          dateclass: dateclass,
         },
       })
         .then((response) => resolve(response.data))
@@ -1146,38 +1170,58 @@ class BackendConnection {
     });
   };
 
-  getAdditionalClassByGrpHorID(id){
-    return new Promise((resolve,reject)=>{
+  aceptarClaseAdicional(id, idgrupohorarios, idfalta, hora, fecha) {
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'PUT',
+        url: `${baseUrl}/additionalclass/${id}`,
+        data: {
+          grupohorarios_idgrupohorarios: idgrupohorarios,
+          falta_idfalta: idfalta,
+          timeclass: hora,
+          dateclass: fecha,
+          accepted: 'si',
+        },
+      })
+        .then((response) => resolve(response.data))
+        .catch((e) => reject(e));
+    });
+  };
+
+  getAdditionalClassByGrpHorID(id) {
+    return new Promise((resolve, reject) => {
       axios({
         method: 'GET',
         url: `${baseUrl}/additionalclass/assistance/${id}`,
-        })
+      })
         .then((response) => resolve(response.data))
         .catch((e) => reject(e));
-      })
+    });
   }
-  getAllAdditionalClass(){
-    return new Promise((resolve,reject)=>{
+
+  getAllAdditionalClass() {
+    return new Promise((resolve, reject) => {
       axios({
         method: 'GET',
         url: `${baseUrl}/additionalclass`,
-        })
+      })
         .then((response) => resolve(response.data))
         .catch((e) => reject(e));
     });
   }
 
   //Crud ReporteAdicional
-  getAllAdditionalReport(){
-    return new Promise((resolve,reject)=>{
+  getAllAdditionalReport() {
+    return new Promise((resolve, reject) => {
       axios({
         method: 'GET',
         url: `${baseUrl}/addicional`,
-        })
+      })
         .then((response) => resolve(response.data))
         .catch((e) => reject(e));
-      })
-  } 
+    });
+  }
+
   registroReporteAdicional(idAsistencia, archivo) {
     return new Promise((resolve, reject) => {
       axios({

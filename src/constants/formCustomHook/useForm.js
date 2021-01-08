@@ -76,6 +76,32 @@ export const useFullName = () => {
   return [values, handleFullNameChange, fullNameError, setFullNameError, fullNameMesasge, setFullNameErrorMessage];
 };
 
+export const useDescription = () => {
+  const [values, setValues] = useState('');
+  const [fullNameError, setFullNameError] = useState(false);
+  const [fullNameMesasge, setFullNameErrorMessage] = useState(null);
+  const handleDescriptionChange = (value) => {
+    if (value.length === 0) {
+      setFullNameErrorMessage(sTheNameCannotBeEmpty);
+      setFullNameError(true);
+    } else if (!nameMateriaRegex.test(value)) {
+      setFullNameErrorMessage(sOnlyLettersAreAccepted);
+      setFullNameError(true);
+    } else if (value.length > 0 && value.length <= 2) {
+      setFullNameErrorMessage(sNameMustHaveMoreThan2Characters);
+      setFullNameError(true);
+    } else if (value.length > 50) {
+      setFullNameErrorMessage(sCharacterLimit25);
+      setFullNameError(true);
+    } else {
+      setFullNameErrorMessage(null);
+      setFullNameError(false);
+    }
+    setValues(value);
+  };
+  return [values, handleDescriptionChange, fullNameError, setFullNameError, fullNameMesasge, setFullNameErrorMessage];
+};
+
 export const useFullNameMateria = () => {
   const [values, setValues] = useState('');
   const [fullNameError, setFullNameError] = useState(false);
@@ -199,6 +225,29 @@ export const useNameRol = () => {
   return [values, handleNameChange, nameError, setNameError, fullNameMesasge, setNameErrorMessage];
 };
 
+export const useAddClassForm= () => {
+  const [date,setDate]=useState("");
+  const [dateError,setDateError]=useState(false);
+  const [dateErrorMesg,setDateErrorMsg] = useState("");
+
+  const handleDateChange=(date)=>{
+    const fechaHoy=new Date();
+    const fechaMayor=new Date(fechaHoy);
+    fechaMayor.setDate(fechaMayor.getDate()+10)
+
+    if(new Date(date)>=fechaHoy&&fechaMayor>=new Date(date)){
+      setDateError(false);
+      setDateErrorMsg("");
+      const fecha=new Date(date);
+      setDate(fecha);
+    }else{
+      setDateError(true);
+      setDateErrorMsg("introduzca una fecha valida");
+    }
+  };
+  return [date,handleDateChange,dateError,setDateError,dateErrorMesg,setDateErrorMsg]
+};
+
 export const useFiles=()=>{
   const [values, setValues] = useState(null);
   const [fileError,setFileError] = useState(false);
@@ -216,9 +265,9 @@ export const useFiles=()=>{
     reader.onloadend=()=>{
       setPreviewSource(reader.result);
     }
-  }  
+  }
   const handleFileChange = (value) => {
-    
+
     if(value===false || types.includes(value.type)===false ){
       setFileMessage("Introduzca Formato PDF");
       setFileError(true);
@@ -231,15 +280,23 @@ export const useFiles=()=>{
     }
   }
   const handleDateChange=(value)=>{
-    if(value===""){
-      setDateError(true);
-      setDateErrorMsg("introduzca la fecha");
-    }else{
+      const fechaHoy=new Date();
+      const fechaMenor=new Date(fechaHoy);
+      fechaMenor.setDate(fechaMenor.getDate()-7)
+
+    if(fechaMenor<=new Date(value)&&new Date(value)<fechaHoy.setDate(fechaHoy.getDate()-1)){
       setDateError(false);
       setDateErrorMsg("");
       setDate(value);
+    }else{
+      setDateError(true);
+      setDateErrorMsg("introduzca una fecha valida");
     }
   }
   return [values,handleFileChange,handleDateChange,fileError,
     setFileError,fileMessage,setFileMessage,previewSource,date,dateError,setDateError,dateErrorMesg,setDateErrorMsg];
+  
 };
+
+
+

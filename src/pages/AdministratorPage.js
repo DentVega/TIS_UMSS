@@ -13,7 +13,6 @@ const useStyles = makeStyles(() => ({
 }));
 
 function AdministratorPage(props) {
-  sessionStorage.setItem("path",props.history.location.pathname);
   const classes = useStyles();
   const goToRoles = () => props.history.push(routes.roles);
 

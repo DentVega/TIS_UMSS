@@ -24,7 +24,6 @@ import { useNameRol } from '../../constants/formCustomHook/useForm';
 import { ListAccess } from '../../components/ListAccess';
 
 function RolePage(props) {
-  sessionStorage.setItem("path",props.history.location.pathname);
   const [createRoleComplete, setCreateRoleComplete] = useState(false);
   const [updateRoleComplete, setUpdateRoleComplete] = useState(false);
   const [idRole, setIdRole] = useState(null);
