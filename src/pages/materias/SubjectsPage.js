@@ -3,36 +3,12 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { getMateriasBackend } from '../../redux/actions/indexthunk.actions';
 import { changeMateria } from '../../redux/actions/index.actions';
-import makeStyles from '@material-ui/core/styles/makeStyles';
-import green from '@material-ui/core/colors/green';
 import { routes } from '../../router/RoutesConstants';
 import BackendConnection from '../../api/BackendConnection';
 import CardItem from '../../components/CardItem';
-import AddIcon from '@material-ui/icons/Add';
 import CustomAlertDialog from '../../components/dialogs/CustomAlertDialog';
 import { sConfirm } from '../../constants/strings';
-import Fab from '@material-ui/core/Fab';
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    backgroundColor: theme.palette.background.paper,
-    width: 500,
-    position: 'relative',
-    minHeight: 200,
-  },
-  fab: {
-    position: 'absolute',
-    bottom: theme.spacing(2),
-    right: theme.spacing(2),
-  },
-  fabGreen: {
-    color: theme.palette.common.white,
-    backgroundColor: green[500],
-    '&:hover': {
-      backgroundColor: green[600],
-    },
-  },
-}));
+import FloatingButton from '../../components/FloatingButton';
 
 function SubjectPage(props) {
   sessionStorage.setItem('path', props.history.location.pathname);
@@ -40,7 +16,6 @@ function SubjectPage(props) {
   const { materias, loading } = props.materiasReducer;
   const [materiaSelecionada, setMateriaSelecionada] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
-  const classes = useStyles();
   const { user } = props.userReducer;
 
   useEffect(() => {
@@ -104,13 +79,6 @@ function SubjectPage(props) {
     );
   };
 
-  const fab = {
-    color: 'primary',
-    className: classes.fab,
-    icon: <AddIcon />,
-    label: 'Add',
-  };
-
   return (
     <div>
       <CustomAlertDialog
@@ -124,9 +92,7 @@ function SubjectPage(props) {
       <h1>Materias</h1>
       {materias.length > 0 ? renderMaterias() : <div />}
       {loading && <h3>Cargando...</h3>}
-      <Fab aria-label={fab.label} className={fab.className} color={fab.color} onClick={newMateria}>
-        {fab.icon}
-      </Fab>
+      <FloatingButton onClick={newMateria}/>
     </div>
   );
 }

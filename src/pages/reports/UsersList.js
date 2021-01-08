@@ -31,7 +31,7 @@ const UsersList = (props) => {
   const {users,loading:lUSers}= props.usersReducer;
   const {materias,loading:lMat} = props.materiasReducer;
   const {careers} = props.carrerasReducer;
-  const {grupos, grupoHorarios} = props.grupoReducer;  
+  const {grupos,loadingGrupos:lgrp, grupoHorarios,loadingGrupoHorarios:lGrpHor} = props.grupoReducer;  
   const {schools} = props.schoolsreducer;
   const classes = useStyles();
   const [search,setSearch] = useState("");
@@ -42,8 +42,9 @@ const UsersList = (props) => {
 
   useEffect(() => {
       lUSers && props.getUsers();
-      props.getGrpHorarios();
+      lgrp && props.getGrpHorarios();
       lMat && props.getMaterias();
+      lGrpHor && props.getGrpHorarios();
   },[]);
 
   const searchOnChange=(val)=>{
@@ -90,8 +91,7 @@ const UsersList = (props) => {
       return usersFil.push(usrs);
     });
     setUsersFiltered(res.flat());
-    setUserFiltering(res.flat());
-    
+    setUserFiltering(res.flat());    
   };
 
   const filterByCareer=(idCareer)=>{

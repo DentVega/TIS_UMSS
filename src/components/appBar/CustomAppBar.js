@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -22,6 +23,9 @@ import { changeUser, openDrawer, updateNotifications } from '../../redux/actions
 import { withRouter } from 'react-router-dom';
 import BackendConnection from '../../api/BackendConnection';
 import { getNumberNotificationsByUser } from '../../redux/actions/indexthunk.actions';
+import { MenuIcon } from '@material-ui/data-grid';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import Tooltip from '@material-ui/core/Tooltip';
 
 const useStyles = makeStyles((theme) => ({
   logo: {
@@ -46,9 +50,16 @@ const useStyles = makeStyles((theme) => ({
       display: 'none',
     },
   },
+  menuButton: {
+    marginRight: theme.spacing(2),
+  },
+  hide: {
+    display: 'none',
+  },
 }));
 
 function CustomAppBar(props) {
+  const { openDrawer } = props.appReducer;
   const { user } = props.userReducer;
   const classes = useStyles();
   const { updateNotification, numberNotifications } = props.notificationsReducer;
@@ -127,27 +138,33 @@ function CustomAppBar(props) {
   const actions = (
     <div>
       <div className={classes.sectionDesktop}>
-        <IconButton aria-label="show 17 new notifications" color="inherit" onClick={goToNotificaciones}>
-          <Badge badgeContent={numberNotifications} color="secondary">
-            <NotificationsIcon/>
-          </Badge>
-        </IconButton>
-        <IconButton
-          edge="end"
-          aria-label="account of current user"
-          aria-haspopup="true"
-          onClick={handleProfileMenuOpen}
-          color="inherit">
-          <AccountCircle/>
-        </IconButton>
-        <IconButton
-          edge="end"
-          aria-label="account of current user"
-          aria-haspopup="true"
-          onClick={handleLogout}
-          color="inherit">
-          <ExitToAppIcon/>
-        </IconButton>
+        <Tooltip title={sNotifications}>
+          <IconButton aria-label="show 17 new notifications" color="inherit" onClick={goToNotificaciones}>
+            <Badge badgeContent={numberNotifications} color="secondary">
+              <NotificationsIcon/>
+            </Badge>
+          </IconButton>
+        </Tooltip>
+        <Tooltip title={sProfile}>
+          <IconButton
+            edge="end"
+            aria-label="account of current user"
+            aria-haspopup="true"
+            onClick={handleProfileMenuOpen}
+            color="inherit">
+            <AccountCircle/>
+          </IconButton>
+        </Tooltip>
+        <Tooltip title={sCloseSesion}>
+          <IconButton
+            edge="end"
+            aria-label="account of current user"
+            aria-haspopup="true"
+            onClick={handleLogout}
+            color="inherit">
+            <ExitToAppIcon/>
+          </IconButton>
+        </Tooltip>
       </div>
       <div className={classes.sectionMobile}>
         <IconButton
@@ -168,11 +185,39 @@ function CustomAppBar(props) {
     </div>
   );
 
+  const handleDrawerOpen = () => {
+    props.openDrawer();
+  };
+
   return (
     <div className={classes.grow}>
       <CssBaseline/>
       <AppBar position="fixed" className={classes.appBar}>
         <Toolbar>
+          {user && (
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              onClick={handleDrawerOpen}
+              edge="start"
+              className={clsx(classes.menuButton, openDrawer && classes.hide)}
+            >
+              <MenuIcon/>
+            </IconButton>
+          )}
+
+          {openDrawer && user && (
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              onClick={handleDrawerOpen}
+              edge="start"
+              className={clsx(classes.menuButton, !openDrawer && classes.hide)}
+            >
+              <ArrowBackIcon/>
+            </IconButton>
+          )}
+
           <img src={logoUmss} className={classes.logo} alt={'logo-umss'}/>
           <Typography variant="h6" noWrap>
             {sNameUmss}
@@ -193,7 +238,7 @@ CustomAppBar.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    app: state.app,
+    appReducer: state.app,
     userReducer: state.userReducer,
     notificationsReducer: state.notificationsReducer,
   };

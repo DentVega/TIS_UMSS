@@ -1,9 +1,6 @@
-import React,{ useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
-import Fab from '@material-ui/core/Fab';
 import makeStyles from '@material-ui/core/styles/makeStyles';
-import green from '@material-ui/core/colors/green';
-import AddIcon from '@material-ui/icons/Add';
 import BackendConnection from '../../api/BackendConnection';
 import { connect } from 'react-redux';
 import CardItem from '../../components/CardItem';
@@ -14,7 +11,7 @@ import { FormControl, Grid, InputLabel, MenuItem, Select, TextField } from '@mat
 import SearchIcon from '@material-ui/icons/Search';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import CustomAlertDialog from '../../components/dialogs/CustomAlertDialog';
-
+import FloatingButton from '../../components/FloatingButton';
 const useStyles = makeStyles((theme) => ({
     root: {
       width: 1150,
@@ -24,14 +21,7 @@ const useStyles = makeStyles((theme) => ({
       position: 'absolute',
       bottom: theme.spacing(2),
       right: theme.spacing(2),
-    },
-    fabGreen: {
-      color: theme.palette.common.white,
-      backgroundColor: green[500],
-      '&:hover': {
-        backgroundColor: green[600],
-      },
-    },
+    },   
     formControl: {
       margin: theme.spacing(1),
       minWidth: 180,
@@ -55,13 +45,6 @@ const Absences = (props) => {
   const [careerSelected, setCareerSelected] = useState('');
   const [userFiltering,setUserFiltering] = useState([]);
   const [filteredAbsences,setFilteredAbsences] = useState([]);
-
-  const fab = {
-    color: 'primary',
-    className: classes.fab,
-    icon: <AddIcon/>,
-    label: 'Add',
-  };
 
   useEffect(() => {
     if (props.history.location.pathname === routes.userAbsences) {
@@ -352,9 +335,7 @@ const Absences = (props) => {
       {user || users ? mapReports() : (<h3>Cargando...</h3>)}
       {
         props.history.location.pathname === routes.userAbsences &&
-        (<Fab aria-label={fab.label} className={fab.className} color={fab.color} onClick={NewAbsence}>
-          {fab.icon}
-        </Fab>)
+        (<FloatingButton onClick={NewAbsence}/>)
       }
       <CustomAlertDialog
         title={'Confirmar borrar falta'}

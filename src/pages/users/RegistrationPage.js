@@ -129,6 +129,7 @@ const RegistrationPage = (props) => {
   const getRol = (idUser) => {
     BackendConnection.getUserRolByIdUser(idUser).then((response) => {
       if(response.length>0){
+        console.log('rol selected', response[0])
         setRoleSelected(response[0].idroles);
       }
     });

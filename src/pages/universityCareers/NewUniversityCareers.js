@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { useFullName } from '../../constants/formCustomHook/useForm';
@@ -13,6 +12,8 @@ import {
   sCreateCareer,
   sName,
   sTheNameCannotBeEmpty,
+  sCareerAlreadySaved,
+  sCareerCannotNameAsSchool,
 } from '../../constants/strings';
 import CustomAlertDialog from '../../components/dialogs/CustomAlertDialog';
 import BackendConnection from '../../api/BackendConnection';
@@ -44,6 +45,8 @@ function NewUniversityCareers(props) {
   const classes = useStyles();
 
   const { user } = props.userReducer;
+  
+  const { careers } = props.careersReducer;
 
   useEffect(() => {
     BackendConnection.getSchools().then((schools) => {
@@ -58,6 +61,18 @@ function NewUniversityCareers(props) {
     props.getCareers();
     props.history.goBack();
   }
+
+  const getSelectedSchool = () => {
+    if(schools.length > 0){
+      return schools.filter((it) => it.namefacultad == name).length;
+    }
+   }
+
+   const getSelectedCareer = () => {
+    if(careers.length > 0){
+      return careers.filter((it) => it.namecarrera == name).length;
+    }
+   }
 
   const cancel = () => {
     props.history.goBack();
@@ -79,7 +94,19 @@ function NewUniversityCareers(props) {
     }
 
     if (nameValidIsNoEmpty) {
-      confirmCreation();
+      let val = getSelectedCareer();
+      if(val > 0){
+        setNameErrorMessage(sCareerAlreadySaved);
+        setNameError(true);
+      }else{
+        let val2 = getSelectedSchool();
+        if(val2 > 0){
+          setNameErrorMessage(sCareerCannotNameAsSchool);
+          setNameError(true);
+        }else{
+          confirmCreation();
+        }
+      } 
     }
   };
 
