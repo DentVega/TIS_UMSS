@@ -71,6 +71,10 @@ export const changeMateriaFiltro = (materiaSeleccionada) => {
   return { type: actions.CHANGE_MATERIA_SELECCIONADA_FILTRO, materiaSeleccionada }
 };
 
+export const changeUsuarioFiltro = (usuarioSeleccionado) => {
+  return { type: actions.CHANGE_USUARIO_SELECCIONADO_FILTRO, usuarioSeleccionado }
+};
+
 export const changeRoleFuncs = (roleFuncs) => {
   return { type: actions.CHANGE_ROLEFUNCS, roleFuncs };
 };

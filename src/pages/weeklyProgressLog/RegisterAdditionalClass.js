@@ -14,6 +14,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import { makeStyles  } from '@material-ui/core/styles';
+import { useAddClassForm } from '../../constants/formCustomHook/useForm';
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -35,7 +36,7 @@ const RegisterAdditionalClass = (props) => {
   const {materias} = props.materiasReducer;
   const {careers:carreras} = props.carrerasReducer;
   const [arrToMap,setArrToMap] = useState([])
-  const [date,setDate] = useState("");
+  
   const [time,setTime] = useState(new Date('2020-11-12T20:52:08.326Z'));
   const [openDialog, setOpenDialog] = useState(false);
   const [openDialogCancel, setOpenDialogCancel] = useState(false);
@@ -43,6 +44,11 @@ const RegisterAdditionalClass = (props) => {
   const [selection,setSelection] = useState("");
   const [userAbsences,setUserAbsences] = useState([]);
   const [selectionValue,setSelectionValue] = useState("")
+  const [confirmMsg,setConfirmMsg] = useState('');
+  const [someErr,setSomeErr] = useState(false);
+  const [date,handleDateChange,dateError,
+        setDateError,dateErrorMsg,setDateErrorMsg]
+        =useAddClassForm();
   const columns=[
     {field:"id",width: 100},
     {field:"Materia",width: 300},
@@ -99,10 +105,12 @@ const RegisterAdditionalClass = (props) => {
   };
 
   const registerHorario = () => {
+    
     const initDate = time.ts ? new Date(time.ts) : time;
 
     const initialDate = moment(initDate.toString()).format('hh:mm:ss');
-    BackendConnection.crearClaseAdicional(parseInt(selection),initialDate,date,selectionValue.idfalta).then(()=>{
+    console.log(parseInt(selection[0]),initialDate,date,selectionValue.idfalta)
+    BackendConnection.crearClaseAdicional(parseInt(selection[0]),initialDate,date,selectionValue.idfalta).then(()=>{
       setOpenDialog(false);
       setCreateHorarioComplete(true);
     })
@@ -121,11 +129,24 @@ const RegisterAdditionalClass = (props) => {
   const closeDialog = () => {
     setOpenDialog(false);
   };
-  const handleDateChange=(target)=>{
-    setDate(target.value)
-  };
+  
   const handleInputChange=(val)=>{
     setSelectionValue(val)
+  };
+  
+  const openDialogConfirm=()=>{
+    if(date===""){
+      setConfirmMsg(<h3 style={{ color: 'red' }}>Seleccione una Fecha</h3>);
+      setSomeErr(true);
+    }else if(selection===''){
+      setConfirmMsg(<h3 style={{ color: 'red' }}>Seleccione un Grupo</h3>);
+      setSomeErr(true);
+
+    }else{
+      setSomeErr(false);
+      setConfirmMsg("Desea enviar solicitud");
+    }
+    setOpenDialog(true);
   };
 
   return (
@@ -135,26 +156,30 @@ const RegisterAdditionalClass = (props) => {
       <h1>Clase Adicional</h1>
       
       <TextField 
-            type="date"
-            helperText={"Seleccione Fecha"}
-            style={{width:"200px",margin:"32px"}}
-            onChange={({target})=>handleDateChange(target)}
+        type="date"
+        helperText={dateErrorMsg}
+        style={{width:"200px",margin:"32px"}}
+        error={dateError}            
+        InputLabelProps={{
+          shrink: true,
+        }}
+        onChange={({target})=>handleDateChange(target.value)}
       />
       <KeyboardTimePicker
-                margin="normal"
-                id="hora propuesta"
-                value={time}
-                onChange={handleDateInicialChange}
-                label="hora"
-                KeyboardButtonProps={{
-                  'aria-label': 'change time',
-                }}
-        />
+        margin="normal"
+        id="hora propuesta"
+        value={time}
+        onChange={handleDateInicialChange}
+        label="hora"
+        KeyboardButtonProps={{
+          'aria-label': 'change time',
+        }}
+      />
       </MuiPickersUtilsProvider>
 
         {arrToMap.length>0 &&
         <div style={{ height: 250, width: '100%' }}>
-          <DataGrid  columns={columns} checkboxSelection rows={arrToMap} onSelectionChange={(newSelection) => {
+          <DataGrid  columns={columns} rows={arrToMap} onSelectionChange={(newSelection) => {
             setSelection(newSelection.rowIds);
         }}/>
         </div>
@@ -162,15 +187,16 @@ const RegisterAdditionalClass = (props) => {
         <FormControl className={classes.formControl}>
         <InputLabel id="demo-controlled-open-select-label">Faltas Registradas</InputLabel>
           <Select
-              labelId="demo-controlled-open-select-label"
-              id="demo-controlled-open-select"
-              name="adjuntarFalta"
-              value={selectionValue}
-              onChange={({target})=>handleInputChange(target.value)}
-            >        
+            labelId="demo-controlled-open-select-label"
+            id="demo-controlled-open-select"
+            name="adjuntarFalta"
+            value={selectionValue}
+            onChange={({target})=>handleInputChange(target.value)}
+          >        
             <MenuItem key={0} value={""}>Subir sin falta</MenuItem>
             { userAbsences && renderAbsences() }
           </Select>
+          <label>(opcional)</label>
           </FormControl> 
           {
             selectionValue !=="" &&
@@ -181,14 +207,25 @@ const RegisterAdditionalClass = (props) => {
               style={{height:"500px",width:"500px"}}/>)
               
             }      
-      <Button variant="contained" color="primary" style={{margin:30,float:"right"}} type="submit" onClick={() => setOpenDialog(true)}>Registrar Clase Adicional</Button>
-      <Button variant="contained" color="primary" style={{margin:30,float:"right"}} type="submit" onClick={() => setOpenDialogCancel(true)}>Cancelar</Button>
+      <Button 
+        variant="contained" 
+        color="primary" 
+        style={{margin:30,float:"right"}} 
+        type="submit" 
+        onClick={openDialogConfirm}
+        >Registrar Clase Adicional</Button>
+      <Button 
+        variant="contained" 
+        color="primary" 
+        style={{margin:30,float:"right"}} 
+        type="submit" 
+        onClick={() => setOpenDialogCancel(true)}>Cancelar</Button>
       <CustomAlertDialog
         title={"Corfirmar Registro"}
-        messageText={"Desea enviar solicitud"}
+        messageText={confirmMsg}
         open={openDialog}
         handleClose={closeDialog}
-        handleAccept={registerHorario}
+        handleAccept={someErr?'':registerHorario}
       />
       <CustomAlertDialog
         title={"Cancelar"}

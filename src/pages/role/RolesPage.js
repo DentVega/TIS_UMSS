@@ -12,7 +12,6 @@ import { getUsers } from '../../redux/actions/indexthunk.actions';
 import FloatingButton from '../../components/FloatingButton';
 
 function RolesPage(props) {
-  sessionStorage.setItem('path', props.history.location.pathname);
   const { roles, loading } = props.rolesReducer;
   const { getRoles } = props;
   const { getUsers } = props;

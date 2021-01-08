@@ -5,6 +5,7 @@ import BackendConnection from '../../api/BackendConnection';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { getCarreras, getGruposBackend, getGrupoHorariosBackend } from '../../redux/actions/indexthunk.actions';
+import { routes } from '../../router/RoutesConstants';
 import FloatingButton from '../../components/FloatingButton';
 
 const { useState, useEffect } = React;
@@ -68,25 +69,31 @@ const AdditionalClassList = (props) => {
     return carr.namecarrera;
   };
 
-  const create = () => {
-    props.history.push('/account/registerAdditionalClass');
+  const create=()=>{
+    props.history.push(routes.registerAdditionalClass);
   };
 
-  return (
-    <div>
-      <h1>Lista de Clases Adicionales</h1>
-      {arrToMap.length > 0 &&
-      arrToMap.map((arr) => <CardActionArea key={arr.idassistance} style={{ margin: '20px' }}>
-        <CardItem
-          text={'Carrera: ' + arr.carrera + ' Materia: ' + arr.materia}
-          secondaryText={`Dia: ${new Date(arr.dateclass).toLocaleDateString()} Hora: ${arr.timeclass}`}
-          tercerText={'Acceptado: ' + arr.accepted}
-          showIconRow={true}
-        />
-      </CardActionArea>)}
-      <FloatingButton onClick={create}/>
-    </div>
-  );
+  const getFecha=(date)=>{
+    const fecha=new Date(date)
+    fecha.setDate(fecha.getDate()+1);
+    return fecha.toLocaleDateString();
+  };
+  
+  return(
+      <div>
+          <h1>Lista de Clases Adicionales</h1>  
+          {arrToMap.length>0 &&
+            arrToMap.map((arr)=><CardActionArea key={arr.idassistance} style={{margin:"20px"}}>            
+            <CardItem
+              text={"Carrera: "+arr.carrera+" Materia: "+arr.materia} 
+              secondaryText={`Dia: ${getFecha(arr.dateclass)} Hora: ${arr.timeclass}`}
+              tercerText={"Acceptado: "+arr.accepted}
+              showIconRow={true}
+            />
+            </CardActionArea>)}
+            <FloatingButton onClick={create}/>
+      </div>
+    )
 };
 
 const mapStateToProps = (state) => {

@@ -36,13 +36,13 @@ export const enumMenuDrawer = {
   },
   administration: {
     id: 7,
-    name: 'administration',
-    nameEs: 'Administracion',
+    name: 'role',
+    nameEs: 'Roles',
   },
   account: {
     id: 8,
     name: 'account',
-    nameEs: 'Cuenta',
+    nameEs: 'Feedback',
   },
   career: {
     id: 9,
