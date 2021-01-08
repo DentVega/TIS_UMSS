@@ -54,7 +54,7 @@ function UserslogViewPage(props) {
     if(log.length > 0){
       getUser(log[0].users_idusers);
       if(usr.length > 0){
-        let val = "El usuario realizo la transaccion de " + getTransaction(log[0].transaction_idtransaction);
+        let val = "El usuario realizó la transacción de " + getTransaction(log[0].transaction_idtransaction);
         return (
           <div>
            <h1>{val}</h1>
