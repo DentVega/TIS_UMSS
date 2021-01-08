@@ -763,6 +763,41 @@ class BackendConnection {
     });
   }
 
+  deleteAbsence(idAbsence){
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'DELETE',
+        url: `${baseUrl}/falta/${idAbsence}`,
+      })
+        .then((response) => resolve(response.data))
+        .catch((e) => reject(e));
+    });
+  };
+
+  updateAbsence(idAbsence,idusr,date,link){
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'PUT',
+        url: `${baseUrl}/falta/${idAbsence}`,
+        headers: {
+          'content-type': 'application/json',
+          'cache-control': 'no-cache',
+        },
+        data: {
+          users_idusers:idusr,
+          fecha: date,
+          archivo: link,
+        },
+      })
+      .then((response) => {
+        resolve(response.data);
+      })
+      .catch((e) => {
+        reject(e);
+      });
+    });
+  };
+
   getAllUsersReport(userid) {
     return new Promise((resolve, reject) => {
       axios({
@@ -818,7 +853,9 @@ class BackendConnection {
           reject(e);
         });
     });
-  }
+  };
+
+  
 
   //Crud Horarios
   getHorarios() {

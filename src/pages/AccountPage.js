@@ -24,17 +24,17 @@ function AccountPage(props) {
   }, [])
 
   const redirectFaltas=()=>{
-    props.history.push('/account/absences')
+    props.history.push(routes.userAbsences)
   };
   const redirectRegisterProgress=()=>{
-    props.history.push('/account/registerProgress')
+    props.history.push(routes.registerProgress)
   };
   const redirectAdditionalClass=()=>{
-    props.history.push(`${routes.additionalClassList}`);
+    props.history.push(routes.additionalClassList);
   };
   return (
     <div >
-      <h1>Cuenta del usuario</h1>
+      <h1>FeedBack</h1>
       {/*Informacion de la cuenta*/}
       <Card 
       className={classes.root }
@@ -42,7 +42,7 @@ function AccountPage(props) {
         <CardActionArea>
           <CardItem          
             onClick={redirectFaltas}
-            text={"Faltas"}
+            text={"Registre su Falta"}
             showIconRow={true}
             showEditIcon={false}
             showDeleteIcon={false}
@@ -56,7 +56,7 @@ function AccountPage(props) {
         <CardActionArea>
           <CardItem          
             onClick={redirectRegisterProgress}
-            text={"Registro de Avanze Semanal"}
+            text={"Registre su avanze semanal"}
             showIconRow={true}
             showEditIcon={false}
             showDeleteIcon={false}
@@ -67,7 +67,7 @@ function AccountPage(props) {
         <CardActionArea>
           <CardItem          
             onClick={redirectAdditionalClass}
-            text={"Registro de Clase Adicional"}
+            text={"Registre su clase adicional"}
             showIconRow={true}
             showEditIcon={false}
             showDeleteIcon={false}

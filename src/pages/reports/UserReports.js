@@ -46,7 +46,7 @@ const UserReports = (props) => {
   const [searchMat,setSearchMat] = useState("");
   const [aux,setAux] = useState([]);
   const [aux2,setAux2] = useState([]);
-  const [typeReport,setTypeReport] = useState("");
+  const [typeReport,setTypeReport] = useState("semanal");
   const [hrsTra,setHrsTra] = useState({
     hrs:0,
     min:0
@@ -150,17 +150,17 @@ const UserReports = (props) => {
   };
 
   const armarArr=(grpH,rep)=>{
-      let arr=[];
-      rep.map((re)=>{
-        arr.push({
-          idassistance:re.idassistance,
-          beginweek:re.beginweek,
-          endweek:re.endweek,dia:obtDia(re,grpH),
-          materia:obtMateria(re,grpH),
-          carrera:obtCarrera(re,grpH)
-        })
-      });
-      return (arr);    
+    let arr=[];
+    rep.map((re)=>{
+      arr.push({
+        idassistance:re.idassistance,
+        beginweek:re.beginweek,
+        endweek:re.endweek,dia:obtDia(re,grpH),
+        materia:obtMateria(re,grpH),
+        carrera:obtCarrera(re,grpH)
+      })
+    });
+    return (arr);    
   };
 
   const obtCarrera=(rep,grpH)=>{    
@@ -244,10 +244,10 @@ const UserReports = (props) => {
                 <Select
                   labelId="demo-controlled-open-select-label"
                   id="demo-controlled-open-select"
-                  value={typeReport}
+                  value={typeReport}                  
                   onChange={(e)=>handleSelectChange(e)}
                 >            
-                  <MenuItem value="semanal">Semanal</MenuItem>
+                  <MenuItem value="semanal" >Semanal</MenuItem>
                   <MenuItem value="mensual">Mensual</MenuItem>
               </Select>
           </FormControl>

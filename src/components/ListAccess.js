@@ -20,6 +20,7 @@ export const ListAccess = (props) => {
     arr[target.id - 1] = newObj;
     props.setState(arr);
   };
+  
   return (
     <FormControl>
       <FormLabel>Lista de Accesos</FormLabel>
@@ -50,11 +51,11 @@ export const ListAccess = (props) => {
         />
         <FormControlLabel
           control={<Checkbox id={7} onChange={handleChange} checked={Administracion} name="Administracion" />}
-          label="Administracion"
+          label="Roles"
         />
         <FormControlLabel
           control={<Checkbox id={8} onChange={handleChange} checked={Cuenta} name="Cuenta" />}
-          label="Cuenta"
+          label="Feedback"
         />
         <FormControlLabel
           control={<Checkbox id={9} onChange={handleChange} checked={Carreras} name="Carreras" />}

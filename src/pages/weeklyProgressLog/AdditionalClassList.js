@@ -8,6 +8,7 @@ import AddIcon from '@material-ui/icons/Add';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { getCarreras, getGruposBackend, getGrupoHorariosBackend } from '../../redux/actions/indexthunk.actions';
+import { routes } from '../../router/RoutesConstants';
 
 const useStyles = makeStyles((theme) => ({
     fab: {
@@ -85,7 +86,13 @@ const AdditionalClassList=(props)=>{
   };
 
   const create=()=>{
-    props.history.push('/account/registerAdditionalClass')
+    props.history.push(routes.registerAdditionalClass);
+  };
+
+  const getFecha=(date)=>{
+    const fecha=new Date(date)
+    fecha.setDate(fecha.getDate()+1);
+    return fecha.toLocaleDateString();
   };
   
   return(
@@ -95,7 +102,7 @@ const AdditionalClassList=(props)=>{
             arrToMap.map((arr)=><CardActionArea key={arr.idassistance} style={{margin:"20px"}}>            
             <CardItem
               text={"Carrera: "+arr.carrera+" Materia: "+arr.materia} 
-              secondaryText={`Dia: ${new Date(arr.dateclass).toLocaleDateString()} Hora: ${arr.timeclass}`}
+              secondaryText={`Dia: ${getFecha(arr.dateclass)} Hora: ${arr.timeclass}`}
               tercerText={"Acceptado: "+arr.accepted}
               showIconRow={true}
             />

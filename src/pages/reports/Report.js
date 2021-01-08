@@ -33,7 +33,6 @@ const Report = (props) => {
     const mat= materias.find((m)=>grp.materia_idmateria==m.idmateria);
     return mat.namemateria;
   };
-
   return (
     <div>
       <h1>ID del Reporte: {id}</h1>
@@ -42,7 +41,7 @@ const Report = (props) => {
       {report && <h2>Contenido de la Clase: {report.classcontain}</h2>}   
       {report && <h2>Observaciones de la clase: {report.observations}</h2>}  
 
-      {addRep.length>0&&
+      {addRep.length>0&&(addRep[0].archivo!==""?
       <Container align="center">
           <iframe
             title="iframe"
@@ -50,7 +49,10 @@ const Report = (props) => {
             src={addRep[0].archivo}
             style={{ height: '550px', width: '700px' }}
           />
-        </Container>}
+        </Container>:
+        <h2>El usuario no adjunto una falta</h2>
+        )
+      }
     </div>
     );
   }
