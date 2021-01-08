@@ -1,5 +1,6 @@
 export const routes = {
   home: '/home',
+  homedefault: '/main',
   login: '/login',
   campus: '/users',
   career: '/career',
@@ -28,7 +29,7 @@ export const routes = {
   editUser: '/users/:id',
   userslog: '/userslog',
   userslogView: '/userslog/:id',
-  //AbcencesRoutes 
+  //AbcencesRoutes
   absencesReports:'/reports/Absences',
   userAbsences:'/account/absences',
   newAbsence:'/account/newAbsence',

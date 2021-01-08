@@ -181,7 +181,7 @@ function CustomAppBar(props) {
 
   const actionsLogin = (
     <div>
-      <Button color="inherit">{sLogin}</Button>
+      <Button color="inherit" onClick={() => props.history.push(routes.login)}>{sLogin}</Button>
     </div>
   );
 
@@ -218,7 +218,7 @@ function CustomAppBar(props) {
             </IconButton>
           )}
 
-          <img src={logoUmss} className={classes.logo} alt={'logo-umss'}/>
+          <img src={logoUmss} className={classes.logo} alt={'logo-umss'} onClick={() => props.history.push(routes.homedefault)}/>
           <Typography variant="h6" noWrap>
             {sNameUmss}
           </Typography>
