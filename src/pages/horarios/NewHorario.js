@@ -83,7 +83,7 @@ function NewHorario(props) {
       setShowTextError(false);
       confirmCreation();
     } else {
-      setTextError('El horario inicial debe ser menor al horario mayor');
+      setTextError('La hora de inicio debe ser menor a la hora final');
       setShowTextError(true);
     }
   };
