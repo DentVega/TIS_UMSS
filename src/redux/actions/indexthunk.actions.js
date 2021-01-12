@@ -25,6 +25,7 @@ export const getUsers = () => {
   return (dispatch) => {
     BackendConnection.getUsers()
       .then((users) => {
+        console.log('users', users)
         dispatch(changeUsers(users));
       })
       .catch((e) => {

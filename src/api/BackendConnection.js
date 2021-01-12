@@ -127,7 +127,7 @@ class BackendConnection {
     });
   }
 
-  createUser(firstname, lastname, phone, email, ci, userpassword) {
+  createUser(firstname, lastname, phone, email, ci, userpassword, ciComplemento) {
     return new Promise((resolve, reject) => {
       axios({
         method: 'POST',
@@ -143,6 +143,7 @@ class BackendConnection {
           email: email,
           ci: ci,
           userpassword: userpassword,
+          cicomplemento: ciComplemento,
         },
       })
         .then((response) => resolve(response.data))
@@ -150,7 +151,7 @@ class BackendConnection {
     });
   }
 
-  updateUser(id, firstname, lastname, phone, email, ci, userpassword) {
+  updateUser(id, firstname, lastname, phone, email, ci, userpassword, ciComplemento) {
     return new Promise((resolve, reject) => {
       axios({
         method: 'PUT',
@@ -165,6 +166,7 @@ class BackendConnection {
           phone: phone,
           email: email,
           userpassword: userpassword,
+          cicomplemento: ciComplemento,
         },
       })
         .then((response) => {
@@ -860,7 +862,7 @@ class BackendConnection {
     });
   };
 
-  
+
 
   //Crud Horarios
   getHorarios() {

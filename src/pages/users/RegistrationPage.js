@@ -10,7 +10,7 @@ import {
   useCi,
   usePhone,
   useLastName,
-  usePassword,
+  usePassword, useCiComplemento,
 } from '../../constants/formCustomHook/useForm';
 import { getRoles, getUsers } from '../../redux/actions/indexthunk.actions';
 import { changeUserSelected } from '../../redux/actions/index.actions';
@@ -20,14 +20,14 @@ import BackendConnection from '../../api/BackendConnection';
 import {
   sAreYouSureYourWantCancel,
   sCancel,
-  sCI,
+  sCI, sCiComplemento,
   sConfirm,
   sConfirmTheCreation,
   sConfirmTheUpdate,
   sCreateUser,
   sEmail,
   sEmailIsAlreadyInUse,
-  sLastName,
+  sLastName, sLimitNumber1,
   sName,
   sPassword,
   sPhone,
@@ -57,6 +57,7 @@ const RegistrationPage = (props) => {
   const [phone, handlePhoneChange, phoneError, setPhoneError, phoneErrorMessage, setPhoneErrorMessage] = usePhone();
   const [email, setEmail, emailError, setEmailError, emailMessage, setEmailMessage] = useEmail();
   const [ci, handleCiChange, ciError, setCiError, ciErrorMessage, setCiMessageError] = useCi();
+  const [ciComplemento, handleCiComplementoChange, ciComplementoError, setCiComplementoError, ciComplementoErrorMessage, setCiComplementoMessageError] = useCiComplemento();
   // eslint-disable-next-line no-unused-vars
   const [password, setPassword, passwordError, setPasswordError, passMessage, setPassMessage] = usePassword();
   const [idUser, setIdUser] = useState(null);
@@ -121,6 +122,12 @@ const RegistrationPage = (props) => {
       setCiError(true);
     }
 
+    const ciComplementoIsNoEmpty = !ciComplementoError && ciComplemento === 1;
+    if (ciComplementoIsNoEmpty) {
+      setCiComplementoMessageError(sLimitNumber1);
+      setCiComplementoError(true);
+    }
+
     if (nameValidIsNoEmpty && lastNameIsNoEmpty && phoneIsNoEmpty && emailIsNoEmpty && ci) {
       verifyEmail();
     }
@@ -128,14 +135,15 @@ const RegistrationPage = (props) => {
 
   const getRol = (idUser) => {
     BackendConnection.getUserRolByIdUser(idUser).then((response) => {
-      if(response.length>0){
-        console.log('rol selected', response[0])
+      if (response.length > 0) {
+        console.log('rol selected', response[0]);
         setRoleSelected(response[0].idroles);
       }
     });
   };
 
   if (userSelected != null && !loadCurrentUser) {
+    console.warn('userSelected', userSelected)
     handleNameChange(userSelected.firstname);
     handleLastNameChange(userSelected.lastname);
     handlePhoneChange(userSelected.phone);
@@ -145,6 +153,7 @@ const RegistrationPage = (props) => {
     setIdUser(userSelected.idusers);
     setLoadCurrentUser(true);
     setPassword(userSelected.userpassword);
+    handleCiComplementoChange(userSelected.cicomplemento);
     getRol(userSelected.idusers);
   }
 
@@ -162,13 +171,13 @@ const RegistrationPage = (props) => {
 
   const registerUser = () => {
     const password = createPassword();
-    BackendConnection.createUser(name, lastName, phone, email, ci, password).then((response) => {
+    BackendConnection.createUser(name, lastName, phone, email, ci, password, ciComplemento).then((response) => {
       asignRol(response.body.res[0], password);
       let aux = new Date();
-      let val = "idusers:" + response.body.res[0] + ",firstname:" + name + ",lastname:" + lastName + ",phone:" + phone
-       + ",email:" + email + ",ci:" + ci + ",userpassword:" + password;
+      let val = 'idusers:' + response.body.res[0] + ',firstname:' + name + ',lastname:' + lastName + ',phone:' + phone
+        + ',email:' + email + ',ci:' + ci + ',userpassword:' + password;
       BackendConnection.createUserslog(2, user.idusers, aux.toLocaleTimeString(), aux.toLocaleDateString(), val, 0).then(() => {
-        console.log("ok inserted");
+        console.log('ok inserted');
       });
     });
   };
@@ -184,21 +193,21 @@ const RegistrationPage = (props) => {
 
   const updateUser = async () => {
     const userRol = await BackendConnection.getUserRolByIdUser(idUser);
-      if(userRol.length>0) await BackendConnection.deleteUserRol(idUser, userRol[0].idroles);
-      await BackendConnection.createUserRol(idUser, roleSelected);
+    if (userRol.length > 0) await BackendConnection.deleteUserRol(idUser, userRol[0].idroles);
+    await BackendConnection.createUserRol(idUser, roleSelected);
 
-      BackendConnection.updateUser(idUser, name, lastName, phone, email, ci, password).then(() => {
-        setOpenDialog(false);
-        setUpdateUserComplete(true);
-      });
-      let aux = new Date();
-      let val = "idusers:" + idUser + ",firstname:" + userSelected.firstname + ",lastname:" + userSelected.lastname + ",phone:" + userSelected.phone
-       + ",email:" + userSelected.email + ",ci:" + userSelected.ci + ",userpassword:" + userSelected.userpassword
-       + ",idusers:" + idUser + ",firstname:" + name + ",lastname:" + lastName + ",phone:" + phone
-       + ",email:" + email + ",ci:" + ci + ",userpassword:" + password;
-      BackendConnection.createUserslog(3, user.idusers, aux.toLocaleTimeString(), aux.toLocaleDateString(), val, 0).then(() => {
-        console.log("ok updated");
-       });
+    BackendConnection.updateUser(idUser, name, lastName, phone, email, ci, password, ciComplemento).then(() => {
+      setOpenDialog(false);
+      setUpdateUserComplete(true);
+    });
+    let aux = new Date();
+    let val = 'idusers:' + idUser + ',firstname:' + userSelected.firstname + ',lastname:' + userSelected.lastname + ',phone:' + userSelected.phone
+      + ',email:' + userSelected.email + ',ci:' + userSelected.ci + ',userpassword:' + userSelected.userpassword
+      + ',idusers:' + idUser + ',firstname:' + name + ',lastname:' + lastName + ',phone:' + phone
+      + ',email:' + email + ',ci:' + ci + ',userpassword:' + password;
+    BackendConnection.createUserslog(3, user.idusers, aux.toLocaleTimeString(), aux.toLocaleDateString(), val, 0).then(() => {
+      console.log('ok updated');
+    });
   };
 
   const cancel = () => {
@@ -221,13 +230,13 @@ const RegistrationPage = (props) => {
           <Grid item>
             <h2>Roles</h2>
           </Grid>
-          <Grid item >
+          <Grid item>
             <FormControl component={'fieldset'}>
               <RadioGroup name={'Rol1'} value={roleSelected} onChange={handleChangeRol}>
                 {roles.map((rol) => {
                   return (
                     <div key={rol.idroles}>
-                      <FormControlLabel control={<Radio />} label={rol.rolename} value={rol.idroles} />
+                      <FormControlLabel control={<Radio/>} label={rol.rolename} value={rol.idroles}/>
                     </div>
                   );
                 })}
@@ -297,6 +306,16 @@ const RegistrationPage = (props) => {
               onChange={({ target }) => handleCiChange(target.value)}
               error={ciError}
               helperText={ciErrorMessage}
+            />
+          </Grid>
+          <Grid item>
+            <TextField
+              label={sCiComplemento}
+              type="text"
+              value={ciComplemento}
+              onChange={({ target }) => handleCiComplementoChange(target.value)}
+              error={ciComplementoError}
+              helperText={ciComplementoErrorMessage}
             />
           </Grid>
           {userSelected && (
