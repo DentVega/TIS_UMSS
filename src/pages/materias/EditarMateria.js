@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
@@ -14,6 +13,9 @@ import {
   sName, sTheDescriptionCannotBeEmpty,
   sTheNameCannotBeEmpty,
   sUpdateMateria,
+  sSubjectAlreadySaved,
+  sSubjectCannotNameAsCareer,
+  sSubjectCannotNameAsSchool,
 } from '../../constants/strings';
 import { Button, Grid, TextField } from '@material-ui/core';
 import FormControl from '@material-ui/core/FormControl';
@@ -42,8 +44,9 @@ function EditarMateria(props) {
   const [careers, setCareers] = useState([]);
   const [careerSelected, setCareersSelected] = useState(0);
 
-  const { materia } = props.materiasReducer;
+  const { materia, materias } = props.materiasReducer;
   const { user } = props.userReducer;
+  const { schools } = props.schoolReducer;
 
   const classes = useStyles();
 
@@ -63,6 +66,24 @@ function EditarMateria(props) {
     props.getMateriasBackend();
     props.history.goBack();
   }
+
+  const getSelectedSchool = () => {
+    if(schools.length > 0){
+      return schools.filter((it) => it.namefacultad == name).length;
+    }
+   }
+
+  const getSelectedCareer = () => {
+    if(careers.length > 0){
+      return careers.filter((it) => it.namecarrera == name).length;
+    }
+   }
+
+   const getSelectedSubject = () => {
+    if(materias.length > 0){
+      return materias.filter((it) => it.namemateria == name).length;
+    }
+   }
 
   const cancel = () => {
     props.history.goBack();
@@ -89,9 +110,28 @@ function EditarMateria(props) {
       setDescriptionError(true);
     }
 
+
     if (nameValidIsNoEmpty && descriptionIsNoEmpty) {
-      confirmCreation();
-    }
+      let val = getSelectedSubject();
+      if(val > 0){
+        setNameErrorMessage(sSubjectAlreadySaved);
+        setNameError(true);
+      }else{
+        let val2 = getSelectedCareer();
+        if(val2 > 0){
+          setNameErrorMessage(sSubjectCannotNameAsCareer);
+          setNameError(true);
+        }else{
+          let val3 = getSelectedSchool();
+          if(val3 > 0){
+            setNameErrorMessage(sSubjectCannotNameAsSchool);
+            setNameError(true);
+          }else{
+            confirmCreation();
+          }
+        }
+      }
+    } 
   };
 
   const updateMateria = () => {
@@ -145,7 +185,7 @@ function EditarMateria(props) {
           {careers.length > 0 && (
             <Grid item>
               <FormControl className={classes.formControl}>
-                <InputLabel id="carerra-selecionada">Facultad</InputLabel>
+                <InputLabel id="carerra-selecionada">Carrera</InputLabel>
                 <Select
                   labelId="carerra-selecionada"
                   id="carerra-selecionada-select"
@@ -214,6 +254,7 @@ const mapStateToProps = (state) => {
     userReducer: state.userReducer,
     materiasReducer: state.materiasReducer,
     careersReducer: state.careersReducer,
+    schoolReducer: state.schoolReducer,
   };
 };
 

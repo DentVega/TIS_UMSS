@@ -18,7 +18,7 @@ function AdministratorPage(props) {
 
   return (
     <div className={classes.content}>
-      <h1>Administracion</h1>
+      <h1>Administración</h1>
       <div>
         <CardItem text={'Roles'} showIconRow={true} width={400} onClick={goToRoles} />
       </div>

@@ -15,7 +15,9 @@ import {
   sName,
   sTheNameCannotBeEmpty,
   sSubjectAlreadySaved,
-  sSubjectCannotNameAsCareer, sTheDescriptionCannotBeEmpty, sDescription,
+  sSubjectCannotNameAsCareer, 
+  sTheDescriptionCannotBeEmpty, sDescription,
+  sSubjectCannotNameAsSchool,
 } from '../../constants/strings';
 import { Button, Grid, TextField } from '@material-ui/core';
 import FormControl from '@material-ui/core/FormControl';
@@ -47,6 +49,7 @@ function NewMateria(props) {
   const classes = useStyles();
   const { user } = props.userReducer;
   const { materias } = props.materiasReducer;
+  const { schools } = props.schoolReducer;
 
   useEffect(() => {
     BackendConnection.getCarreras().then((carerras) => {
@@ -62,11 +65,11 @@ function NewMateria(props) {
     props.history.goBack();
   }
 
-  /*const getSelectedSchool = () => {
+  const getSelectedSchool = () => {
     if(schools.length > 0){
       return schools.filter((it) => it.namefacultad == name).length;
     }
-   }*/
+   }
 
   const getSelectedCareer = () => {
     if (careers.length > 0) {
@@ -116,7 +119,13 @@ function NewMateria(props) {
           setNameErrorMessage(sSubjectCannotNameAsCareer);
           setNameError(true);
         } else {
-          confirmCreation();
+          let val3 = getSelectedSchool();
+          if(val3 > 0){
+            setNameErrorMessage(sSubjectCannotNameAsSchool);
+            setNameError(true);
+          }else{
+            confirmCreation();
+          }
         }
       }
     }
@@ -242,6 +251,7 @@ const mapStateToProps = (state) => {
     userReducer: state.userReducer,
     materiasReducer: state.materiasReducer,
     careersReducer: state.careersReducer,
+    schoolReducer: state.schoolReducer,
   };
 };
 

@@ -182,7 +182,7 @@ function NewGrupo(props) {
   const renderDia = () => {
     return (
       <FormControl className={classes.formControl}>
-        <InputLabel id="Dia-selecionada">Dia</InputLabel>
+        <InputLabel id="Dia-selecionada">Día</InputLabel>
         <Select labelId="Dia-selecionada" id="Dia-selecionada-select" value={diaSelected} onChange={handleDia}>
           {dias.map((dia) => {
             return (
