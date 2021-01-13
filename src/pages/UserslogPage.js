@@ -30,7 +30,7 @@ function UserslogPage(props) {
           const userSelected = users.filter((user) => user.idusers === item.users_idusers );
           text += userSelected[0].firstname + " ";
           text += userSelected[0].lastname + " hizo un ";
-          text += getTransaction(item.transaction_idtransaction);
+          //text += getTransaction(item.transaction_idtransaction);
         }
         if(item.check == 0){
           return (
@@ -38,7 +38,9 @@ function UserslogPage(props) {
               <CardItem
                 onClick={() => onClick(item)}
                 text={text}
-                width={500}
+                secondaryText={getTransaction(item.transaction_idtransaction)}
+                tercerText={getDate(item.datechange)}
+                width={1000}
                 showEditIcon={false}
                 showDeleteIcon={false}
               />
@@ -62,6 +64,15 @@ const getTransaction = (id) => {
     }
   }
 }
+
+const getDate = (date) => {
+  let val = "";
+  for(let i = 0; i < 10; i++){
+    val += date.charAt(i);
+  }
+  return val;
+}
+
 
 const mapStateToProps = (state) => {
   return {

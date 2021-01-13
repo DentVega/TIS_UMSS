@@ -52,7 +52,7 @@ export const enumMenuDrawer = {
   userslog: {
     id: 10,
     name: 'userslog',
-    nameEs: 'Bitacoras',
+    nameEs: 'Bitácoras',
   },
 };
 

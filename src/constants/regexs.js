@@ -5,3 +5,4 @@ export const nameMateriaRegex = /^[a-zA-Z0-9ñÑ ]+$/;
 export const lastNameRegex = /^[a-zA-Z ]+$/;
 export const phoneRegex = /^[0-9]+$/;
 export const ciRegex = /^[0-9]+$/;
+export const ciComplementoRegex = /^[a-zA-Z]+$/;

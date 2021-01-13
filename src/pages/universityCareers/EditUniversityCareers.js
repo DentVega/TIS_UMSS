@@ -12,6 +12,8 @@ import {
   sName, sTheDescriptionCannotBeEmpty,
   sTheNameCannotBeEmpty,
   sUpdateCareer,
+  sCareerAlreadySaved,
+  sCareerCannotNameAsSchool,
 } from '../../constants/strings';
 import { makeStyles } from '@material-ui/core/styles';
 import { Button, Grid, TextField } from '@material-ui/core';
@@ -41,7 +43,7 @@ function EditUniversityCareers(props) {
   const [schools, setSchools] = useState([]);
   const [schoolSelected, setSchoolSelected] = useState(0);
 
-  const { career } = props.careersReducer;
+  const { career, careers } = props.careersReducer;
   const { user } = props.userReducer;
 
 
@@ -76,6 +78,18 @@ function EditUniversityCareers(props) {
     setOpenDialog(false);
   };
 
+  const getSelectedSchool = () => {
+    if(schools.length > 0){
+      return schools.filter((it) => it.namefacultad == name).length;
+    }
+   }
+
+   const getSelectedCareer = () => {
+    if(careers.length > 0){
+      return careers.filter((it) => it.namecarrera == name).length;
+    }
+   }
+
   const validName = () => {
     const nameValidIsNoEmpty = !nameError && name.length > 0;
     if (!nameValidIsNoEmpty) {
@@ -90,7 +104,19 @@ function EditUniversityCareers(props) {
     }
 
     if (nameValidIsNoEmpty && descriptionIsNoEmpty) {
-      confirmCreation();
+      let val = getSelectedCareer();
+      if(val > 0){
+        setNameErrorMessage(sCareerAlreadySaved);
+        setNameError(true);
+      }else{
+        let val2 = getSelectedSchool();
+        if(val2 > 0){
+          setNameErrorMessage(sCareerCannotNameAsSchool);
+          setNameError(true);
+        }else{
+          confirmCreation();
+        }
+      }
     }
   };
 

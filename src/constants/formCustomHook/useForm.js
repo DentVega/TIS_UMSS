@@ -1,5 +1,13 @@
 import { useState } from 'react';
-import { emailRegex, nameRegex, lastNameRegex, phoneRegex, ciRegex, nameMateriaRegex } from '../regexs';
+import {
+  emailRegex,
+  nameRegex,
+  lastNameRegex,
+  phoneRegex,
+  ciRegex,
+  nameMateriaRegex,
+  ciComplementoRegex
+} from '../regexs';
 import {
   sLimitNumber,
   sLimitCharacters,
@@ -9,7 +17,12 @@ import {
   sNameMustHaveMoreThan2Characters,
   sCharacterLimit,
   sTheLastNameCannotBeEmpty,
-  sMustHaveMoreThan2Characters, sCharacterLimit25, sOnlyNumbersAreAllowed, sMustBeGreaterThanNumbers, sNumbersMinimum
+  sMustHaveMoreThan2Characters,
+  sCharacterLimit25,
+  sOnlyNumbersAreAllowed,
+  sMustBeGreaterThanNumbers,
+  sNumbersMinimum,
+  sLimitNumber1, sOnlyLettersAreAllowed
 } from '../strings';
 
 export const useEmail = () => {
@@ -176,6 +189,27 @@ export const useCi = () => {
   };
   return [values, handleCiChange, ciError, setCiError, ciErrorMessage, setCiMessageError];
 };
+
+export const useCiComplemento = () => {
+  const [values, setValues] = useState('');
+  const [ciError, setCiError] = useState(false);
+  const [ciErrorMessage, setCiMessageError] = useState('');
+  const handleCiChange = (value) => {
+    if (!ciComplementoRegex.test(value)) {
+      setCiMessageError(sOnlyLettersAreAllowed);
+      setCiError(true);
+    } else if (value.length !== 1) {
+      setCiMessageError(sLimitNumber1);
+      setCiError(true);
+    } else {
+      setCiMessageError('');
+      setCiError(false);
+    }
+    setValues(value);
+  };
+  return [values, handleCiChange, ciError, setCiError, ciErrorMessage, setCiMessageError];
+};
+
 export const usePhone = () => {
   const [values, setValues] = useState('');
   const [phoneError, setPhoneError] = useState(false);
@@ -295,7 +329,7 @@ export const useFiles=()=>{
   }
   return [values,handleFileChange,handleDateChange,fileError,
     setFileError,fileMessage,setFileMessage,previewSource,date,dateError,setDateError,dateErrorMesg,setDateErrorMsg];
-  
+
 };
 
 

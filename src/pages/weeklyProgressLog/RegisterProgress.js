@@ -272,7 +272,7 @@ const RegisterProgress = (props) => {
             <h2>Día</h2>
           </Grid>
           <Grid item xs={true} align="middle">
-            <h2>Platafroma o Medio Utilizado</h2>
+            <h2>Plataforma o Medio Utilizado</h2>
           </Grid>
           <Grid item xs={true} align="middle">
             <h2>Avance de la clase</h2>
