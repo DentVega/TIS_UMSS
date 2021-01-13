@@ -20,7 +20,7 @@ function GrupoItem(props) {
   return (
     <div>
       <CardItem
-        text={`Grupo:${idgrupo}`}
+        text={`Grupo: ${idgrupo}`}
         secondaryText={materia? `Materia: ${materia.namemateria}`: ''}
         showEditIcon={true}
         showDeleteIcon={true}

@@ -8,7 +8,9 @@ import {
   changeHorarios,
   changeUserslogs,
   changeGrupoHorarios,
-  changeGrupos, changeNumberNotifications,
+  changeGrupos, 
+  changeNumberNotifications,
+  changeUsersRole
 } from './index.actions';
 
 import BackendConnection from '../../api/BackendConnection';
@@ -17,6 +19,13 @@ export const getRoles = () => {
   return (dispatch) => {
     BackendConnection.getRoles().then((roles) => {
       dispatch(changeRoles(roles));
+    });
+  };
+};
+export const getUsersRol = () => {
+  return (dispatch) => {
+    BackendConnection.getAllUsersRol().then((usersRol) => {
+      dispatch(changeUsersRole(usersRol));
     });
   };
 };

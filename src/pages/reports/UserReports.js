@@ -19,7 +19,7 @@ const {useState,useEffect} = React;
 
 const useStyles = makeStyles((theme) => ({
   root: {      
-    width: "90%", 
+    width: "auto", 
     padding:10,     
   },
   button: {

@@ -12,7 +12,7 @@ import FloatingButton from '../../components/FloatingButton';
 
 const useStyles = makeStyles((theme) => ({
     root: {
-      width: 1150,
+      width: "auto",
       padding:10,
     },
     fab: {
@@ -30,10 +30,6 @@ const Absences = (props) => {
   const classes = useStyles();
   const { user } = props.user;
   const { users,loading:lusers } = props.usersReducer;
-  const {schools} = props.schoolsreducer;
-  const {careers} = props.careersReducer;
-  const {grupos, grupoHorarios} = props.gruposReducer; 
-  const {materias} = props.materiasReducer; 
   const [openDialog, setOpenDialog] = useState(false);
   const [absence,setAbsence] = useState('');
   const [allAbsences, setAllAbsences] = useState([]);
@@ -47,10 +43,10 @@ const Absences = (props) => {
     }
     else {
       lusers && props.getUsers();      
-        BackendConnection.getAllUsersReport(props.match.params.id)
-        .then((res) => {
-          setAllAbsences(res);
-        });
+      BackendConnection.getAllUsersReport(props.match.params.id)
+      .then((res) => {
+        setAllAbsences(res);
+      });
     }    
     // eslint-disable-next-line
   }, []);
@@ -101,7 +97,7 @@ const Absences = (props) => {
 
   const mapReports = () => {
       return props.history.location.pathname===routes.userAbsences ? allAbsences.map((item)=>(
-        <div  key={item.idfalta} style={{width:600,padding:10}}>
+        <div  key={item.idfalta} style={{padding:10}}>
           <CardActionArea>
             <CardItem
               text={"Fecha: "+getDate(item.fecha)}

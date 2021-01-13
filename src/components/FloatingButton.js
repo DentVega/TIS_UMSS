@@ -5,9 +5,9 @@ import Fab from '@material-ui/core/Fab';
 
 const useStyles = makeStyles((theme) => ({
   fab: {
-    position: 'absolute',
-    bottom: theme.spacing(2),
-    right: theme.spacing(0),
+    position: 'fixed',
+    bottom: theme.spacing(6),
+    right: theme.spacing(5),
   },
 }));
 

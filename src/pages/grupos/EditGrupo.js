@@ -17,7 +17,7 @@ import {
 } from '../../constants/strings';
 import CustomAlertDialog from '../../components/dialogs/CustomAlertDialog';
 import { changeGrupoHorario } from '../../redux/actions/index.actions';
-import { getGrupoHorariosBackend, getGruposBackend } from '../../redux/actions/indexthunk.actions';
+import { getGrupoHorariosBackend, getGruposBackend, getCarreras } from '../../redux/actions/indexthunk.actions';
 import ItemGrupoHorario from './ItemGrupoHorario';
 import AddIcon from '@material-ui/icons/Add';
 
@@ -56,29 +56,38 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function EditGrupo(props) {
+  const idgrp = props.match.params.id;
+  const [idUser, setIdUser] = useState(0);
+  const [usersArr, setUsersArr] = useState([])
+  const {roles, usersRole} = props.rolesReducer;
+
   const [dias, setDias] = useState(diasConst);
   const [users, setUsers] = useState([]);
   const [horarios, setHorarios] = useState([]);
   const [materias, setMaterias] = useState([]);
 
-  const [userSelected, setUserSelected] = useState(null);
-  const [horarioSelected, setHorarioSelected] = useState(null);
-  const [diaSelected, setDiaSelected] = useState(null);
-  const [materiaSelected, setMateriaSelected] = useState(null);
+  const [userSelected, setUserSelected] = useState('');
+  const [horarioSelected, setHorarioSelected] = useState('');
+  const [diaSelected, setDiaSelected] = useState('');
+  const [materiaSelected, setMateriaSelected] = useState('');
 
   const [openDialog, setOpenDialog] = useState(false);
   const [openDialogCancel, setOpenDialogCancel] = useState(false);
   const [createGrupoComplete, setCreateGrupoComplete] = useState(false);
 
-  const [grupoIdSelected, setGrupoIdSelected] = useState(null);
-  const { grupo } = props.grupoReducer;
-
+  const [grupoIdSelected, setGrupoIdSelected] = useState('');
+  const { grupo,grupos } = props.grupoReducer;
   const [loadingAllItems, setLoadingAllItems] = useState(false);
 
   const [showFormHorario, setShowHorario] = useState(false);
   const [horariosActivados, setHorariosActivados] = useState([]);
+  const [schoolSchedule,setSchoolSchedule] = useState([]);
 
+  const {careers} = props.careersReducer;
+  
+  const {schools} = props.schoolReducer;
   const classes = useStyles();
+  
 
   if (createGrupoComplete) {
     props.getGrupoHorariosBackend();
@@ -86,6 +95,7 @@ function EditGrupo(props) {
   }
 
   useEffect(() => {
+    props.getCarreras();
     loadData();
   }, []);
 
@@ -98,20 +108,31 @@ function EditGrupo(props) {
     const { idgrupo, materia_idmateria } = grupo;
     setMateriaSelected(materia_idmateria);
     setGrupoIdSelected(idgrupo);
-
+    
     setUsers(users);
     setMaterias(materias);
     setHorarios(horarios);
-    setLoadingAllItems(true);
   };
 
   const loadGruposHorarios = async () => {
     const { idgrupo } = grupo;
     const grupoHorarios = await BackendConnection.getGrupoHorariosByIdGrupo(idgrupo);
+    setIdUser(grupoHorarios[0].users_idusers)
     if (grupoHorarios && grupoHorarios.length > 0) {
       setHorariosActivados(grupoHorarios);
     }
   };
+
+  useEffect(()=>{
+    if(!loadingAllItems && users.length>0 && careers.length>0 && horarios.length>0 && grupos.length > 0 && schools.length > 0 && materias.length > 0){ 
+      const group = grupos.find((grp)=>idgrp == grp.idgrupo);
+      const subjectGroup = materias.find((materia)=>materia.idmateria == group.materia_idmateria);
+      const careerGroup = careers.find((carrera)=>subjectGroup.carrera_idcarrera == carrera.idcarrera);      
+      setSchoolSchedule(horarios.filter((schedule)=>careerGroup.facultad_idfacultad == schedule.facultad_idfacultad));
+      setLoadingAllItems(true);
+    }
+    // eslint-disable-next-line
+  },[users, grupos, careers, horarios, materias]);
 
   const cancel = () => {
     props.history.goBack();
@@ -135,7 +156,7 @@ function EditGrupo(props) {
     setCreateGrupoComplete(true);
   };
 
-  const renderHoraios = () => {
+  const renderHorarios = () => {
     return (
       <FormControl className={classes.formControl}>
         <InputLabel id="horario-selecionada">Horario</InputLabel>
@@ -144,7 +165,7 @@ function EditGrupo(props) {
           id="horario-selecionada-select"
           value={horarioSelected}
           onChange={handleHorario}>
-          {horarios.map((horario) => {
+          {schoolSchedule.map((horario) => {
             return (
               <MenuItem key={horario.idhorario} value={horario.idhorario}>
                 inicio: {horario.horaini} - fin: {horario.horafin}
@@ -169,13 +190,15 @@ function EditGrupo(props) {
           id="Usuario-selecionada-select"
           value={userSelected}
           onChange={handleUsers}>
-          {users.map((user) => {
-            return (
-              <MenuItem key={user.idusers} value={user.idusers}>
-                {user.firstname}
-              </MenuItem>
-            );
-          })}
+          {
+            usersArr.length > 0 && usersArr.map((user) => {
+              return (
+                <MenuItem key={user.idusers} value={user.idusers}>
+                  {user.firstname} {user.lastname}
+                </MenuItem>
+              );
+            })
+          }
         </Select>
       </FormControl>
     );
@@ -238,8 +261,23 @@ function EditGrupo(props) {
   };
 
   const deleteGrupoHoario = async (idGrupoHorario) => {
-    await BackendConnection.deleteGrupoHorario(idGrupoHorario);
+    const grupoHorarios = await BackendConnection.getGrupoHorariosByIdGrupo(idgrp);
+    grupoHorarios.length > 1 && await BackendConnection.deleteGrupoHorario(idGrupoHorario);
     loadGruposHorarios();
+  };
+  
+  const handleHorarioAdd=()=>{
+    const usersArr=[];
+    console.log(idUser);
+    const docente=users.length > 0 && (users.find((usr)=>usr.idusers == idUser));
+    docente != undefined && usersArr.push(docente);
+    const auxiliares = usersRole.filter((userRol)=>userRol.roles_idroles == 101);
+    auxiliares.map((aux)=>{
+      const usr = users.find((usr)=>aux.users_idusers == usr.idusers);
+      usr != undefined && usersArr.push(usr);
+    })
+    setUsersArr(usersArr);
+    setShowHorario(true);
   };
 
   const renderListHorarios = () => {
@@ -248,16 +286,22 @@ function EditGrupo(props) {
         <Grid container alignItems={'center'}>
           <h4>Horarios</h4>
           {!showFormHorario && (
-            <IconButton onClick={() => setShowHorario(true)}>
+            <IconButton onClick={handleHorarioAdd}>
               <AddIcon/>
             </IconButton>
           )}
         </Grid>
-        {showFormHorario ? renderFormHorarios() : horariosActivados.map((horarioActivado) => {
-          return <ItemGrupoHorario key={horarioActivado.idgrupohorarios} grupoHorario={horarioActivado}
-                                   materias={materias} horarios={horarios}
-                                   deleteClick={(idGrupoHorario) => deleteGrupoHoario(idGrupoHorario)}/>;
-        })}
+        {
+          showFormHorario ? renderFormHorarios() : horariosActivados.map((horarioActivado) => {
+            return  <ItemGrupoHorario 
+                      key={horarioActivado.idgrupohorarios} 
+                      grupoHorario={horarioActivado}
+                      materias={materias} 
+                      horarios={horarios}
+                      deleteClick={(idGrupoHorario) => deleteGrupoHoario(idGrupoHorario)}
+                    />;
+          })
+        }
       </Grid>
     );
   };
@@ -265,13 +309,13 @@ function EditGrupo(props) {
 
   const crearHorario = async () => {
     const { idgrupo } = grupo;
-    BackendConnection.createGrupoHorario(
+    await BackendConnection.createGrupoHorario(
       horarioSelected,
       idgrupo,
       userSelected,
-      diaSelected,
+      diaSelected,    
     );
-    loadGruposHorarios();
+    await loadGruposHorarios();
     setShowHorario(false);
   };
 
@@ -280,12 +324,12 @@ function EditGrupo(props) {
       <Grid item>
         {loadingAllItems && renderDia()}
         <div className={{ height: 20 }}/>
-        {loadingAllItems && renderHoraios()}
+        {loadingAllItems && renderHorarios()}
         <div className={{ height: 20 }}/>
         {loadingAllItems && renderUsers()}
         <Grid container direction={'row'} spacing={2}>
           <Grid item>
-            <Button variant="contained" color="primary" type="submit" onClick={() => setShowHorario(true)}>
+            <Button variant="contained" color="primary" type="submit" onClick={() => setShowHorario(false)}>
               Cancelar
             </Button>
           </Grid>
@@ -351,6 +395,9 @@ const mapStateToProps = (state) => {
     app: state.app,
     userReducer: state.userReducer,
     grupoReducer: state.grupoReducer,
+    schoolReducer: state.schoolReducer,
+    rolesReducer: state.rolesReducer,
+    careersReducer: state.careersReducer,
   };
 };
 
@@ -358,6 +405,7 @@ const mapDispatchToProps = (dispatch) => ({
   changeGrupoHorario: (grupoHorario) => dispatch(changeGrupoHorario(grupoHorario)),
   getGruposBackend: () => dispatch(getGruposBackend()),
   getGrupoHorariosBackend: () => dispatch(getGrupoHorariosBackend()),
+  getCarreras: () => dispatch(getCarreras()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(EditGrupo));
