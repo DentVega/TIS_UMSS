@@ -1,10 +1,12 @@
-import { CHANGE_ROLE,CHANGE_USER_ROLE, CHANGE_ROLES, CLEAN_ALL_REDUCERS } from '../actions/actions';
+import { CHANGE_ROLE,CHANGE_USER_ROLE, CHANGE_USERS_ROLE, CHANGE_ROLES, CLEAN_ALL_REDUCERS } from '../actions/actions';
 
 const initState = {
   role: null,
   roles: [],
   userRole:null,
-  loading: true
+  usersRole:[],
+  loading: true,
+  loadingUsersRole:true,
 };
 
 function rolesReducer(state = initState, action) {
@@ -26,6 +28,13 @@ function rolesReducer(state = initState, action) {
       return {
         ...state,
         userRole: action.userRole
+      }
+    }
+    case CHANGE_USERS_ROLE:{
+      return {
+        ...state,
+        usersRole: action.usersRole,
+        loadingUsersRole:false,
       }
     }
     case CLEAN_ALL_REDUCERS: {

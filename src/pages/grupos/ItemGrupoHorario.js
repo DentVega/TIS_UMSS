@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Grid from '@material-ui/core/Grid';
+import { connect } from 'react-redux';
 
 const useStyles = makeStyles(() => ({
   content: {
@@ -16,9 +17,14 @@ const useStyles = makeStyles(() => ({
 function ItemGrupoHorario(props) {
   const { grupoHorario, horarios, deleteClick } = props;
   const classes = useStyles();
-
+  const {users} = props.usersReducer;
   useEffect(() => {
   }, []);
+
+  const searchName=()=>{
+    const usrObj=users.find((usr)=>usr.idusers==grupoHorario.users_idusers);
+    return usrObj.firstname;
+  };
 
   const renderHorario = () => {
     let currenthorario = null;
@@ -29,6 +35,7 @@ function ItemGrupoHorario(props) {
     });
     if (currenthorario) {
       return <div>
+        <h5>Responsable: {searchName()}</h5>
         <h5>Inicio: {currenthorario.horaini} - Fin {currenthorario.horafin}</h5>
       </div>;
     } else {
@@ -50,5 +57,9 @@ function ItemGrupoHorario(props) {
     </Card>
   );
 }
-
-export default ItemGrupoHorario;
+const mapStateToProps = (state) => {
+  return {   
+    usersReducer: state.usersReducer,    
+  };
+};
+export default connect(mapStateToProps)(ItemGrupoHorario);

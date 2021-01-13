@@ -17,7 +17,7 @@ import {
 } from '../../constants/strings';
 import CustomAlertDialog from '../../components/dialogs/CustomAlertDialog';
 import { changeGrupoHorario } from '../../redux/actions/index.actions';
-import { getGrupoHorariosBackend, getGruposBackend } from '../../redux/actions/indexthunk.actions';
+import { getGrupoHorariosBackend, getGruposBackend, getSchools } from '../../redux/actions/indexthunk.actions';
 
 const diasConst = [
   {
@@ -54,50 +54,69 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function NewGrupo(props) {
+  const {schools, loading:ldingSchools} = props.schoolReducer;
+  const {usersRole,loadingUsersRole} = props.rolesReducer;
+  const {careers} = props.careersReducer;
   const [dias, setDias] = useState(diasConst);
   const [users, setUsers] = useState([]);
   const [horarios, setHorarios] = useState([]);
   const [materias, setMaterias] = useState([]);
 
-  const [userSelected, setUserSelected] = useState(null);
-  const [horarioSelected, setHorarioSelected] = useState(null);
-  const [diaSelected, setDiaSelected] = useState(null);
-  const [materiaSelected, setMateriaSelected] = useState(null);
+  const [userSelected, setUserSelected] = useState('');
+  const [horarioSelected, setHorarioSelected] = useState('');
+  const [diaSelected, setDiaSelected] = useState('');
+  const [materiaSelected, setMateriaSelected] = useState('');
+  const [schoolSelected,setSchoolSelected] = useState('');
+
+  const [horariosBySchool,setHorariosBySchool] = useState([])
+  const [materiasBySchool,setMateriasBySchool] = useState([]);
 
   const [openDialog, setOpenDialog] = useState(false);
   const [openDialogCancel, setOpenDialogCancel] = useState(false);
-  const [createGrupoComplete, setCreateGrupoComplete] = useState(false);
-
+  const [createGrupoComplete, setCreateGrupoComplete] = useState(false);  
 
    const [loadingCampos, setLoadingCampos] = useState(false);
 
   const classes = useStyles();
 
   if (createGrupoComplete) {
-    props.getGrupoHorariosBackend();
+    // props.getGrupoHorariosBackend();
+    props.getGruposBackend();
     props.history.goBack();
   }
 
   useEffect(() => {
-    loadData();
-  }, []);
+    ldingSchools && props.getSchools();
+    if(!ldingSchools && !loadingUsersRole){
+      loadData();
+    }    
+  }, [loadingUsersRole, ldingSchools]);
 
   const loadData = async () => {
-    const users = await BackendConnection.getUsers();
+    const usrs = await BackendConnection.getUsers();
     const horarios = await BackendConnection.getHorarios();
     const materias = await BackendConnection.getMaterias();
 
-    setMateriaSelected(materias[0].idmateria);
-    setHorarioSelected(horarios[0].idhorario);
-    setUserSelected(users[0].idusers);
     setDiaSelected(dias[0].dia);
-
-    setUsers(users);
+    const rolDocentes = usersRole.filter((usrRole)=>usrRole.roles_idroles==123) 
+    // const userDocentes = [];
+    setUsers(rolDocentes.map((roldoc)=>{
+      return usrs.find((usr)=>roldoc.users_idusers==usr.idusers);      
+    }))
+    
     setMaterias(materias);
     setHorarios(horarios);
-    setLoadingCampos(true);
   };
 
+  useEffect(()=>{
+    if(users.length>0 && !loadingCampos && careers.length>0 && horarios.length>0){ 
+      setUserSelected(users[0].idusers)
+      handleSchool(schools[0].idfacultad)
+      setLoadingCampos(true);
+    }
+  },[users, careers, horarios]);
+  
+  
   const cancel = () => {
     props.history.goBack();
   };
@@ -117,8 +136,7 @@ function NewGrupo(props) {
   const registerGrupo = async () => {
     const grupoCreado = await BackendConnection.createGrupo(materiaSelected);
     const { idgrupo } = grupoCreado.body.res[0];
-
-    const grupoMateria = await BackendConnection.createGrupoHorario(
+    await BackendConnection.createGrupoHorario(
       horarioSelected,
       idgrupo,
       userSelected,
@@ -129,7 +147,7 @@ function NewGrupo(props) {
     setCreateGrupoComplete(true);
   };
 
-  const renderHoraios = () => {
+  const renderHorarios = () => {
     return (
       <FormControl className={classes.formControl}>
         <InputLabel id="horario-selecionada">Horario</InputLabel>
@@ -138,7 +156,7 @@ function NewGrupo(props) {
           id="horario-selecionada-select"
           value={horarioSelected}
           onChange={handleHorario}>
-          {horarios.map((horario) => {
+          {horariosBySchool && horariosBySchool.map((horario) => {
             return (
               <MenuItem key={horario.idhorario} value={horario.idhorario}>
                 inicio: {horario.horaini} - fin: {horario.horafin}
@@ -157,7 +175,7 @@ function NewGrupo(props) {
   const renderUsers = () => {
     return (
       <FormControl className={classes.formControl}>
-        <InputLabel id="Usuario-selecionada">Usuario</InputLabel>
+        <InputLabel id="Usuario-selecionada">Docentes</InputLabel>
         <Select
           labelId="Usuario-selecionada"
           id="Usuario-selecionada-select"
@@ -166,7 +184,7 @@ function NewGrupo(props) {
           {users.map((user) => {
             return (
               <MenuItem key={user.idusers} value={user.idusers}>
-                {user.firstname}
+                {user.firstname} {user.lastname}
               </MenuItem>
             );
           })}
@@ -182,8 +200,11 @@ function NewGrupo(props) {
   const renderDia = () => {
     return (
       <FormControl className={classes.formControl}>
-        <InputLabel id="Dia-selecionada">Día</InputLabel>
-        <Select labelId="Dia-selecionada" id="Dia-selecionada-select" value={diaSelected} onChange={handleDia}>
+        <InputLabel id="Dia-selecionada">Dia</InputLabel>
+        <Select labelId="Dia-selecionada" 
+          id="Dia-selecionada-select" 
+          value={diaSelected} 
+          onChange={handleDia}>
           {dias.map((dia) => {
             return (
               <MenuItem key={dia.dia} value={dia.dia}>
@@ -199,6 +220,43 @@ function NewGrupo(props) {
   const handleMateria = (event) => {
     setMateriaSelected(event.target.value);
   };
+  const getMateriasBySchool =(idSchool)=>{
+    const materiasFacultad=[];
+    const schoolCareers=careers.filter((carr)=>carr.facultad_idfacultad==idSchool);
+    schoolCareers.map((scCareer)=>{
+      const subjects=materias.filter((mat)=>mat.carrera_idcarrera==scCareer.idcarrera);
+      materiasFacultad.push(subjects)
+    });
+    setMateriasBySchool(materiasFacultad.flat())
+  };
+  const handleSchool=(val)=>{
+    const filteredSchedule = horarios.filter((hor)=>hor.facultad_idfacultad==val);
+    getMateriasBySchool(val)
+    setHorariosBySchool(filteredSchedule);
+    setSchoolSelected(val);
+    setHorarioSelected('');
+    setMateriaSelected('');
+  };
+
+  const renderFacultades = () =>{
+    return (
+      <FormControl className={classes.formControl}>
+        <InputLabel id="Facultad-selecionado">Facultad</InputLabel>
+        <Select labelId="Facultad-selecionado" 
+          id="Facultad-selecionada-select" 
+          value={schoolSelected} 
+          onChange={({target})=>handleSchool(target.value)}>
+          {schools.map((school) => {
+            return (
+              <MenuItem key={school.idfacultad} value={school.idfacultad}>
+                {school.namefacultad}
+              </MenuItem>
+            );
+          })}
+        </Select>
+      </FormControl>
+    );
+  };
 
   const renderMateria = () => {
     return (
@@ -209,7 +267,7 @@ function NewGrupo(props) {
           id="Materia-selecionada-select"
           value={materiaSelected}
           onChange={handleMateria}>
-          {materias.map((materia) => {
+          {materiasBySchool.map((materia) => {
             return (
               <MenuItem key={materia.idmateria} value={materia.idmateria}>
                 {materia.namemateria}
@@ -240,9 +298,12 @@ function NewGrupo(props) {
 
       <h3>Nuevo Grupo</h3>
       {!loadingCampos && <h3>Cargando...</h3>}
-      {loadingCampos && renderHoraios()}
+      {loadingCampos && renderFacultades()}
+      <div className={{ height: 20 }} />
+      {loadingCampos && renderHorarios()}
       <div className={{ height: 20 }} />
       {loadingCampos && renderUsers()}
+      
       <div className={{ height: 20 }} />
       {loadingCampos && renderDia()}
       <div className={{ height: 20 }} />
@@ -270,6 +331,9 @@ const mapStateToProps = (state) => {
     app: state.app,
     userReducer: state.userReducer,
     grupoReducer: state.grupoReducer,
+    schoolReducer: state.schoolReducer,
+    rolesReducer: state.rolesReducer,
+    careersReducer: state.careersReducer,
   };
 };
 
@@ -277,6 +341,7 @@ const mapDispatchToProps = (dispatch) => ({
   changeGrupoHorario: (grupoHorario) => dispatch(changeGrupoHorario(grupoHorario)),
   getGruposBackend: () => dispatch(getGruposBackend()),
   getGrupoHorariosBackend: () => dispatch(getGrupoHorariosBackend()),
+  getSchools: ()=> dispatch(getSchools()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(NewGrupo));

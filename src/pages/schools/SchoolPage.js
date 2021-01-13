@@ -65,7 +65,7 @@ function SchoolPage(props) {
               <CardItem
                 text={`Nombre: ${school.namefacultad}`}
                 secondaryText={`Descripcion: ${school.descripcion}`}
-                width={"120vh"}
+                width={1600}
                 showEditIcon={true}
                 showDeleteIcon={true}
                 deleteClick={() => confirmDelete(school)}

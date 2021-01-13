@@ -39,13 +39,13 @@ const useStyles = makeStyles((theme) => ({
 function EditHorario(props) {
   const [inicio, setInicio] = useState(new Date('2020-11-12T20:52:08.326Z'));
   const [final, setFinal] = useState(new Date('2020-11-12T20:52:08.326Z'));
-
+  const idHorario = props.match.params.id;
   const [openDialog, setOpenDialog] = useState(false);
   const [openDialogCancel, setOpenDialogCancel] = useState(false);
   const [createHorarioComplete, setCreateHorarioComplete] = useState(false);
 
   const [schools, setSchools] = useState([]);
-  const [schoolSelected, setSchoolSelected] = useState(0);
+  const [schoolSelected, setSchoolSelected] = useState('');
 
   const [showTextError, setShowTextError] = useState(false);
   const [textError, setTextError] = useState('');
@@ -56,12 +56,15 @@ function EditHorario(props) {
   useEffect(() => {
     BackendConnection.getSchools().then((schools) => {
       if (schools && schools.length > 0) {
-        setSchoolSelected(schools[0].idfacultad);
-        setSchools(schools);
-
-        setInicio(new Date(`2020-11-12T${horario.horaini}`));
-        setFinal(new Date(`2020-11-12T${horario.horafin}`));
+        BackendConnection.getHorariosById(idHorario)
+        .then((res)=>{
+          setSchools(schools);
+          setSchoolSelected(schools.find((school)=>res[0].facultad_idfacultad==school.idfacultad).idfacultad);
+          setInicio(new Date(`2020-11-12T${horario.horaini}`));
+          setFinal(new Date(`2020-11-12T${horario.horafin}`));
+        })
       }
+      
     });
   }, []);
 

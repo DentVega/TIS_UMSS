@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { getCarreras } from '../../redux/actions/indexthunk.actions';
+import { getCarreras, getSchools } from '../../redux/actions/indexthunk.actions';
 import CardItem from '../../components/CardItem';
 // import ContainerFilter from '../../components/filters/ContainerFilter';
 import { changeCarrera, filterCareer } from '../../redux/actions/index.actions';
@@ -13,6 +13,7 @@ import FloatingButton from '../../components/FloatingButton';
 
 function UniversityCareers(props) {
   const { careers, careersAux, loading } = props.careersReducer;
+  const {schools} = props.schoolReducer;
   const { facultadSeleccionada } = props.filtersReducer;
   const [facultadAux, setFacultadAux] = useState(0);
   const [careersSelected, setCareersSelected] = useState(null);
@@ -33,6 +34,7 @@ function UniversityCareers(props) {
   useEffect(() => {
     if (loading) {
       props.getCareers();
+      props.getSchools();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -69,17 +71,21 @@ function UniversityCareers(props) {
     setCareersSelected(null);
   };
 
+  const schoolName=(career)=>{
+    const scho=schools.find((school)=>career.facultad_idfacultad==school.idfacultad)
+    return scho.namefacultad;
+  };
+
   const renderCareers = () => {
-    console.log('carreras', careersAux)
     return (
       <div>
         {careersAux.map((career) => {
           return (
             <div key={career.idcarrera}>
               <CardItem
-                width={"100vh"}
                 text={`Nombre: ${career.namecarrera}`}
-                secondaryText={`Descripcion: ${career.descripcion}`}
+                secondaryText={`Facultad: ${schoolName(career)}`}
+                tercerText={career.descripcion}
                 showEditIcon={true}
                 showDeleteIcon={true}
                 editClick={() => updateCarrera(career)}
@@ -105,7 +111,7 @@ function UniversityCareers(props) {
 
       <h1>Carreras</h1>
       {/*<ContainerFilter showFFacultad={true} />*/}
-      {careers.length > 0 ? renderCareers() : <div />}
+      {careers.length > 0 && schools.length > 0 ? renderCareers() : <div />}
       {loading && <h3>Cargando...</h3>}
       <FloatingButton onClick={newCarrera}/>
     </div>
@@ -116,12 +122,15 @@ const mapStateToProps = (state) => ({
   userReducer: state.userReducer,
   careersReducer: state.careersReducer,
   filtersReducer: state.filtersReducer,
+  schoolReducer: state.schoolReducer,
 });
 
 const mapDipatchToProps = (dispatch) => ({
   getCareers: () => dispatch(getCarreras()),
   filterCareer: (careers) => dispatch(filterCareer(careers)),
   changeCarrera: (carrera) => dispatch(changeCarrera(carrera)),
+  getSchools:() => dispatch(getSchools()),
+
 });
 
 export default connect(mapStateToProps, mapDipatchToProps)(withRouter(UniversityCareers));

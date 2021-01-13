@@ -10,7 +10,7 @@ import { getCarreras, getSchools,getMateriasBackend,getGrupoHorariosBackend,getG
 
 const useStyles = makeStyles({
     root: {
-      width: 600,
+      width: 900,
       margin:20
     },
 })

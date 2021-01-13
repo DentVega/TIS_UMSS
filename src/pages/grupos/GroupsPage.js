@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { getGrupoHorariosBackend, getGruposBackend } from '../../redux/actions/indexthunk.actions';
+import { getCarreras, getGrupoHorariosBackend, getGruposBackend, getUsers, getSchools, getUsersRol, getRoles } from '../../redux/actions/indexthunk.actions';
 import { changeGrupo, changeGrupoHorario } from '../../redux/actions/index.actions';
 import { routes } from '../../router/RoutesConstants';
 import CustomAlertDialog from '../../components/dialogs/CustomAlertDialog';
@@ -13,12 +13,22 @@ import FloatingButton from '../../components/FloatingButton';
 function GroupsPage(props) {
   sessionStorage.setItem('path', props.history.location.pathname);
   const { grupos, grupoHorarios, loadingGrupoHorarios, loadingGrupos } = props.grupoReducer;
-
+  const {loading:ldingUsers} = props.usersReducer;
+  const {loading:ldingSchools} = props.schoolReducer;
+  const {loadingUsersRole,loading:ldingRoles} = props.rolesReducer;
   const [openDialog, setOpenDialog] = useState(false);
   const [grupoSelected, setGrupoSelected] = useState(null);
 
   useEffect(() => {
     props.getGruposBackend();
+    props.getCarreras();
+    setTimeout(() => {
+      ldingUsers && props.getUsersBackend();     
+      ldingSchools && props.getSchools(); 
+      loadingUsersRole && props.getUsersRol();
+      ldingRoles && props.getRoles();
+    }, 1900);
+    // eslint-disable-next-line
   }, []);
 
   const newGrupo = () => {
@@ -33,16 +43,15 @@ function GroupsPage(props) {
 
   const updateGrupo = (grupo) => {
     props.changeGrupo(grupo);
-    // props.changeGrupoHorario(grupoHorario);
     props.history.push(`${routes.groups}/${grupo.idgrupo}`);
   };
 
   const deleteGrupo = async () => {
-    const { grupo_idgrupo, idgrupohorarios } = grupoSelected;
-    await BackendConnection.deleteGrupoHorario(idgrupohorarios);
-    await BackendConnection.deleteGrupo(grupo_idgrupo);
-
-    props.getGrupoHorariosBackend();
+    const { idgrupo } = grupoSelected;
+    const gruposByHorario = await BackendConnection.getGrupoHorariosByIdGrupo(idgrupo) ;
+    await Promise.all(gruposByHorario.map((grp)=>BackendConnection.deleteGrupoHorario(grp.idgrupohorarios)))
+    await BackendConnection.deleteGrupo(idgrupo);
+    props.getGruposBackend();
     setOpenDialog(false);
   };
 
@@ -61,7 +70,7 @@ function GroupsPage(props) {
                 grupoHorario={grupo}
                 grupo={grupo}
                 updateGrupo={() => updateGrupo(grupo)}
-                confirmDelete={confirmDelete}
+                confirmDelete={() => confirmDelete(grupo)}
               />
             </div>
           );
@@ -94,6 +103,9 @@ const mapStateToProps = (state) => {
     app: state.app,
     userReducer: state.userReducer,
     grupoReducer: state.grupoReducer,
+    schoolReducer: state.schoolReducer,
+    usersReducer: state.usersReducer,
+    rolesReducer: state.rolesReducer,
   };
 };
 
@@ -102,6 +114,11 @@ const mapDispatchToProps = (dispatch) => ({
   changeGrupoHorario: (grupoHorario) => dispatch(changeGrupoHorario(grupoHorario)),
   getGruposBackend: () => dispatch(getGruposBackend()),
   getGrupoHorariosBackend: () => dispatch(getGrupoHorariosBackend()),
+  getUsersBackend:() => dispatch(getUsers()),
+  getSchools: () => dispatch(getSchools()),
+  getUsersRol: () => dispatch(getUsersRol()),
+  getRoles: () => dispatch(getRoles()),
+  getCarreras:() => dispatch(getCarreras()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(GroupsPage));

@@ -27,6 +27,9 @@ export const changeRole = (role) => {
 export const changeUserRole = (userRole) => {
   return { type: actions.CHANGE_USER_ROLE, userRole };
 };
+export const changeUsersRole = (usersRole) => {
+  return { type: actions.CHANGE_USERS_ROLE, usersRole };
+};
 
 export const changeUsers = (users) => {
   return { type: actions.CHANGE_USERS, users };

@@ -23,7 +23,6 @@ function CardUser(props) {
         text={`${user.firstname} ${user.lastname}`}
         secondaryText={user.email}
         tercerText={typeUser}
-        width={'120vh'}
         showEditIcon={true}
         showDeleteIcon={true}
         deleteClick={() => confirmDelete(user)}

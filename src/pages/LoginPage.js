@@ -30,9 +30,9 @@ const LoginPage = (props) => {
   if (e !== null && p !== null) {
     BackendConnection.login(e, p).then((user) => {
       props.changeUser(user[0]);
-      props.getRoleFun();
       BackendConnection.getUserRol(user[0].idusers).then((rol) => {
         props.changeUserRole(rol[0]);
+        props.getRoleFun();
       });
       props.history.push(sessionStorage.getItem('path'));
     });
@@ -59,8 +59,8 @@ const LoginPage = (props) => {
         sessionStorage.setItem('email', email);
         sessionStorage.setItem('password', password);
         props.changeUser(user[0]);
-        props.getRoleFun();
         BackendConnection.getUserRol(user[0].idusers).then((rol) => {
+          props.getRoleFun();
           props.changeUserRole(rol[0]);
         });
         props.history.push(routes.home);

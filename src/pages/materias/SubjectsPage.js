@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { getMateriasBackend } from '../../redux/actions/indexthunk.actions';
+import { getMateriasBackend, getSchools, getCarreras } from '../../redux/actions/indexthunk.actions';
 import { changeMateria } from '../../redux/actions/index.actions';
 import { routes } from '../../router/RoutesConstants';
 import BackendConnection from '../../api/BackendConnection';
@@ -14,6 +14,8 @@ function SubjectPage(props) {
   sessionStorage.setItem('path', props.history.location.pathname);
 
   const { materias, loading } = props.materiasReducer;
+  const {schools} = props.schoolReducer;
+  const {careers} = props.careersReducer;
   const [materiaSelecionada, setMateriaSelecionada] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
   const { user } = props.userReducer;
@@ -22,6 +24,8 @@ function SubjectPage(props) {
     if (loading) {
       props.getMateriasBackend();
     }
+    props.getSchools();
+    props.getCareers();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -42,9 +46,7 @@ function SubjectPage(props) {
     });
     let aux = new Date();
     let val = "idmateria:" + materiaSelecionada.idmateria + ",carrera_idcarrera:" + materiaSelecionada.carrera_idcarrera + ",namemateria:" + materiaSelecionada.carrera_idcarrera;
-    BackendConnection.createUserslog(1, user.idusers, aux.toLocaleTimeString(), aux.toLocaleDateString(), val, 0).then(() => {
-      console.log("ok deleted");
-    })
+    BackendConnection.createUserslog(1, user.idusers, aux.toLocaleTimeString(), aux.toLocaleDateString(), val, 0)
   };
 
   const confirmDelete = (materia) => {
@@ -57,26 +59,37 @@ function SubjectPage(props) {
     setMateriaSelecionada(null);
   };
 
+  const getCarrera=(mat)=>{
+    const career=careers.find((care)=>care.idcarrera==mat.carrera_idcarrera)
+    return career.namecarrera;
+  };
+  const getFacultad=(mat)=>{
+    const career=careers.find((care)=>care.idcarrera==mat.carrera_idcarrera);
+    const facul=schools.find((school)=>school.idfacultad==career.facultad_idfacultad);
+    return facul.namefacultad;
+  };
+
   const renderMaterias = () => {
-    console.log('materias', materias)
     return (
       <div>
-        {materias.map((materia) => {
-          return (
-            <div key={materia.idmateria}>
-              <CardItem
-                text={`Nombre: ${materia.namemateria}`}
-                secondaryText={`Descripcion: ${materia.descripcion}`}
-                showEditIcon={true}
-                width={750}
-                showDeleteIcon={true}
-                editClick={() => updateMateria(materia)}
-                deleteClick={() => confirmDelete(materia)}
-              />
-              <div style={{ height: 20 }} />
-            </div>
-          );
-        })}
+        {
+          materias.length > 0 && (schools.length > 0 && (careers.length>0 && materias.map((materia) => {
+            return (
+              <div key={materia.idmateria}>
+                <CardItem
+                  text={`Nombre: ${materia.namemateria}`}
+                  secondaryText={`Carrera: ${getCarrera(materia)}`}
+                  tercerText = {`facultad: ${getFacultad(materia)}`}
+                  showEditIcon={true}
+                  showDeleteIcon={true}
+                  editClick={() => updateMateria(materia)}
+                  deleteClick={() => confirmDelete(materia)}
+                />
+                <div style={{ height: 20 }} />
+              </div>
+            );
+          })))
+        }
       </div>
     );
   };
@@ -104,12 +117,18 @@ const mapStateToProps = (state) => {
     app: state.app,
     userReducer: state.userReducer,
     materiasReducer: state.materiasReducer,
+    schoolReducer: state.schoolReducer,
+    careersReducer: state.careersReducer,
+
   };
 };
 
 const mapDispathToProps = (dispatch) => ({
   changeMateria: (materia) => dispatch(changeMateria(materia)),
   getMateriasBackend: () => dispatch(getMateriasBackend()),
+  getSchools:() => dispatch(getSchools()),
+  getCareers: () => dispatch(getCarreras()),
+  
 });
 
 export default connect(mapStateToProps, mapDispathToProps)(withRouter(SubjectPage));
