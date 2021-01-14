@@ -19,10 +19,10 @@ import { sCloseSesion, sLogin, sNameUmss, sNotifications, sProfile } from '../..
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { connect } from 'react-redux';
 import { routes } from '../../router/RoutesConstants';
-import { changeUser, openDrawer, updateNotifications } from '../../redux/actions/index.actions';
+import { changeUser, openDrawer, updateNotifications,cleanAllReducers } from '../../redux/actions/index.actions';
 import { withRouter } from 'react-router-dom';
 import BackendConnection from '../../api/BackendConnection';
-import { getNumberNotificationsByUser } from '../../redux/actions/indexthunk.actions';
+import { getNumberNotificationsByUser  } from '../../redux/actions/indexthunk.actions';
 import { MenuIcon } from '@material-ui/data-grid';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -62,6 +62,7 @@ function CustomAppBar(props) {
   const { openDrawer } = props.appReducer;
   const { user } = props.userReducer;
   const classes = useStyles();
+
   const { updateNotification, numberNotifications } = props.notificationsReducer;
   // eslint-disable-next-line no-unused-vars
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -87,6 +88,7 @@ function CustomAppBar(props) {
   const handleLogout = () => {
     props.changeUser(null);
     sessionStorage.clear();
+    props.cleanAllReducers();
     props.history.push(routes.login);
   };
 
@@ -145,7 +147,7 @@ function CustomAppBar(props) {
             </Badge>
           </IconButton>
         </Tooltip>
-        <Tooltip title={sProfile}>
+        {/* <Tooltip title={sProfile}>
           <IconButton
             edge="end"
             aria-label="account of current user"
@@ -154,7 +156,7 @@ function CustomAppBar(props) {
             color="inherit">
             <AccountCircle/>
           </IconButton>
-        </Tooltip>
+        </Tooltip> */}
         <Tooltip title={sCloseSesion}>
           <IconButton
             edge="end"
@@ -241,6 +243,17 @@ const mapStateToProps = (state) => {
     appReducer: state.app,
     userReducer: state.userReducer,
     notificationsReducer: state.notificationsReducer,
+    configReducer:state.configReducer,
+    rolesReducer:state.rolesReducer,
+    usersReducer:state.usersReducer,
+    userslogsReducer: state.userslogsReducer,
+    schoolReducer: state.schoolReducer,
+    careersReducer: state.careersReducer,
+    roleFuncsReducer: state.roleFuncsReducer,
+    filtersReducer: state.filtersReducer,
+    materiasReducer: state.materiasReducer,
+    horarioReducer: state.horarioReducer,
+    grupoReducer: state.grupoReducer,    
   };
 };
 
@@ -249,6 +262,7 @@ const mapDispatchToProps = (dispatch) => ({
   changeUser: (user) => dispatch(changeUser(user)),
   updateNotifications: () => dispatch(updateNotifications()),
   getNumberNotificationsByUser: (idUser) => dispatch(getNumberNotificationsByUser(idUser)),
+  cleanAllReducers:()=>dispatch(cleanAllReducers()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(CustomAppBar));

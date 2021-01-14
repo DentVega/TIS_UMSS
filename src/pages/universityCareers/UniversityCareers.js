@@ -12,6 +12,7 @@ import BackendConnection from '../../api/BackendConnection';
 import FloatingButton from '../../components/FloatingButton';
 
 function UniversityCareers(props) {
+  sessionStorage.setItem('path', props.history.location.pathname);
   const { careers, careersAux, loading } = props.careersReducer;
   const {schools} = props.schoolReducer;
   const { facultadSeleccionada } = props.filtersReducer;
