@@ -112,19 +112,15 @@ const RegisterProgress = (props) => {
         return (BackendConnection.registroReporteAdicional(res[index].body.res[0].idassistance,item.adjuntarFalta));       
       })  
       setOpenDialog(false);
+      props.history.goBack();
+
       })
     .catch(err=>console.log(err))
   };
 
   const openConfirm=()=>{
-    if(idGr!==""){
-      if(beginWeek<endWeek){
-        inputFields.map((i)=>{    
-          beginWeek.length===0|endWeek===0? setError(true):setOpenDialog(true);
-        })
-      }else{
-        setError(true);
-      }
+    if(idGr!==""){          
+      beginWeek.length===0? setError(true):setOpenDialog(true);      
     }else{
       setGrpErrorMsg("Seleccione un Grupo")
       setGrpError(true);
