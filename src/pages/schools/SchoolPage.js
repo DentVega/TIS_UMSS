@@ -56,7 +56,6 @@ function SchoolPage(props) {
   };
 
   const renderSchool = () => {
-    console.log('facultades', schools)
     return (
       <div>
         {schools.map((school) => {
@@ -65,7 +64,6 @@ function SchoolPage(props) {
               <CardItem
                 text={`Nombre: ${school.namefacultad}`}
                 secondaryText={`Descripcion: ${school.descripcion}`}
-                width={1600}
                 showEditIcon={true}
                 showDeleteIcon={true}
                 deleteClick={() => confirmDelete(school)}

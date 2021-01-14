@@ -79,7 +79,7 @@ function SubjectPage(props) {
                 <CardItem
                   text={`Nombre: ${materia.namemateria}`}
                   secondaryText={`Carrera: ${getCarrera(materia)}`}
-                  tercerText = {`facultad: ${getFacultad(materia)}`}
+                  tercerText = {`Facultad: ${getFacultad(materia)}`}
                   showEditIcon={true}
                   showDeleteIcon={true}
                   editClick={() => updateMateria(materia)}
