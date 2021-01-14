@@ -22,6 +22,7 @@ function CampusPage(props) {
   const [openDialog, setOpenDialog] = useState(false);
   const [search, setSearch] = useState('');
   const [usersFiltered, setUsersFiltered] = useState([]);
+  const [deleteEnableDialog, setDeleteEnableDialog] = useState(false);
   const { user } = props.userReducer;
 
   useEffect(() => {
@@ -42,24 +43,32 @@ function CampusPage(props) {
   };
 
   const deleteUser = async () => {
-    const userRol = await BackendConnection.getUserRolByIdUser(userSelected.idusers);
+    const grupoHorarios = await BackendConnection.getGrupoHByUserId(userSelected.idusers);
+    console.warn('user', userSelected);
+    console.warn(grupoHorarios);
+    console.warn(grupoHorarios.length);
+    if (grupoHorarios.length === 0) {
+      const userRol = await BackendConnection.getUserRolByIdUser(userSelected.idusers);
 
-    if (userRol) {
-      await BackendConnection.deleteUserRol(userSelected.idusers, userRol[0].idroles);
+      if (userRol) {
+        await BackendConnection.deleteUserRol(userSelected.idusers, userRol[0].idroles);
+      }
+
+      BackendConnection.deleteUsers(userSelected.idusers)
+        .then(() => {
+          setOpenDialog(false);
+          props.getUsers();
+        })
+        .catch((e) => console.warn('Error Delete User', e));
+      let aux = new Date();
+      let val = 'idusers:' + userSelected.idusers + ',firstname:' + userSelected.firstname + ',lastname:' + userSelected.lastname + ',phone:' + userSelected.phone
+        + ',email:' + userSelected.email + ',ci:' + userSelected.ci + ',userpassword:' + userSelected.userpassword;
+      BackendConnection.createUserslog(1, user.idusers, aux.toLocaleTimeString(), aux.toLocaleDateString(), val, 0).then(() => {
+        console.log('ok deleted');
+      });
+    } else {
+      setDeleteEnableDialog(true);
     }
-
-    BackendConnection.deleteUsers(userSelected.idusers)
-      .then(() => {
-        setOpenDialog(false);
-        props.getUsers();
-      })
-      .catch((e) => console.warn('Error Delete User', e));
-    let aux = new Date();
-    let val = 'idusers:' + userSelected.idusers + ',firstname:' + userSelected.firstname + ',lastname:' + userSelected.lastname + ',phone:' + userSelected.phone
-      + ',email:' + userSelected.email + ',ci:' + userSelected.ci + ',userpassword:' + userSelected.userpassword;
-    BackendConnection.createUserslog(1, user.idusers, aux.toLocaleTimeString(), aux.toLocaleDateString(), val, 0).then(() => {
-      console.log('ok deleted');
-    });
   };
 
   const confirmDelete = (user) => {
@@ -116,6 +125,13 @@ function CampusPage(props) {
         open={openDialog}
         handleClose={cancelDelete}
         handleAccept={deleteUser}
+      />
+      <CustomAlertDialog
+        title={'Alerta'}
+        messageText={'No se puede eliminar el usuario esta asignado a grupos'}
+        open={deleteEnableDialog}
+        handleClose={() => () => setDeleteEnableDialog(false)}
+        handleAccept={() => setDeleteEnableDialog(false)}
       />
       <h1>{sUsers}</h1>
       <TextField
