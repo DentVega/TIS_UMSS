@@ -21,7 +21,6 @@ import { connect } from 'react-redux';
 import { routes } from '../../router/RoutesConstants';
 import { changeUser, openDrawer, updateNotifications,cleanAllReducers } from '../../redux/actions/index.actions';
 import { withRouter } from 'react-router-dom';
-import BackendConnection from '../../api/BackendConnection';
 import { getNumberNotificationsByUser  } from '../../redux/actions/indexthunk.actions';
 import { MenuIcon } from '@material-ui/data-grid';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
