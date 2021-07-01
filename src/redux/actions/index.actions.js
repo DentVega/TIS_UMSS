@@ -1,5 +1,4 @@
 import * as actions from './actions';
-import { CHANGE_GRUPO } from './actions';
 
 export const changeTabIndex = (index) => {
   return { type: actions.CHANGE_TAB_INDEX, index };
@@ -24,9 +23,11 @@ export const changeRoles = (roles) => {
 export const changeRole = (role) => {
   return { type: actions.CHANGE_ROLE, role };
 };
+
 export const changeUserRole = (userRole) => {
   return { type: actions.CHANGE_USER_ROLE, userRole };
 };
+
 export const changeUsersRole = (usersRole) => {
   return { type: actions.CHANGE_USERS_ROLE, usersRole };
 };
@@ -41,11 +42,12 @@ export const changeUserSelected = (userSelected) => {
 
 export const changeUserslogs = (userslogs) => {
   return { type: actions.CHANGE_USERSLOGS, userslogs };
-}
+};
 
 export const changeUserslog = (userslog) => {
   return { type: actions.CHANGE_USERSLOG, userslog };
-}
+};
+
 export const changeSchools = (schools) => {
   return { type: actions.CHANGE_SCHOOLS, schools };
 };

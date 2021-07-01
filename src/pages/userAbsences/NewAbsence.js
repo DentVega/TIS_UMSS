@@ -34,7 +34,7 @@ const NewAbsence = (props) => {
       }
     }
   };
-
+  
   const handleStorage = () => {
     const storageRef = projectStorage.ref(file.name);
     storageRef.put(file).on('state_changed', () => {

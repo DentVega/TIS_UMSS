@@ -87,26 +87,27 @@ function RolePage(props) {
 
   const createRole = () => {
     let cont=0;
-    if (nameRole.length === 0) {
-      setNameErrorMessage(sTheNameCannotBeEmpty);
-      setNameError(true);
-    } else {
-        BackendConnection.createRole(nameRole)
-         .then((res) => {
-            setCreateRoleComplete(true);        
-            for(let i=0;i<state.length;i++){
-              if(state[i].checked){
-                setTimeout(() => {
-                 BackendConnection.roleFunction(res.data.body.res[0].idroles,state[i].id);  
-                },cont*200)
-             }  
-             cont++;        
-           }
-            setTimeout(() => {
-             props.getRoleFunc();
-            },cont*200)        
-         }).catch((err) => console.warn(err))
-    }
+      if (nameRole.length === 0) {
+        setNameErrorMessage(sTheNameCannotBeEmpty);
+        setNameError(true);
+      } else {
+          BackendConnection.createRole(nameRole)
+          .then((res) => {
+              setCreateRoleComplete(true);        
+              for(let i=0;i<state.length;i++){
+                if(state[i].checked){
+                  setTimeout(() => {
+                  BackendConnection.roleFunction(res.data.body.res[0].idroles,state[i].id);  
+                  },cont*200)
+              }  
+              cont++;        
+            }
+              setTimeout(() => {
+              props.getRoleFunc();
+              },cont*200)        
+          }).catch((err) => console.warn(err))
+      }
+    
   };
 
   const updateRole = () => {
@@ -119,7 +120,7 @@ function RolePage(props) {
       rolFun.forEach((element)=>{ 
         setTimeout(()=>{  
           BackendConnection.deleteRoleFunc(idRole,element.funcion_idfuncion);
-        },cont*400)
+        },cont*700)
         cont++;  
             
       }) 
@@ -128,14 +129,14 @@ function RolePage(props) {
         if(state[i].checked){
           setTimeout(()=>{  
           BackendConnection.roleFunction(idRole,state[i].id);  
-        },cont*400)
+        },cont*700)
         } 
         cont++;
       }
     })
     setTimeout(()=>{  
      props.getRoleFunc();
-    },8.5*1000)
+    },9*1400)
     setUpdateRoleComplete(true);
     
     } 
@@ -152,13 +153,18 @@ function RolePage(props) {
       setNameErrorMessage(sTheNameCannotBeEmpty);
       setNameError(true);
     } else {
-      let val = getSelected();
-      if(val > 0){
-        setNameErrorMessage(sRoleAlreadySaved);
-        setNameError(true);
+      if(props.history.location.pathname==="/newrole"){
+        let val = getSelected();
+        if(val > 0){
+          setNameErrorMessage(sRoleAlreadySaved);
+          setNameError(true);
+        }else{
+          setOpenDialog(true);
+        }
       }else{
         setOpenDialog(true);
       }
+      
     }
   };
 
